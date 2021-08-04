@@ -106,6 +106,11 @@ class Message extends StatelessWidget {
         return FileMessage(
           message: fileMessage,
         );
+      case types.MessageType.voice:
+        final voiceMessage = message as types.VoiceMessage;
+        return VoiceMessage(
+          message: voiceMessage,
+        );
       case types.MessageType.image:
         final imageMessage = message as types.ImageMessage;
         return ImageMessage(
