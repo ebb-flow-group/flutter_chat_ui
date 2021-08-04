@@ -27,7 +27,8 @@ dependencies:
   photo_view: ^0.12.0
   audioplayers:
     git:
-      url: https://github.com/shubhambsps/audioplayers/tree/master/packages/audioplayers
+      url: https://github.com/shubhambsps/audioplayers
+      path: packages/audioplayers
 
 dev_dependencies:
   flutter_test:
