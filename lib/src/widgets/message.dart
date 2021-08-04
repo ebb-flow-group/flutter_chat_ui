@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+import 'package:flutter_chat_ui/src/widgets/voice_message.dart';
 import '../util.dart';
 import 'file_message.dart';
 import 'image_message.dart';
@@ -108,9 +109,7 @@ class Message extends StatelessWidget {
         );
       case types.MessageType.voice:
         final voiceMessage = message as types.VoiceMessage;
-        return VoiceMessage(
-          message: voiceMessage,
-        );
+        return VoiceMessage(message: voiceMessage);
       case types.MessageType.image:
         final imageMessage = message as types.ImageMessage;
         return ImageMessage(
