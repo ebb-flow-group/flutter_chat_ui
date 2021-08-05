@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:audioplayer/audioplayer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
@@ -5,6 +7,8 @@ import '../util.dart';
 import 'inherited_chat_theme.dart';
 import 'inherited_l10n.dart';
 import 'inherited_user.dart';
+
+enum PlayerState { stopped, playing, paused }
 
 /// A class that represents file message widget
 class _VoiceMessage extends StatelessWidget {
@@ -112,15 +116,78 @@ class VoiceMessage extends StatefulWidget {
 
 class _VoiceMessageState extends State<VoiceMessage> {
   AudioPlayer audioPlayer = AudioPlayer();
-  int isPlaying = -1;
+
+  Duration? duration;
+  Duration? position;
+
+  PlayerState playerState = PlayerState.stopped;
+
+  get isPlaying => playerState == PlayerState.playing;
+
+  get isPaused => playerState == PlayerState.paused;
+
+  get durationText =>
+      duration != null ? duration.toString().split('.').first : '';
+
+  get positionText =>
+      position != null ? position.toString().split('.').first : '';
+
+  bool isMuted = false;
+
+  StreamSubscription? _positionSubscription;
+  StreamSubscription? _audioPlayerStateSubscription;
 
   @override
   void initState() {
     super.initState();
+    initAudioPlayer();
+  }
+
+  @override
+  void dispose() {
+    _positionSubscription!.cancel();
+    _audioPlayerStateSubscription!.cancel();
+    audioPlayer.stop();
+    super.dispose();
+  }
+
+  void initAudioPlayer() {
+    audioPlayer = AudioPlayer();
+    _positionSubscription = audioPlayer.onAudioPositionChanged
+        .listen((p) => setState(() => position = p));
+    _audioPlayerStateSubscription =
+        audioPlayer.onPlayerStateChanged.listen((s) {
+          if (s == AudioPlayerState.PLAYING) {
+            setState(() => duration = audioPlayer.duration);
+          } else if (s == AudioPlayerState.STOPPED) {
+            onComplete();
+            setState(() {
+              position = duration;
+            });
+          }
+        }, onError: (msg) {
+          setState(() {
+            playerState = PlayerState.stopped;
+            duration = Duration(seconds: 0);
+            position = Duration(seconds: 0);
+          });
+        });
+  }
+
+  void onComplete() {
+    setState(() => playerState = PlayerState.stopped);
   }
 
   void play(String uri) async {
     await audioPlayer.play(uri, isLocal: true);
+    setState(() {
+      playerState = PlayerState.playing;
+    });
+  }
+
+  Future pause() async {
+    await audioPlayer.pause();
+    setState(() => playerState = PlayerState.paused);
   }
 
   @override
@@ -146,15 +213,7 @@ class _VoiceMessageState extends State<VoiceMessage> {
               width: 42,
               child: InheritedChatTheme.of(context).theme.documentIcon != null
                   ? InheritedChatTheme.of(context).theme.documentIcon!
-                  : GestureDetector(
-                      onTap: () {
-                        play(widget.message.uri);
-                      },
-                      child: Icon(
-                        Icons.play_arrow,
-                        color: _color,
-                      ),
-                    ),
+                  : _buildControlAndProgressView(),
             ),
             Flexible(
               child: Container(
@@ -197,4 +256,49 @@ class _VoiceMessageState extends State<VoiceMessage> {
       ),
     );
   }
+
+  Row _buildControlAndProgressView() => Row(mainAxisSize: MainAxisSize.min, children: [
+    Container(
+      height: 42,
+      width: 42,
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+
+          CircularProgressIndicator(
+            value: position != null && position!.inMilliseconds > 0
+                ? (position?.inMilliseconds.toDouble() ?? 0.0) /
+                (duration?.inMilliseconds.toDouble() ?? 0.0)
+                : 0.0,
+            valueColor: AlwaysStoppedAnimation(Colors.cyan),
+            backgroundColor: Colors.grey.shade400,
+          ),
+
+          GestureDetector(
+              onTap: () {
+
+                if(playerState == PlayerState.playing)
+                {
+                  pause();
+                }
+                else
+                {
+                  play('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3');
+                }
+              },
+              child: playerState == PlayerState.playing
+                  ? Icon(
+                Icons.pause,
+                color: Colors.black,
+              )
+                  : Icon(
+                Icons.play_arrow,
+                color: Colors.black,
+              )),
+
+
+        ],
+      ),
+    ),
+  ]);
 }
