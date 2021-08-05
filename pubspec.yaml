@@ -28,10 +28,7 @@ dependencies:
   audioplayer: ^0.8.1
     #git:
       #url: https://github.com/shubhambsps/audioplayers
-<<<<<<< HEAD
-=======
       #path: packages/audioplayers
->>>>>>> 2749d930f2a3e0ea63b5dbbf4fc4d02f8ceae657
 
 dev_dependencies:
   flutter_test:
