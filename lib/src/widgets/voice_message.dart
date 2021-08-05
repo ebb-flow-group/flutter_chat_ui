@@ -283,7 +283,7 @@ class _VoiceMessageState extends State<VoiceMessage> {
                 }
                 else
                 {
-                  play('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3');
+                  play(widget.message.uri);
                 }
               },
               child: playerState == PlayerState.playing
