@@ -1,4 +1,4 @@
-import 'package:audioplayers/audioplayers.dart';
+import 'package:audioplayer/audioplayer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import '../util.dart';
@@ -111,22 +111,16 @@ class VoiceMessage extends StatefulWidget {
 }
 
 class _VoiceMessageState extends State<VoiceMessage> {
-  AudioPlayer audioPlayer = AudioPlayer(mode: PlayerMode.LOW_LATENCY);
+  AudioPlayer audioPlayer = AudioPlayer();
   int isPlaying = -1;
 
   @override
   void initState() {
     super.initState();
-
-    AudioPlayer.logEnabled = true;
   }
 
   void play(String uri) async {
-    int result = await audioPlayer.play(uri, isLocal: true);
-    print('AUDIO PLAYER PLAY RESULT: $result');
-    if (result == 1) {
-      // success
-    }
+    await audioPlayer.play(uri, isLocal: true);
   }
 
   @override
