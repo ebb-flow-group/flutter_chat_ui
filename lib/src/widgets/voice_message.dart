@@ -213,7 +213,7 @@ class _VoiceMessageState extends State<VoiceMessage> {
               width: 42,
               child: InheritedChatTheme.of(context).theme.documentIcon != null
                   ? InheritedChatTheme.of(context).theme.documentIcon!
-                  : _buildControlAndProgressView(),
+                  : AudioController(widget.message),
             ),
             Flexible(
               child: Container(
@@ -303,3 +303,142 @@ class _VoiceMessageState extends State<VoiceMessage> {
     ),
   ]);
 }
+
+class AudioController extends StatefulWidget {
+
+  /// [types.VoiceMessage]
+  final types.VoiceMessage message;
+
+  AudioController(this.message);
+
+  @override
+  _AudioControllerState createState() => _AudioControllerState();
+}
+
+class _AudioControllerState extends State<AudioController> {
+
+  AudioPlayer audioPlayer = AudioPlayer();
+
+  Duration? duration;
+  Duration? position;
+
+  PlayerState playerState = PlayerState.stopped;
+
+  get isPlaying => playerState == PlayerState.playing;
+
+  get isPaused => playerState == PlayerState.paused;
+
+  get durationText =>
+      duration != null ? duration.toString().split('.').first : '';
+
+  get positionText =>
+      position != null ? position.toString().split('.').first : '';
+
+  bool isMuted = false;
+
+  StreamSubscription? _positionSubscription;
+  StreamSubscription? _audioPlayerStateSubscription;
+
+  @override
+  void initState() {
+    super.initState();
+    initAudioPlayer();
+  }
+
+  @override
+  void dispose() {
+    _positionSubscription!.cancel();
+    _audioPlayerStateSubscription!.cancel();
+    audioPlayer.stop();
+    super.dispose();
+  }
+
+  void initAudioPlayer() {
+    audioPlayer = AudioPlayer();
+    _positionSubscription = audioPlayer.onAudioPositionChanged
+        .listen((p) => setState(() => position = p));
+    _audioPlayerStateSubscription =
+        audioPlayer.onPlayerStateChanged.listen((s) {
+          if (s == AudioPlayerState.PLAYING) {
+            setState(() => duration = audioPlayer.duration);
+          } else if (s == AudioPlayerState.STOPPED) {
+            onComplete();
+            setState(() {
+              position = duration;
+            });
+          }
+        }, onError: (msg) {
+          setState(() {
+            playerState = PlayerState.stopped;
+            duration = Duration(seconds: 0);
+            position = Duration(seconds: 0);
+          });
+        });
+  }
+
+  void onComplete() {
+    setState(() => playerState = PlayerState.stopped);
+  }
+
+  void play(String uri) async {
+    await audioPlayer.play(uri, isLocal: true);
+    setState(() {
+      playerState = PlayerState.playing;
+    });
+  }
+
+  Future pause() async {
+    await audioPlayer.pause();
+    setState(() => playerState = PlayerState.paused);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(mainAxisSize: MainAxisSize.min, children: [
+      Container(
+        height: 42,
+        width: 42,
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+
+            CircularProgressIndicator(
+              value: position != null && position!.inMilliseconds > 0
+                  ? (position?.inMilliseconds.toDouble() ?? 0.0) /
+                  (duration?.inMilliseconds.toDouble() ?? 0.0)
+                  : 0.0,
+              valueColor: const AlwaysStoppedAnimation(Colors.cyan),
+              backgroundColor: Colors.grey.shade400,
+            ),
+
+            GestureDetector(
+                onTap: () {
+
+                  if(playerState == PlayerState.playing)
+                  {
+                    pause();
+                  }
+                  else
+                  {
+                    print('PLAYED AUDIO PATH: ${widget.message.uri}');
+                    play(widget.message.uri);
+                  }
+                },
+                child: playerState == PlayerState.playing
+                    ? const Icon(
+                  Icons.pause,
+                  color: Colors.black,
+                )
+                    : const Icon(
+                  Icons.play_arrow,
+                  color: Colors.black,
+                )),
+
+
+          ],
+        ),
+      ),
+    ]);
+  }
+}
+
