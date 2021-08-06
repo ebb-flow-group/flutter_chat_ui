@@ -283,6 +283,7 @@ class _VoiceMessageState extends State<VoiceMessage> {
                 }
                 else
                 {
+                  print('PLAYED AUDIO PATH: ${widget.message.uri}');
                   play(widget.message.uri);
                 }
               },
