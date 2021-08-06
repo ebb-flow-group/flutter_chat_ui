@@ -97,7 +97,7 @@ class _VoiceMessage extends StatelessWidget {
 }
 
 class VoiceMessage extends StatefulWidget {
-  /// Creates a file message widget based on a [types.VoiceMessage]
+  /// Creates a voice message widget based on a [types.VoiceMessage]
   const VoiceMessage({
     Key? key,
     required this.message,
@@ -270,7 +270,7 @@ class _VoiceMessageState extends State<VoiceMessage> {
                 ? (position?.inMilliseconds.toDouble() ?? 0.0) /
                 (duration?.inMilliseconds.toDouble() ?? 0.0)
                 : 0.0,
-            valueColor: AlwaysStoppedAnimation(Colors.cyan),
+            valueColor: const AlwaysStoppedAnimation(Colors.cyan),
             backgroundColor: Colors.grey.shade400,
           ),
 
@@ -288,11 +288,11 @@ class _VoiceMessageState extends State<VoiceMessage> {
                 }
               },
               child: playerState == PlayerState.playing
-                  ? Icon(
+                  ? const Icon(
                 Icons.pause,
                 color: Colors.black,
               )
-                  : Icon(
+                  : const Icon(
                 Icons.play_arrow,
                 color: Colors.black,
               )),
