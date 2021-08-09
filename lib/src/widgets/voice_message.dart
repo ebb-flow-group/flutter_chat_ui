@@ -115,7 +115,7 @@ class VoiceMessage extends StatefulWidget {
 }
 
 class _VoiceMessageState extends State<VoiceMessage> {
-  /*AudioPlayer audioPlayer = AudioPlayer();
+  AudioPlayer audioPlayer = AudioPlayer();
 
   Duration? duration;
   Duration? position;
@@ -135,7 +135,7 @@ class _VoiceMessageState extends State<VoiceMessage> {
   bool isMuted = false;
 
   StreamSubscription? _positionSubscription;
-  StreamSubscription? _audioPlayerStateSubscription;*/
+  StreamSubscription? _audioPlayerStateSubscription;
 
   @override
   void initState() {
@@ -145,13 +145,13 @@ class _VoiceMessageState extends State<VoiceMessage> {
 
   @override
   void dispose() {
-   /* _positionSubscription!.cancel();
+    _positionSubscription!.cancel();
     _audioPlayerStateSubscription!.cancel();
-    audioPlayer.stop();*/
+    audioPlayer.stop();
     super.dispose();
   }
 
-  /*void initAudioPlayer() {
+  void initAudioPlayer() {
     audioPlayer = AudioPlayer();
     _positionSubscription = audioPlayer.onAudioPositionChanged
         .listen((p) => setState(() => position = p));
@@ -168,17 +168,21 @@ class _VoiceMessageState extends State<VoiceMessage> {
         }, onError: (msg) {
           setState(() {
             playerState = PlayerState.stopped;
-            duration = Duration(seconds: 0);
-            position = Duration(seconds: 0);
+            duration = const Duration(seconds: 0);
+            position = const Duration(seconds: 0);
           });
         });
-  }*/
+  }
 
-  /*void onComplete() {
-    setState(() => playerState = PlayerState.stopped);
-  }*/
+  void onComplete() {
+    setState(() {
+      playerState = PlayerState.stopped;
+      duration = const Duration(seconds: 0);
+      position = const Duration(seconds: 0);
+    });
+  }
 
-  /*void play(String uri) async {
+  void play(String uri) async {
 
     _positionSubscription = audioPlayer.onAudioPositionChanged
         .listen((p) => setState(() => position = p));
@@ -205,12 +209,12 @@ class _VoiceMessageState extends State<VoiceMessage> {
     setState(() {
       playerState = PlayerState.playing;
     });
-  }*/
+  }
 
-  /*Future pause() async {
+  Future pause() async {
     await audioPlayer.pause();
     setState(() => playerState = PlayerState.paused);
-  }*/
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -236,7 +240,7 @@ class _VoiceMessageState extends State<VoiceMessage> {
               width: 42,
               child: InheritedChatTheme.of(context).theme.documentIcon != null
                   ? InheritedChatTheme.of(context).theme.documentIcon!
-                  : AudioController(key: UniqueKey(), message: widget.message),
+                  : _buildControlAndProgressView()/*AudioController(key: UniqueKey(), message: widget.message)*/,
             ),
             Flexible(
               child: Container(
@@ -280,7 +284,7 @@ class _VoiceMessageState extends State<VoiceMessage> {
     );
   }
 
-  /*Row _buildControlAndProgressView() =>
+  Row _buildControlAndProgressView() =>
       Row(mainAxisSize: MainAxisSize.min, children: [
         Container(
           height: 42,
@@ -317,7 +321,7 @@ class _VoiceMessageState extends State<VoiceMessage> {
             ],
           ),
         ),
-      ]);*/
+      ]);
 }
 
 class AudioController extends StatefulWidget {
@@ -372,7 +376,7 @@ class _AudioControllerState extends State<AudioController> {
 
   void initAudioPlayer() {
     audioPlayer = AudioPlayer();
-    /*_positionSubscription = audioPlayer.onAudioPositionChanged
+    _positionSubscription = audioPlayer.onAudioPositionChanged
         .listen((p) => setState(() => position = p));
     _audioPlayerStateSubscription =
         audioPlayer.onPlayerStateChanged.listen((s) {
@@ -390,7 +394,7 @@ class _AudioControllerState extends State<AudioController> {
         duration = Duration(seconds: 0);
         position = Duration(seconds: 0);
       });
-    });*/
+    });
   }
 
   void onComplete() {
@@ -401,26 +405,6 @@ class _AudioControllerState extends State<AudioController> {
   }
 
   void play(String uri) async {
-    _positionSubscription = audioPlayer.onAudioPositionChanged
-        .listen((p) => setState(() => position = p));
-    _audioPlayerStateSubscription =
-        audioPlayer.onPlayerStateChanged.listen((s) {
-          if (s == AudioPlayerState.PLAYING) {
-            setState(() => duration = audioPlayer.duration);
-          } else if (s == AudioPlayerState.STOPPED) {
-            onComplete();
-            setState(() {
-              position = duration;
-            });
-          }
-        }, onError: (msg) {
-          setState(() {
-            playerState = PlayerState.stopped;
-            duration = Duration(seconds: 0);
-            position = Duration(seconds: 0);
-          });
-        });
-
     await audioPlayer.play(uri, isLocal: true);
 
     setState(() {
@@ -435,7 +419,7 @@ class _AudioControllerState extends State<AudioController> {
 
   @override
   Widget build(BuildContext context) {
-    return Row(key: widget.key, mainAxisSize: MainAxisSize.min, children: [
+    return Row(mainAxisSize: MainAxisSize.min, children: [
       Container(
         height: 42,
         width: 42,
