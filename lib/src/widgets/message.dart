@@ -109,7 +109,7 @@ class Message extends StatelessWidget {
         );
       case types.MessageType.voice:
         final voiceMessage = message as types.VoiceMessage;
-        return VoiceMessage(message: voiceMessage);
+        return VoiceMessage(key: UniqueKey(), message: voiceMessage);
       case types.MessageType.image:
         final imageMessage = message as types.ImageMessage;
         return ImageMessage(
