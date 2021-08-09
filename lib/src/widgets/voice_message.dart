@@ -376,7 +376,6 @@ class _AudioControllerState extends State<AudioController> {
   }
 
   void play(String uri) async {
-    await audioPlayer.play(uri, isLocal: true);
     _positionSubscription = audioPlayer.onAudioPositionChanged
         .listen((p) => setState(() => position = p));
     _audioPlayerStateSubscription =
@@ -396,6 +395,9 @@ class _AudioControllerState extends State<AudioController> {
             position = Duration(seconds: 0);
           });
         });
+
+    await audioPlayer.play(uri, isLocal: true);
+
     setState(() {
       playerState = PlayerState.playing;
     });
