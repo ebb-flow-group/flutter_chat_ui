@@ -350,6 +350,7 @@ class _ChatState extends State<Chat> {
                                 onTap: () => FocusManager.instance.primaryFocus
                                     ?.unfocus(),
                                 child: ChatList(
+                                  key: ValueKey(_chatMessages.length),
                                   isLastPage: widget.isLastPage,
                                   itemBuilder: (item, index) =>
                                       _buildMessage(item),
