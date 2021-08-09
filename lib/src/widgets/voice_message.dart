@@ -157,21 +157,21 @@ class _VoiceMessageState extends State<VoiceMessage> {
         .listen((p) => setState(() => position = p));
     _audioPlayerStateSubscription =
         audioPlayer.onPlayerStateChanged.listen((s) {
-          if (s == AudioPlayerState.PLAYING) {
-            setState(() => duration = audioPlayer.duration);
-          } else if (s == AudioPlayerState.STOPPED) {
-            onComplete();
-            setState(() {
-              position = duration;
-            });
-          }
-        }, onError: (msg) {
-          setState(() {
-            playerState = PlayerState.stopped;
-            duration = Duration(seconds: 0);
-            position = Duration(seconds: 0);
-          });
+      if (s == AudioPlayerState.PLAYING) {
+        setState(() => duration = audioPlayer.duration);
+      } else if (s == AudioPlayerState.STOPPED) {
+        onComplete();
+        setState(() {
+          position = duration;
         });
+      }
+    }, onError: (msg) {
+      setState(() {
+        playerState = PlayerState.stopped;
+        duration = Duration(seconds: 0);
+        position = Duration(seconds: 0);
+      });
+    });
   }
 
   void onComplete() {
@@ -198,6 +198,7 @@ class _VoiceMessageState extends State<VoiceMessage> {
         : InheritedChatTheme.of(context).theme.receivedMessageDocumentIconColor;
 
     return Semantics(
+      key: widget.key,
       label: InheritedL10n.of(context).l10n.fileButtonAccessibilityLabel,
       child: Container(
         padding: const EdgeInsets.fromLTRB(16, 16, 24, 16),
@@ -213,7 +214,7 @@ class _VoiceMessageState extends State<VoiceMessage> {
               width: 42,
               child: InheritedChatTheme.of(context).theme.documentIcon != null
                   ? InheritedChatTheme.of(context).theme.documentIcon!
-                  : AudioController(widget.message),
+                  : AudioController(key: UniqueKey(), message: widget.message),
             ),
             Flexible(
               child: Container(
@@ -257,66 +258,60 @@ class _VoiceMessageState extends State<VoiceMessage> {
     );
   }
 
-  Row _buildControlAndProgressView() => Row(mainAxisSize: MainAxisSize.min, children: [
-    Container(
-      height: 42,
-      width: 42,
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-
-          CircularProgressIndicator(
-            value: position != null && position!.inMilliseconds > 0
-                ? (position?.inMilliseconds.toDouble() ?? 0.0) /
-                (duration?.inMilliseconds.toDouble() ?? 0.0)
-                : 0.0,
-            valueColor: const AlwaysStoppedAnimation(Colors.cyan),
-            backgroundColor: Colors.grey.shade400,
+  Row _buildControlAndProgressView() =>
+      Row(mainAxisSize: MainAxisSize.min, children: [
+        Container(
+          height: 42,
+          width: 42,
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              CircularProgressIndicator(
+                value: position != null && position!.inMilliseconds > 0
+                    ? (position?.inMilliseconds.toDouble() ?? 0.0) /
+                        (duration?.inMilliseconds.toDouble() ?? 0.0)
+                    : 0.0,
+                valueColor: const AlwaysStoppedAnimation(Colors.cyan),
+                backgroundColor: Colors.grey.shade400,
+              ),
+              GestureDetector(
+                  onTap: () {
+                    if (playerState == PlayerState.playing) {
+                      pause();
+                    } else {
+                      print('PLAYED AUDIO PATH: ${widget.message.uri}');
+                      play(widget.message.uri);
+                    }
+                  },
+                  child: playerState == PlayerState.playing
+                      ? const Icon(
+                          Icons.pause,
+                          color: Colors.black,
+                        )
+                      : const Icon(
+                          Icons.play_arrow,
+                          color: Colors.black,
+                        )),
+            ],
           ),
-
-          GestureDetector(
-              onTap: () {
-
-                if(playerState == PlayerState.playing)
-                {
-                  pause();
-                }
-                else
-                {
-                  print('PLAYED AUDIO PATH: ${widget.message.uri}');
-                  play(widget.message.uri);
-                }
-              },
-              child: playerState == PlayerState.playing
-                  ? const Icon(
-                Icons.pause,
-                color: Colors.black,
-              )
-                  : const Icon(
-                Icons.play_arrow,
-                color: Colors.black,
-              )),
-
-
-        ],
-      ),
-    ),
-  ]);
+        ),
+      ]);
 }
 
 class AudioController extends StatefulWidget {
-
   /// [types.VoiceMessage]
   final types.VoiceMessage message;
 
-  AudioController(this.message);
+  const AudioController({
+    Key? key,
+    required this.message,
+  }) : super(key: key);
 
   @override
   _AudioControllerState createState() => _AudioControllerState();
 }
 
 class _AudioControllerState extends State<AudioController> {
-
   AudioPlayer audioPlayer = AudioPlayer();
 
   Duration? duration;
@@ -359,21 +354,21 @@ class _AudioControllerState extends State<AudioController> {
         .listen((p) => setState(() => position = p));
     _audioPlayerStateSubscription =
         audioPlayer.onPlayerStateChanged.listen((s) {
-          if (s == AudioPlayerState.PLAYING) {
-            setState(() => duration = audioPlayer.duration);
-          } else if (s == AudioPlayerState.STOPPED) {
-            onComplete();
-            setState(() {
-              position = duration;
-            });
-          }
-        }, onError: (msg) {
-          setState(() {
-            playerState = PlayerState.stopped;
-            duration = Duration(seconds: 0);
-            position = Duration(seconds: 0);
-          });
+      if (s == AudioPlayerState.PLAYING) {
+        setState(() => duration = audioPlayer.duration);
+      } else if (s == AudioPlayerState.STOPPED) {
+        onComplete();
+        setState(() {
+          position = duration;
         });
+      }
+    }, onError: (msg) {
+      setState(() {
+        playerState = PlayerState.stopped;
+        duration = Duration(seconds: 0);
+        position = Duration(seconds: 0);
+      });
+    });
   }
 
   void onComplete() {
@@ -394,49 +389,42 @@ class _AudioControllerState extends State<AudioController> {
 
   @override
   Widget build(BuildContext context) {
-    return Row(mainAxisSize: MainAxisSize.min, children: [
+    return Row(key: widget.key, mainAxisSize: MainAxisSize.min, children: [
       Container(
         height: 42,
         width: 42,
         child: Stack(
           alignment: Alignment.center,
           children: [
-
             CircularProgressIndicator(
               value: position != null && position!.inMilliseconds > 0
                   ? (position?.inMilliseconds.toDouble() ?? 0.0) /
-                  (duration?.inMilliseconds.toDouble() ?? 0.0)
+                      (duration?.inMilliseconds.toDouble() ?? 0.0)
                   : 0.0,
               valueColor: const AlwaysStoppedAnimation(Colors.cyan),
               backgroundColor: Colors.grey.shade400,
             ),
-
             GestureDetector(
                 onTap: () {
-
-                  if(playerState == PlayerState.playing)
-                  {
+                  if (playerState == PlayerState.playing) {
                     pause();
-                  }
-                  else
-                  {
+                  } else {
                     print('PLAYED AUDIO PATH: ${widget.message.uri}');
                     play(widget.message.uri);
                   }
                 },
                 child: playerState == PlayerState.playing
                     ? const Icon(
-                  Icons.pause,
-                  color: Colors.black,
-                )
+                        Icons.pause,
+                        color: Colors.black,
+                      )
                     : const Icon(
-                  Icons.play_arrow,
-                  color: Colors.black,
-                )),
+                        Icons.play_arrow,
+                        color: Colors.black,
+                      )),
           ],
         ),
       ),
     ]);
   }
 }
-
