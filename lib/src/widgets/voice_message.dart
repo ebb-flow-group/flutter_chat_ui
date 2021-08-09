@@ -350,7 +350,7 @@ class _AudioControllerState extends State<AudioController> {
 
   void initAudioPlayer() {
     audioPlayer = AudioPlayer();
-    _positionSubscription = audioPlayer.onAudioPositionChanged
+    /*_positionSubscription = audioPlayer.onAudioPositionChanged
         .listen((p) => setState(() => position = p));
     _audioPlayerStateSubscription =
         audioPlayer.onPlayerStateChanged.listen((s) {
@@ -368,7 +368,7 @@ class _AudioControllerState extends State<AudioController> {
         duration = Duration(seconds: 0);
         position = Duration(seconds: 0);
       });
-    });
+    });*/
   }
 
   void onComplete() {
@@ -377,6 +377,25 @@ class _AudioControllerState extends State<AudioController> {
 
   void play(String uri) async {
     await audioPlayer.play(uri, isLocal: true);
+    _positionSubscription = audioPlayer.onAudioPositionChanged
+        .listen((p) => setState(() => position = p));
+    _audioPlayerStateSubscription =
+        audioPlayer.onPlayerStateChanged.listen((s) {
+          if (s == AudioPlayerState.PLAYING) {
+            setState(() => duration = audioPlayer.duration);
+          } else if (s == AudioPlayerState.STOPPED) {
+            onComplete();
+            setState(() {
+              position = duration;
+            });
+          }
+        }, onError: (msg) {
+          setState(() {
+            playerState = PlayerState.stopped;
+            duration = Duration(seconds: 0);
+            position = Duration(seconds: 0);
+          });
+        });
     setState(() {
       playerState = PlayerState.playing;
     });
