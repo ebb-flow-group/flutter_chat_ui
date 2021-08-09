@@ -49,9 +49,9 @@ class _VoiceMessage extends StatelessWidget {
               child: InheritedChatTheme.of(context).theme.documentIcon != null
                   ? InheritedChatTheme.of(context).theme.documentIcon!
                   : Icon(
-                      Icons.play_arrow,
-                      color: _color,
-                    ),
+                Icons.play_arrow,
+                color: _color,
+              ),
             ),
             Flexible(
               child: Container(
@@ -65,11 +65,11 @@ class _VoiceMessage extends StatelessWidget {
                       message.name,
                       style: _user.id == message.author.id
                           ? InheritedChatTheme.of(context)
-                              .theme
-                              .sentMessageBodyTextStyle
+                          .theme
+                          .sentMessageBodyTextStyle
                           : InheritedChatTheme.of(context)
-                              .theme
-                              .receivedMessageBodyTextStyle,
+                          .theme
+                          .receivedMessageBodyTextStyle,
                       textWidthBasis: TextWidthBasis.longestLine,
                     ),
                     Container(
@@ -79,11 +79,11 @@ class _VoiceMessage extends StatelessWidget {
                       child: Text(formatBytes(message.size),
                           style: _user.id == message.author.id
                               ? InheritedChatTheme.of(context)
-                                  .theme
-                                  .sentMessageCaptionTextStyle
+                              .theme
+                              .sentMessageCaptionTextStyle
                               : InheritedChatTheme.of(context)
-                                  .theme
-                                  .receivedMessageCaptionTextStyle),
+                              .theme
+                              .receivedMessageCaptionTextStyle),
                     ),
                   ],
                 ),
@@ -115,7 +115,7 @@ class VoiceMessage extends StatefulWidget {
 }
 
 class _VoiceMessageState extends State<VoiceMessage> {
-  AudioPlayer audioPlayer = AudioPlayer();
+  /*AudioPlayer audioPlayer = AudioPlayer();
 
   Duration? duration;
   Duration? position;
@@ -135,12 +135,12 @@ class _VoiceMessageState extends State<VoiceMessage> {
   bool isMuted = false;
 
   StreamSubscription? _positionSubscription;
-  StreamSubscription? _audioPlayerStateSubscription;
+  StreamSubscription? _audioPlayerStateSubscription;*/
 
   @override
   void initState() {
     super.initState();
-    initAudioPlayer();
+    // initAudioPlayer();
   }
 
   @override
@@ -153,25 +153,25 @@ class _VoiceMessageState extends State<VoiceMessage> {
 
   void initAudioPlayer() {
     audioPlayer = AudioPlayer();
-    _positionSubscription = audioPlayer.onAudioPositionChanged
+    /*_positionSubscription = audioPlayer.onAudioPositionChanged
         .listen((p) => setState(() => position = p));
     _audioPlayerStateSubscription =
         audioPlayer.onPlayerStateChanged.listen((s) {
-      if (s == AudioPlayerState.PLAYING) {
-        setState(() => duration = audioPlayer.duration);
-      } else if (s == AudioPlayerState.STOPPED) {
-        onComplete();
-        setState(() {
-          position = duration;
-        });
-      }
-    }, onError: (msg) {
-      setState(() {
-        playerState = PlayerState.stopped;
-        duration = Duration(seconds: 0);
-        position = Duration(seconds: 0);
-      });
-    });
+          if (s == AudioPlayerState.PLAYING) {
+            setState(() => duration = audioPlayer.duration);
+          } else if (s == AudioPlayerState.STOPPED) {
+            onComplete();
+            setState(() {
+              position = duration;
+            });
+          }
+        }, onError: (msg) {
+          setState(() {
+            playerState = PlayerState.stopped;
+            duration = Duration(seconds: 0);
+            position = Duration(seconds: 0);
+          });
+        });*/
   }
 
   void onComplete() {
@@ -179,7 +179,29 @@ class _VoiceMessageState extends State<VoiceMessage> {
   }
 
   void play(String uri) async {
+
+    _positionSubscription = audioPlayer.onAudioPositionChanged
+        .listen((p) => setState(() => position = p));
+    _audioPlayerStateSubscription =
+        audioPlayer.onPlayerStateChanged.listen((s) {
+          if (s == AudioPlayerState.PLAYING) {
+            setState(() => duration = audioPlayer.duration);
+          } else if (s == AudioPlayerState.STOPPED) {
+            onComplete();
+            setState(() {
+              position = duration;
+            });
+          }
+        }, onError: (msg) {
+          setState(() {
+            playerState = PlayerState.stopped;
+            duration = Duration(seconds: 0);
+            position = Duration(seconds: 0);
+          });
+        });
+
     await audioPlayer.play(uri, isLocal: true);
+
     setState(() {
       playerState = PlayerState.playing;
     });
@@ -228,11 +250,11 @@ class _VoiceMessageState extends State<VoiceMessage> {
                       widget.message.name,
                       style: _user.id == widget.message.author.id
                           ? InheritedChatTheme.of(context)
-                              .theme
-                              .sentMessageBodyTextStyle
+                          .theme
+                          .sentMessageBodyTextStyle
                           : InheritedChatTheme.of(context)
-                              .theme
-                              .receivedMessageBodyTextStyle,
+                          .theme
+                          .receivedMessageBodyTextStyle,
                       textWidthBasis: TextWidthBasis.longestLine,
                     ),
                     Container(
@@ -242,11 +264,11 @@ class _VoiceMessageState extends State<VoiceMessage> {
                       child: Text(formatBytes(widget.message.size),
                           style: _user.id == widget.message.author.id
                               ? InheritedChatTheme.of(context)
-                                  .theme
-                                  .sentMessageCaptionTextStyle
+                              .theme
+                              .sentMessageCaptionTextStyle
                               : InheritedChatTheme.of(context)
-                                  .theme
-                                  .receivedMessageCaptionTextStyle),
+                              .theme
+                              .receivedMessageCaptionTextStyle),
                     ),
                   ],
                 ),
@@ -269,7 +291,7 @@ class _VoiceMessageState extends State<VoiceMessage> {
               CircularProgressIndicator(
                 value: position != null && position!.inMilliseconds > 0
                     ? (position?.inMilliseconds.toDouble() ?? 0.0) /
-                        (duration?.inMilliseconds.toDouble() ?? 0.0)
+                    (duration?.inMilliseconds.toDouble() ?? 0.0)
                     : 0.0,
                 valueColor: const AlwaysStoppedAnimation(Colors.cyan),
                 backgroundColor: Colors.grey.shade400,
@@ -285,13 +307,13 @@ class _VoiceMessageState extends State<VoiceMessage> {
                   },
                   child: playerState == PlayerState.playing
                       ? const Icon(
-                          Icons.pause,
-                          color: Colors.black,
-                        )
+                    Icons.pause,
+                    color: Colors.black,
+                  )
                       : const Icon(
-                          Icons.play_arrow,
-                          color: Colors.black,
-                        )),
+                    Icons.play_arrow,
+                    color: Colors.black,
+                  )),
             ],
           ),
         ),
@@ -373,6 +395,9 @@ class _AudioControllerState extends State<AudioController> {
 
   void onComplete() {
     setState(() => playerState = PlayerState.stopped);
+    _positionSubscription!.cancel();
+    _audioPlayerStateSubscription!.cancel();
+    audioPlayer.stop();
   }
 
   void play(String uri) async {
@@ -420,7 +445,7 @@ class _AudioControllerState extends State<AudioController> {
             CircularProgressIndicator(
               value: position != null && position!.inMilliseconds > 0
                   ? (position?.inMilliseconds.toDouble() ?? 0.0) /
-                      (duration?.inMilliseconds.toDouble() ?? 0.0)
+                  (duration?.inMilliseconds.toDouble() ?? 0.0)
                   : 0.0,
               valueColor: const AlwaysStoppedAnimation(Colors.cyan),
               backgroundColor: Colors.grey.shade400,
@@ -436,13 +461,13 @@ class _AudioControllerState extends State<AudioController> {
                 },
                 child: playerState == PlayerState.playing
                     ? const Icon(
-                        Icons.pause,
-                        color: Colors.black,
-                      )
+                  Icons.pause,
+                  color: Colors.black,
+                )
                     : const Icon(
-                        Icons.play_arrow,
-                        color: Colors.black,
-                      )),
+                  Icons.play_arrow,
+                  color: Colors.black,
+                )),
           ],
         ),
       ),
