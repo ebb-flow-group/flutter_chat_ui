@@ -145,15 +145,15 @@ class _VoiceMessageState extends State<VoiceMessage> {
 
   @override
   void dispose() {
-    _positionSubscription!.cancel();
+   /* _positionSubscription!.cancel();
     _audioPlayerStateSubscription!.cancel();
-    audioPlayer.stop();
+    audioPlayer.stop();*/
     super.dispose();
   }
 
-  void initAudioPlayer() {
+  /*void initAudioPlayer() {
     audioPlayer = AudioPlayer();
-    /*_positionSubscription = audioPlayer.onAudioPositionChanged
+    _positionSubscription = audioPlayer.onAudioPositionChanged
         .listen((p) => setState(() => position = p));
     _audioPlayerStateSubscription =
         audioPlayer.onPlayerStateChanged.listen((s) {
@@ -171,14 +171,14 @@ class _VoiceMessageState extends State<VoiceMessage> {
             duration = Duration(seconds: 0);
             position = Duration(seconds: 0);
           });
-        });*/
-  }
+        });
+  }*/
 
-  void onComplete() {
+  /*void onComplete() {
     setState(() => playerState = PlayerState.stopped);
-  }
+  }*/
 
-  void play(String uri) async {
+  /*void play(String uri) async {
 
     _positionSubscription = audioPlayer.onAudioPositionChanged
         .listen((p) => setState(() => position = p));
@@ -205,12 +205,12 @@ class _VoiceMessageState extends State<VoiceMessage> {
     setState(() {
       playerState = PlayerState.playing;
     });
-  }
+  }*/
 
-  Future pause() async {
+  /*Future pause() async {
     await audioPlayer.pause();
     setState(() => playerState = PlayerState.paused);
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -280,7 +280,7 @@ class _VoiceMessageState extends State<VoiceMessage> {
     );
   }
 
-  Row _buildControlAndProgressView() =>
+  /*Row _buildControlAndProgressView() =>
       Row(mainAxisSize: MainAxisSize.min, children: [
         Container(
           height: 42,
@@ -317,7 +317,7 @@ class _VoiceMessageState extends State<VoiceMessage> {
             ],
           ),
         ),
-      ]);
+      ]);*/
 }
 
 class AudioController extends StatefulWidget {
