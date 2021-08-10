@@ -175,6 +175,7 @@ class _VoiceMessageState extends State<VoiceMessage> {
   }
 
   void onComplete() {
+    audioPlayer.stop();
     setState(() {
       playerState = PlayerState.stopped;
       duration = const Duration(seconds: 0);
@@ -183,7 +184,7 @@ class _VoiceMessageState extends State<VoiceMessage> {
   }
 
   void play(String uri) async {
-
+    audioPlayer = AudioPlayer();
     _positionSubscription = audioPlayer.onAudioPositionChanged
         .listen((p) => setState(() => position = p));
     _audioPlayerStateSubscription =
