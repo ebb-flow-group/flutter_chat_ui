@@ -200,11 +200,21 @@ class _VoiceMessageState extends State<VoiceMessage> {
         }, onError: (msg) {
           setState(() {
             playerState = PlayerState.stopped;
-            duration = Duration(seconds: 0);
-            position = Duration(seconds: 0);
+            duration = const Duration(seconds: 0);
+            position = const Duration(seconds: 0);
           });
         });
 
+    if(playerState == PlayerState.playing || playerState == PlayerState.paused)
+      {
+        await audioPlayer.stop();
+        setState(() {
+          playerState = PlayerState.stopped;
+          duration = const Duration(seconds: 0);
+          position = const Duration(seconds: 0);
+        });
+      }
+    
     await audioPlayer.play(uri, isLocal: true);
 
     setState(() {
