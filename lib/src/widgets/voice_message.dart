@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:audioplayers/audioplayers.dart';
+import 'package:audioplayer/audioplayer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import '../util.dart';
@@ -115,7 +115,7 @@ class VoiceMessage extends StatefulWidget {
 }
 
 class _VoiceMessageState extends State<VoiceMessage> {
-  late AudioPlayer audioPlayer;
+  AudioPlayer audioPlayer = AudioPlayer();
 
   Duration? duration;
   Duration? position;
@@ -158,9 +158,7 @@ class _VoiceMessageState extends State<VoiceMessage> {
     _audioPlayerStateSubscription =
         audioPlayer.onPlayerStateChanged.listen((s) {
           if (s == AudioPlayerState.PLAYING) {
-            audioPlayer.onDurationChanged.listen((event) {
-              setState(() => duration = event);
-            });
+            setState(() => duration = audioPlayer.duration);
           } else if (s == AudioPlayerState.STOPPED) {
             onComplete();
             setState(() {
@@ -204,9 +202,7 @@ class _VoiceMessageState extends State<VoiceMessage> {
     _audioPlayerStateSubscription =
         audioPlayer.onPlayerStateChanged.listen((s) {
           if (s == AudioPlayerState.PLAYING) {
-            audioPlayer.onDurationChanged.listen((event) {
-              setState(() => duration = event);
-            });
+            setState(() => duration = audioPlayer.duration);
           } else if (s == AudioPlayerState.STOPPED) {
             onComplete();
             setState(() {
@@ -416,9 +412,7 @@ class _AudioControllerState extends State<AudioController> {
     _audioPlayerStateSubscription =
         audioPlayer.onPlayerStateChanged.listen((s) {
       if (s == AudioPlayerState.PLAYING) {
-        audioPlayer.onDurationChanged.listen((event) {
-          setState(() => duration = event);
-        });
+        setState(() => duration = audioPlayer.duration);
       } else if (s == AudioPlayerState.STOPPED) {
         onComplete();
         setState(() {
