@@ -223,6 +223,17 @@ class _VoiceMessageState extends State<VoiceMessage> {
       playerState = PlayerState.playing;
     });
   }
+  
+  Future stop() async
+  {
+    await audioPlayer.stop();
+    setState(() {
+      playerState = PlayerState.paused;
+      playerState = PlayerState.stopped;
+      duration = const Duration(seconds: 0);
+      position = const Duration(seconds: 0);
+    });
+  }
 
   Future pause() async {
     await audioPlayer.pause();
@@ -323,7 +334,7 @@ class _VoiceMessageState extends State<VoiceMessage> {
               GestureDetector(
                   onTap: () {
                     if (playerState == PlayerState.playing) {
-                      pause();
+                      stop();
                     } else {
                       print('PLAYED AUDIO PATH: ${widget.message.uri}');
                       play(widget.message.uri);
@@ -331,7 +342,7 @@ class _VoiceMessageState extends State<VoiceMessage> {
                   },
                   child: playerState == PlayerState.playing
                       ? const Icon(
-                    Icons.pause,
+                    Icons.stop,
                     color: Colors.black,
                   )
                       : const Icon(
