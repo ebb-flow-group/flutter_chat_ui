@@ -185,16 +185,17 @@ class _VoiceMessageState extends State<VoiceMessage> {
 
   void play(String uri) async {
 
-    if(playerState == PlayerState.playing || playerState == PlayerState.paused)
+    /*if(playerState == PlayerState.playing || playerState == PlayerState.paused)
     {
+      print('PLAYER STATE: $playerState');
       await audioPlayer.stop();
       setState(() {
         playerState = PlayerState.stopped;
         duration = const Duration(seconds: 0);
         position = const Duration(seconds: 0);
       });
-    }
-    
+    }*/
+
     audioPlayer = AudioPlayer();
     _positionSubscription = audioPlayer.onAudioPositionChanged
         .listen((p) => setState(() => position = p));
@@ -225,7 +226,14 @@ class _VoiceMessageState extends State<VoiceMessage> {
 
   Future pause() async {
     await audioPlayer.pause();
-    setState(() => playerState = PlayerState.paused);
+    await audioPlayer.stop();
+    setState(() {
+      playerState = PlayerState.paused;
+      playerState = PlayerState.stopped;
+      duration = const Duration(seconds: 0);
+      position = const Duration(seconds: 0);
+    });
+    // setState(() => playerState = PlayerState.paused);
   }
 
   @override
