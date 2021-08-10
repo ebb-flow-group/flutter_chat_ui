@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:audioplayer/audioplayer.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import '../util.dart';
@@ -115,7 +115,7 @@ class VoiceMessage extends StatefulWidget {
 }
 
 class _VoiceMessageState extends State<VoiceMessage> {
-  AudioPlayer audioPlayer = AudioPlayer();
+  late AudioPlayer audioPlayer;
 
   Duration? duration;
   Duration? position;
@@ -158,7 +158,9 @@ class _VoiceMessageState extends State<VoiceMessage> {
     _audioPlayerStateSubscription =
         audioPlayer.onPlayerStateChanged.listen((s) {
           if (s == AudioPlayerState.PLAYING) {
-            setState(() => duration = audioPlayer.duration);
+            audioPlayer.onDurationChanged.listen((event) {
+              setState(() => duration = event);
+            });
           } else if (s == AudioPlayerState.STOPPED) {
             onComplete();
             setState(() {
@@ -202,7 +204,9 @@ class _VoiceMessageState extends State<VoiceMessage> {
     _audioPlayerStateSubscription =
         audioPlayer.onPlayerStateChanged.listen((s) {
           if (s == AudioPlayerState.PLAYING) {
-            setState(() => duration = audioPlayer.duration);
+            audioPlayer.onDurationChanged.listen((event) {
+              setState(() => duration = event);
+            });
           } else if (s == AudioPlayerState.STOPPED) {
             onComplete();
             setState(() {
@@ -223,7 +227,7 @@ class _VoiceMessageState extends State<VoiceMessage> {
       playerState = PlayerState.playing;
     });
   }
-  
+
   Future stop() async
   {
     await audioPlayer.stop();
@@ -412,7 +416,9 @@ class _AudioControllerState extends State<AudioController> {
     _audioPlayerStateSubscription =
         audioPlayer.onPlayerStateChanged.listen((s) {
       if (s == AudioPlayerState.PLAYING) {
-        setState(() => duration = audioPlayer.duration);
+        audioPlayer.onDurationChanged.listen((event) {
+          setState(() => duration = event);
+        });
       } else if (s == AudioPlayerState.STOPPED) {
         onComplete();
         setState(() {
