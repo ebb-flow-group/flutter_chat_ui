@@ -119,7 +119,7 @@ class _VoiceMessageState extends State<VoiceMessage> {
 
   Duration? duration;
   Duration? position;
-  
+
   String firstUrl = '';
 
   PlayerState playerState = PlayerState.stopped;
@@ -193,7 +193,7 @@ class _VoiceMessageState extends State<VoiceMessage> {
 
     if(playerState == PlayerState.paused)
     {
-      if(firstUrl == widget.message.uri)
+      if(firstUrl != widget.message.uri)
       {
         await audioPlayer.stop();
         setState(() {
@@ -235,57 +235,57 @@ class _VoiceMessageState extends State<VoiceMessage> {
         });
       }
       else
-        {
-          await audioPlayer.play(widget.message.uri);
-          await audioPlayer.seek(position!.inSeconds.toDouble());
-          setState(() {
-            playerState = PlayerState.playing;
-          });
-        }
-    }
-    else if(playerState == PlayerState.playing)
       {
-
-       await audioPlayer.stop();
-        setState(() {
-          playerState = PlayerState.stopped;
-          duration = const Duration(seconds: 0);
-          position = const Duration(seconds: 0);
-        });
-
-
-        audioPlayer = AudioPlayer();
-        _positionSubscription = audioPlayer.onAudioPositionChanged
-            .listen((p) => setState(() => position = p));
-        _audioPlayerStateSubscription =
-            audioPlayer.onPlayerStateChanged.listen((s) {
-              if (s == AudioPlayerState.PLAYING) {
-                setState(() => duration = audioPlayer.duration);
-                /*audioPlayer.onDurationChanged.listen((Duration d) {
-              print('Max duration: $d');
-              setState(() => duration = d);
-            });*/
-              } else if (s == AudioPlayerState.STOPPED) {
-                onComplete();
-                setState(() {
-                  position = duration;
-                });
-              }
-            }, onError: (msg) {
-              setState(() {
-                playerState = PlayerState.stopped;
-                duration = const Duration(seconds: 0);
-                position = const Duration(seconds: 0);
-              });
-            });
-
-        await audioPlayer.play(uri, isLocal: true);
-
+        await audioPlayer.play(widget.message.uri);
+        await audioPlayer.seek(position!.inSeconds.toDouble());
         setState(() {
           playerState = PlayerState.playing;
         });
-
       }
+    }
+    else if(playerState == PlayerState.playing)
+    {
+
+      await audioPlayer.stop();
+      setState(() {
+        playerState = PlayerState.stopped;
+        duration = const Duration(seconds: 0);
+        position = const Duration(seconds: 0);
+      });
+
+
+      audioPlayer = AudioPlayer();
+      _positionSubscription = audioPlayer.onAudioPositionChanged
+          .listen((p) => setState(() => position = p));
+      _audioPlayerStateSubscription =
+          audioPlayer.onPlayerStateChanged.listen((s) {
+            if (s == AudioPlayerState.PLAYING) {
+              setState(() => duration = audioPlayer.duration);
+              /*audioPlayer.onDurationChanged.listen((Duration d) {
+              print('Max duration: $d');
+              setState(() => duration = d);
+            });*/
+            } else if (s == AudioPlayerState.STOPPED) {
+              onComplete();
+              setState(() {
+                position = duration;
+              });
+            }
+          }, onError: (msg) {
+            setState(() {
+              playerState = PlayerState.stopped;
+              duration = const Duration(seconds: 0);
+              position = const Duration(seconds: 0);
+            });
+          });
+
+      await audioPlayer.play(uri, isLocal: true);
+
+      setState(() {
+        playerState = PlayerState.playing;
+      });
+
+    }
     else{
       audioPlayer = AudioPlayer();
       _positionSubscription = audioPlayer.onAudioPositionChanged
