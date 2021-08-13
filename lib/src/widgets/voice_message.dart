@@ -138,6 +138,8 @@ class _VoiceMessageState extends State<VoiceMessage> {
 
   StreamSubscription? _positionSubscription;
   StreamSubscription? _audioPlayerStateSubscription;
+  
+  List<String> urlList = [];
 
   @override
   void initState() {
@@ -193,7 +195,9 @@ class _VoiceMessageState extends State<VoiceMessage> {
 
     if(playerState == PlayerState.paused)
     {
-      if(firstUrl != widget.message.uri)
+      urlList.add(widget.message.uri);
+      
+      if(!urlList[0].contains(widget.message.uri))
       {
         await audioPlayer.stop();
         setState(() {
