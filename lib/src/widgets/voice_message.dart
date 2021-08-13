@@ -205,7 +205,7 @@ class _VoiceMessageState extends State<VoiceMessage> {
         .listen((p) => setState(() => position = p));
     _audioPlayerStateSubscription =
         audioPlayer.onPlayerStateChanged.listen((s) {
-          if (s == AudioPlayerState.STOPPED) {
+          if (s == AudioPlayerState.PLAYING) {
             setState(() => duration = audioPlayer.duration);
             /*audioPlayer.onDurationChanged.listen((Duration d) {
               print('Max duration: $d');
