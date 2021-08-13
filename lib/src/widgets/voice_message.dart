@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:audioplayers/audioplayers.dart';
+import 'package:audioplayer/audioplayer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import '../util.dart';
@@ -8,7 +8,7 @@ import 'inherited_chat_theme.dart';
 import 'inherited_l10n.dart';
 import 'inherited_user.dart';
 
-// enum PlayerState { stopped, playing, paused }
+enum PlayerState { stopped, playing, paused }
 
 /// A class that represents file message widget
 class _VoiceMessage extends StatelessWidget {
@@ -120,11 +120,11 @@ class _VoiceMessageState extends State<VoiceMessage> {
   Duration? duration;
   Duration? position;
 
-  PlayerState playerState = PlayerState.PLAYING;
+  PlayerState playerState = PlayerState.playing;
 
-  get isPlaying => playerState == PlayerState.PLAYING;
+  get isPlaying => playerState == PlayerState.playing;
 
-  get isPaused => playerState == PlayerState.PAUSED;
+  get isPaused => playerState == PlayerState.paused;
 
   get durationText =>
       duration != null ? duration.toString().split('.').first : '';
@@ -157,13 +157,13 @@ class _VoiceMessageState extends State<VoiceMessage> {
         .listen((p) => setState(() => position = p));
     _audioPlayerStateSubscription =
         audioPlayer.onPlayerStateChanged.listen((s) {
-          if (s == PlayerState.PLAYING) {
-            // setState(() => duration = audioPlayer.duration);
-            audioPlayer.onDurationChanged.listen((Duration d) {
+          if (s == AudioPlayerState.PAUSED) {
+            setState(() => duration = audioPlayer.duration);
+            /*audioPlayer.onDurationChanged.listen((Duration d) {
               print('Max duration: $d');
               setState(() => duration = d);
-            });
-          } else if (s == PlayerState.STOPPED) {
+            });*/
+          } else if (s == AudioPlayerState.STOPPED) {
             onComplete();
             setState(() {
               position = duration;
@@ -171,7 +171,7 @@ class _VoiceMessageState extends State<VoiceMessage> {
           }
         }, onError: (msg) {
           setState(() {
-            playerState = PlayerState.STOPPED;
+            playerState = PlayerState.stopped;
             duration = const Duration(seconds: 0);
             position = const Duration(seconds: 0);
           });
@@ -181,7 +181,7 @@ class _VoiceMessageState extends State<VoiceMessage> {
   void onComplete() {
     audioPlayer.stop();
     setState(() {
-      playerState = PlayerState.STOPPED;
+      playerState = PlayerState.stopped;
       duration = const Duration(seconds: 0);
       position = const Duration(seconds: 0);
     });
@@ -205,13 +205,13 @@ class _VoiceMessageState extends State<VoiceMessage> {
         .listen((p) => setState(() => position = p));
     _audioPlayerStateSubscription =
         audioPlayer.onPlayerStateChanged.listen((s) {
-          if (s == PlayerState.PLAYING) {
-            // setState(() => duration = audioPlayer.duration);
-            audioPlayer.onDurationChanged.listen((Duration d) {
+          if (s == AudioPlayerState.STOPPED) {
+            setState(() => duration = audioPlayer.duration);
+            /*audioPlayer.onDurationChanged.listen((Duration d) {
               print('Max duration: $d');
               setState(() => duration = d);
-            });
-          } else if (s == PlayerState.STOPPED) {
+            });*/
+          } else if (s == AudioPlayerState.STOPPED) {
             onComplete();
             setState(() {
               position = duration;
@@ -219,7 +219,7 @@ class _VoiceMessageState extends State<VoiceMessage> {
           }
         }, onError: (msg) {
           setState(() {
-            playerState = PlayerState.STOPPED;
+            playerState = PlayerState.stopped;
             duration = const Duration(seconds: 0);
             position = const Duration(seconds: 0);
           });
@@ -228,7 +228,7 @@ class _VoiceMessageState extends State<VoiceMessage> {
     await audioPlayer.play(uri, isLocal: true);
 
     setState(() {
-      playerState = PlayerState.PLAYING;
+      playerState = PlayerState.playing;
     });
   }
 
@@ -236,8 +236,8 @@ class _VoiceMessageState extends State<VoiceMessage> {
   {
     await audioPlayer.stop();
     setState(() {
-      playerState = PlayerState.PAUSED;
-      playerState = PlayerState.STOPPED;
+      playerState = PlayerState.paused;
+      playerState = PlayerState.stopped;
       duration = const Duration(seconds: 0);
       position = const Duration(seconds: 0);
     });
@@ -247,8 +247,8 @@ class _VoiceMessageState extends State<VoiceMessage> {
     await audioPlayer.pause();
     await audioPlayer.stop();
     setState(() {
-      playerState = PlayerState.PAUSED;
-      playerState = PlayerState.STOPPED;
+      playerState = PlayerState.paused;
+      playerState = PlayerState.stopped;
       duration = const Duration(seconds: 0);
       position = const Duration(seconds: 0);
     });
@@ -341,20 +341,14 @@ class _VoiceMessageState extends State<VoiceMessage> {
               ),
               GestureDetector(
                   onTap: () {
-                    if (playerState == PlayerState.PLAYING) {
-                      //stop();
-                      audioPlayer.pause();
+                    if (playerState == PlayerState.playing) {
+                      stop();
                     } else {
                       print('PLAYED AUDIO PATH: ${widget.message.uri}');
-                      if(playerState == PlayerState.PAUSED) {
-                        audioPlayer.resume();
-                      }
-                      else{
-                        play(widget.message.uri);
-                      }
+                      play(widget.message.uri);
                     }
                   },
-                  child: playerState == PlayerState.PLAYING
+                  child: playerState == PlayerState.playing
                       ? const Icon(
                     Icons.stop,
                     color: Colors.black,
