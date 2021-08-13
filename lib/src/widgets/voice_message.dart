@@ -120,7 +120,7 @@ class _VoiceMessageState extends State<VoiceMessage> {
   Duration? duration;
   Duration? position;
 
-  PlayerState playerState = PlayerState.playing;
+  PlayerState playerState = PlayerState.stopped;
 
   get isPlaying => playerState == PlayerState.playing;
 
