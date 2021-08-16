@@ -119,9 +119,7 @@ class _VoiceMessageState extends State<VoiceMessage> {
 
   Duration? duration;
   Duration? position;
-
-  String firstUrl = '';
-
+  
   PlayerState playerState = PlayerState.stopped;
 
   get isPlaying => playerState == PlayerState.playing;
@@ -139,7 +137,8 @@ class _VoiceMessageState extends State<VoiceMessage> {
   StreamSubscription? _positionSubscription;
   StreamSubscription? _audioPlayerStateSubscription;
 
-  List<String> urlList = [];
+  List<String> urlList = [];  
+  String firstUrl = '';
 
   @override
   void initState() {
@@ -195,57 +194,11 @@ class _VoiceMessageState extends State<VoiceMessage> {
 
     if(playerState == PlayerState.paused)
     {
-      urlList.add(widget.message.uri);
-
-      if(urlList[0] != widget.message.uri)
-      {
-        await audioPlayer.stop();
-        setState(() {
-          playerState = PlayerState.stopped;
-          duration = const Duration(seconds: 0);
-          position = const Duration(seconds: 0);
-        });
-
-
-        audioPlayer = AudioPlayer();
-        _positionSubscription = audioPlayer.onAudioPositionChanged
-            .listen((p) => setState(() => position = p));
-        _audioPlayerStateSubscription =
-            audioPlayer.onPlayerStateChanged.listen((s) {
-              if (s == AudioPlayerState.PLAYING) {
-                setState(() => duration = audioPlayer.duration);
-                /*audioPlayer.onDurationChanged.listen((Duration d) {
-              print('Max duration: $d');
-              setState(() => duration = d);
-            });*/
-              } else if (s == AudioPlayerState.STOPPED) {
-                onComplete();
-                setState(() {
-                  position = duration;
-                });
-              }
-            }, onError: (msg) {
-              setState(() {
-                playerState = PlayerState.stopped;
-                duration = const Duration(seconds: 0);
-                position = const Duration(seconds: 0);
-              });
-            });
-
-        await audioPlayer.play(uri, isLocal: true);
-
-        setState(() {
-          playerState = PlayerState.playing;
-        });
-      }
-      else
-      {
-        await audioPlayer.play(widget.message.uri);
-        await audioPlayer.seek(position!.inSeconds.toDouble());
-        setState(() {
-          playerState = PlayerState.playing;
-        });
-      }
+      await audioPlayer.play(widget.message.uri);
+      await audioPlayer.seek(position!.inSeconds.toDouble());
+      setState(() {
+        playerState = PlayerState.playing;
+      });
     }
     else if(playerState == PlayerState.playing)
     {
@@ -256,8 +209,7 @@ class _VoiceMessageState extends State<VoiceMessage> {
         duration = const Duration(seconds: 0);
         position = const Duration(seconds: 0);
       });
-
-
+      
       audioPlayer = AudioPlayer();
       _positionSubscription = audioPlayer.onAudioPositionChanged
           .listen((p) => setState(() => position = p));
