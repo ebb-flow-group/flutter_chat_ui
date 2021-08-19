@@ -236,6 +236,8 @@ class _ChatState extends State<Chat> {
         margin: const EdgeInsets.only(
           bottom: 32,
           top: 16,
+          left: 20,
+          right: 20
         ),
         child: Row(
           children: [
