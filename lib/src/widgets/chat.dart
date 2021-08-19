@@ -237,9 +237,20 @@ class _ChatState extends State<Chat> {
           bottom: 32,
           top: 16,
         ),
-        child: Text(
-          object.text,
-          style: widget.theme.dateDividerTextStyle,
+        child: Row(
+          children: [
+            Expanded(
+              child: Divider(
+                thickness: 1.5,
+                color: Colors.grey[300],
+                endIndent: 20,
+              ),
+            ),
+            Text(
+              object.text,
+              style: widget.theme.dateDividerTextStyle,
+            ),
+          ],
         ),
       );
     } else if (object is MessageSpacer) {
@@ -350,6 +361,7 @@ class _ChatState extends State<Chat> {
                                 onTap: () => FocusManager.instance.primaryFocus
                                     ?.unfocus(),
                                 child: ChatList(
+                                  key: ValueKey(_chatMessages.length),
                                   isLastPage: widget.isLastPage,
                                   itemBuilder: (item, index) =>
                                       _buildMessage(item),
