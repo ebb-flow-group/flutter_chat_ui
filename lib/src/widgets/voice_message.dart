@@ -139,7 +139,6 @@ class _VoiceMessageState extends State<VoiceMessage> {
 
   List<String> urlList = [];
   String firstUrl = '';
-  Duration? firstUrlDuration;
 
   @override
   void initState() {
@@ -195,8 +194,6 @@ class _VoiceMessageState extends State<VoiceMessage> {
 
     if(playerState == PlayerState.paused)
     {
-      print('1');
-
       await audioPlayer.play(widget.message.uri);
       await audioPlayer.seek(position!.inSeconds.toDouble());
       setState(() {
@@ -205,8 +202,6 @@ class _VoiceMessageState extends State<VoiceMessage> {
     }
     else if(playerState == PlayerState.playing)
     {
-
-      print('2');
 
       await audioPlayer.stop();
       setState(() {
@@ -248,16 +243,6 @@ class _VoiceMessageState extends State<VoiceMessage> {
 
     }
     else{
-
-      print('3');
-
-      await audioPlayer.stop();
-      setState(() {
-        playerState = PlayerState.stopped;
-        duration = const Duration(seconds: 0);
-        position = const Duration(seconds: 0);
-      });
-
       audioPlayer = AudioPlayer();
       _positionSubscription = audioPlayer.onAudioPositionChanged
           .listen((p) => setState(() => position = p));
@@ -284,9 +269,8 @@ class _VoiceMessageState extends State<VoiceMessage> {
           });
 
       await audioPlayer.play(uri, isLocal: true);
+
       setState(() {
-        firstUrlDuration = audioPlayer.duration;
-        firstUrl = widget.message.uri;
         playerState = PlayerState.playing;
       });
     }
@@ -306,6 +290,7 @@ class _VoiceMessageState extends State<VoiceMessage> {
   Future pause() async {
     await audioPlayer.pause();
     setState(() {
+      firstUrl = widget.message.uri;
       playerState = PlayerState.paused;
     });
     // setState(() => playerState = PlayerState.paused);
