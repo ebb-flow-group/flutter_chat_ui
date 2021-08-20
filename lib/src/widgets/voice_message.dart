@@ -120,7 +120,7 @@ class _VoiceMessageState extends State<VoiceMessage> {
   Duration? duration;
   Duration? position;
 
-  PlayerState playerState = PlayerState.playing;
+  PlayerState playerState = PlayerState.stopped;
 
   get isPlaying => playerState == PlayerState.playing;
 
@@ -136,6 +136,10 @@ class _VoiceMessageState extends State<VoiceMessage> {
 
   StreamSubscription? _positionSubscription;
   StreamSubscription? _audioPlayerStateSubscription;
+
+  List<String> urlList = [];
+  String firstUrl = '';
+  Duration? firstUrlDuration;
 
   @override
   void initState() {
@@ -189,47 +193,103 @@ class _VoiceMessageState extends State<VoiceMessage> {
 
   void play(String uri) async {
 
-    /*if(playerState == PlayerState.playing || playerState == PlayerState.paused)
+    if(playerState == PlayerState.paused)
     {
-      print('PLAYER STATE: $playerState');
+      print('1');
+
+      await audioPlayer.play(widget.message.uri);
+      await audioPlayer.seek(position!.inSeconds.toDouble());
+      setState(() {
+        playerState = PlayerState.playing;
+      });
+    }
+    else if(playerState == PlayerState.playing)
+    {
+
+      print('2');
+
       await audioPlayer.stop();
       setState(() {
         playerState = PlayerState.stopped;
         duration = const Duration(seconds: 0);
         position = const Duration(seconds: 0);
       });
-    }*/
 
-    audioPlayer = AudioPlayer();
-    _positionSubscription = audioPlayer.onAudioPositionChanged
-        .listen((p) => setState(() => position = p));
-    _audioPlayerStateSubscription =
-        audioPlayer.onPlayerStateChanged.listen((s) {
-          if (s == AudioPlayerState.PLAYING) {
-            setState(() => duration = audioPlayer.duration);
-            /*audioPlayer.onDurationChanged.listen((Duration d) {
+      audioPlayer = AudioPlayer();
+      _positionSubscription = audioPlayer.onAudioPositionChanged
+          .listen((p) => setState(() => position = p));
+      _audioPlayerStateSubscription =
+          audioPlayer.onPlayerStateChanged.listen((s) {
+            if (s == AudioPlayerState.PLAYING) {
+              setState(() => duration = audioPlayer.duration);
+              /*audioPlayer.onDurationChanged.listen((Duration d) {
               print('Max duration: $d');
               setState(() => duration = d);
             });*/
-          } else if (s == AudioPlayerState.STOPPED) {
-            onComplete();
+            } else if (s == AudioPlayerState.STOPPED) {
+              onComplete();
+              setState(() {
+                position = duration;
+              });
+            }
+          }, onError: (msg) {
             setState(() {
-              position = duration;
+              playerState = PlayerState.stopped;
+              duration = const Duration(seconds: 0);
+              position = const Duration(seconds: 0);
             });
-          }
-        }, onError: (msg) {
-          setState(() {
-            playerState = PlayerState.stopped;
-            duration = const Duration(seconds: 0);
-            position = const Duration(seconds: 0);
           });
-        });
 
-    await audioPlayer.play(uri, isLocal: true);
+      await audioPlayer.play(uri, isLocal: true);
 
-    setState(() {
-      playerState = PlayerState.playing;
-    });
+      setState(() {
+        playerState = PlayerState.playing;
+      });
+
+    }
+    else{
+
+      print('3');
+
+      await audioPlayer.stop();
+      setState(() {
+        playerState = PlayerState.stopped;
+        duration = const Duration(seconds: 0);
+        position = const Duration(seconds: 0);
+      });
+
+      audioPlayer = AudioPlayer();
+      _positionSubscription = audioPlayer.onAudioPositionChanged
+          .listen((p) => setState(() => position = p));
+      _audioPlayerStateSubscription =
+          audioPlayer.onPlayerStateChanged.listen((s) {
+            if (s == AudioPlayerState.PLAYING) {
+              setState(() => duration = audioPlayer.duration);
+              /*audioPlayer.onDurationChanged.listen((Duration d) {
+              print('Max duration: $d');
+              setState(() => duration = d);
+            });*/
+            } else if (s == AudioPlayerState.STOPPED) {
+              onComplete();
+              setState(() {
+                position = duration;
+              });
+            }
+          }, onError: (msg) {
+            setState(() {
+              playerState = PlayerState.stopped;
+              duration = const Duration(seconds: 0);
+              position = const Duration(seconds: 0);
+            });
+          });
+
+      await audioPlayer.play(uri, isLocal: true);
+      setState(() {
+        firstUrlDuration = audioPlayer.duration;
+        firstUrl = widget.message.uri;
+        playerState = PlayerState.playing;
+      });
+    }
   }
 
   Future stop() async
@@ -245,12 +305,8 @@ class _VoiceMessageState extends State<VoiceMessage> {
 
   Future pause() async {
     await audioPlayer.pause();
-    await audioPlayer.stop();
     setState(() {
       playerState = PlayerState.paused;
-      playerState = PlayerState.stopped;
-      duration = const Duration(seconds: 0);
-      position = const Duration(seconds: 0);
     });
     // setState(() => playerState = PlayerState.paused);
   }
@@ -342,7 +398,7 @@ class _VoiceMessageState extends State<VoiceMessage> {
               GestureDetector(
                   onTap: () {
                     if (playerState == PlayerState.playing) {
-                      stop();
+                      pause();
                     } else {
                       print('PLAYED AUDIO PATH: ${widget.message.uri}');
                       play(widget.message.uri);
@@ -350,7 +406,7 @@ class _VoiceMessageState extends State<VoiceMessage> {
                   },
                   child: playerState == PlayerState.playing
                       ? const Icon(
-                    Icons.stop,
+                    Icons.pause,
                     color: Colors.black,
                   )
                       : const Icon(

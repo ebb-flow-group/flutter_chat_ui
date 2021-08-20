@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+import 'package:flutter_chat_ui/src/widgets/custom_input.dart';
 import 'package:flutter_chat_ui/src/widgets/inherited_l10n.dart';
 import 'package:intl/intl.dart';
 import 'package:photo_view/photo_view_gallery.dart';
@@ -33,6 +34,7 @@ class Chat extends StatefulWidget {
     this.l10n = const ChatL10nEn(),
     required this.messages,
     this.onAttachmentPressed,
+    this.onVoiceMessagePressed,
     this.onEndReached,
     this.onEndReachedThreshold,
     this.onMessageLongPress,
@@ -96,6 +98,9 @@ class Chat extends StatefulWidget {
 
   /// See [Input.onAttachmentPressed]
   final void Function()? onAttachmentPressed;
+
+  /// See [Input.onAttachmentPressed]
+  final void Function()? onVoiceMessagePressed;
 
   /// See [ChatList.onEndReached]
   final Future<void> Function()? onEndReached;
@@ -236,10 +241,23 @@ class _ChatState extends State<Chat> {
         margin: const EdgeInsets.only(
           bottom: 32,
           top: 16,
+          left: 20,
+          right: 20
         ),
-        child: Text(
-          object.text,
-          style: widget.theme.dateDividerTextStyle,
+        child: Row(
+          children: [
+            Expanded(
+              child: Divider(
+                thickness: 1.5,
+                color: Colors.grey[300],
+                endIndent: 20,
+              ),
+            ),
+            Text(
+              object.text,
+              style: widget.theme.dateDividerTextStyle,
+            ),
+          ],
         ),
       );
     } else if (object is MessageSpacer) {
@@ -361,9 +379,17 @@ class _ChatState extends State<Chat> {
                                 ),
                               ),
                       ),
-                      Input(
+                      /*Input(
                         isAttachmentUploading: widget.isAttachmentUploading,
                         onAttachmentPressed: widget.onAttachmentPressed,
+                        onSendPressed: widget.onSendPressed,
+                        onTextChanged: widget.onTextChanged,
+                      ),*/
+
+                      CustomInput(
+                        isAttachmentUploading: widget.isAttachmentUploading,
+                        onAttachmentPressed: widget.onAttachmentPressed,
+                        onVoiceMessagePressed: widget.onVoiceMessagePressed,
                         onSendPressed: widget.onSendPressed,
                         onTextChanged: widget.onTextChanged,
                       ),
