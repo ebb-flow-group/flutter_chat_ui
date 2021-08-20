@@ -76,71 +76,66 @@ class _CustomInputState extends State<CustomInput> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: Center(
-      child: Container(
-        child: Row(
-          children: [
-            IconButton(
-              icon: Icon(
-                Icons.mic,
-                color: InheritedChatTheme.of(context).theme.secondaryColor,
-              ),
-              onPressed: widget.onVoiceMessagePressed,
-            ),
-            if (widget.onAttachmentPressed != null) _attachmentWidget(),
-            Expanded(
-              child: Container(
-                decoration: BoxDecoration(
-                    color: InheritedChatTheme.of(context).theme.backgroundColor,
-                    borderRadius: BorderRadius.circular(20),
-                    boxShadow: [
-                      BoxShadow(
-                          color: Colors.grey[300]!,
-                          blurRadius: 10.0,
-                          spreadRadius: 5),
-                    ]),
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: TextFormField(
-                  controller: _textController,
-                  focusNode: _inputFocusNode,
-                  keyboardType: TextInputType.multiline,
-                  textCapitalization: TextCapitalization.sentences,
-                  textInputAction: TextInputAction.done,
-                  decoration: const InputDecoration(
-                      hintText: 'Say something...', border: InputBorder.none),
-                  style: InheritedChatTheme.of(context)
-                      .theme
-                      .inputTextStyle
-                      .copyWith(
-                          color: InheritedChatTheme.of(context)
-                              .theme
-                              .inputTextColor
-                              .withOpacity(0.5)),
-                  maxLines: 5,
-                  minLines: 1,
-                  onChanged: widget.onTextChanged,
-                ),
-              ),
-            ),
-
-            IconButton(
-              icon: Icon(
-                Icons.send,
-                color: _sendButtonVisible
-                    ? InheritedChatTheme.of(context).theme.secondaryColor
-                    : Colors.grey[400]
-              ),
-              onPressed: () {
-                if(_sendButtonVisible) {
-                  _handleSendPressed();
-                }
-              },
-            ),
-          ],
+    return Row(
+      children: [
+        IconButton(
+          icon: Icon(
+            Icons.mic,
+            color: InheritedChatTheme.of(context).theme.secondaryColor,
+          ),
+          onPressed: widget.onVoiceMessagePressed,
         ),
-      ),
-    ));
+        if (widget.onAttachmentPressed != null) _attachmentWidget(),
+        Expanded(
+          child: Container(
+            decoration: BoxDecoration(
+                color: InheritedChatTheme.of(context).theme.backgroundColor,
+                borderRadius: BorderRadius.circular(20),
+                boxShadow: [
+                  BoxShadow(
+                      color: Colors.grey[300]!,
+                      blurRadius: 10.0,
+                      spreadRadius: 5),
+                ]),
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: TextFormField(
+              controller: _textController,
+              focusNode: _inputFocusNode,
+              keyboardType: TextInputType.multiline,
+              textCapitalization: TextCapitalization.sentences,
+              textInputAction: TextInputAction.done,
+              decoration: const InputDecoration(
+                  hintText: 'Say something...', border: InputBorder.none),
+              style: InheritedChatTheme.of(context)
+                  .theme
+                  .inputTextStyle
+                  .copyWith(
+                  color: InheritedChatTheme.of(context)
+                      .theme
+                      .inputTextColor
+                      .withOpacity(0.5)),
+              maxLines: 5,
+              minLines: 1,
+              onChanged: widget.onTextChanged,
+            ),
+          ),
+        ),
+
+        IconButton(
+          icon: Icon(
+              Icons.send,
+              color: _sendButtonVisible
+                  ? InheritedChatTheme.of(context).theme.secondaryColor
+                  : Colors.grey[400]
+          ),
+          onPressed: () {
+            if(_sendButtonVisible) {
+              _handleSendPressed();
+            }
+          },
+        ),
+      ],
+    );
   }
 
   Widget _attachmentWidget() {
