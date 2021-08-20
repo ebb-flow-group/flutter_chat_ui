@@ -79,9 +79,9 @@ class _CustomInputState extends State<CustomInput> {
     final _query = MediaQuery.of(context);
     return Container(
       padding: EdgeInsets.fromLTRB(
-        24 + _query.padding.left,
+        0,//24 + _query.padding.left,
         20,
-        24 + _query.padding.right,
+        0, //24 + _query.padding.right,
         20 + _query.viewInsets.bottom + _query.padding.bottom,
       ),
       child: Row(
@@ -112,16 +112,26 @@ class _CustomInputState extends State<CustomInput> {
                 keyboardType: TextInputType.multiline,
                 textCapitalization: TextCapitalization.sentences,
                 textInputAction: TextInputAction.done,
-                decoration: const InputDecoration(
-                    hintText: 'Say something...', border: InputBorder.none),
+                decoration: InputDecoration(
+                    hintText: 'Say something...', border: InputBorder.none,
+                  hintStyle: InheritedChatTheme.of(context)
+                      .theme
+                      .inputTextStyle
+                      .copyWith(
+                    color: InheritedChatTheme.of(context)
+                        .theme
+                        .inputTextColor
+                        .withOpacity(0.5),
+                  ),
+                ),
                 style: InheritedChatTheme.of(context)
                     .theme
                     .inputTextStyle
                     .copyWith(
-                    color: InheritedChatTheme.of(context)
-                        .theme
-                        .inputTextColor
-                        .withOpacity(0.5)),
+                  color: InheritedChatTheme.of(context)
+                      .theme
+                      .inputTextColor,
+                ),
                 maxLines: 5,
                 minLines: 1,
                 onChanged: widget.onTextChanged,
