@@ -89,14 +89,14 @@ class _CustomInputState extends State<CustomInput> {
         ),
         child: Row(
           children: [
-            IconButton(
+            if(_inputFocusNode.hasFocus) IconButton(
               icon: Icon(
                 Icons.mic,
                 color: InheritedChatTheme.of(context).theme.secondaryColor,
               ),
               onPressed: widget.onVoiceMessagePressed,
             ),
-            if (widget.onAttachmentPressed != null) _attachmentWidget(),
+            if(_inputFocusNode.hasFocus)  if (widget.onAttachmentPressed != null) _attachmentWidget(),
             Expanded(
               child: Container(
                 /*decoration: BoxDecoration(
