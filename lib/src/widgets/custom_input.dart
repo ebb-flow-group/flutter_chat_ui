@@ -77,82 +77,85 @@ class _CustomInputState extends State<CustomInput> {
   @override
   Widget build(BuildContext context) {
     final _query = MediaQuery.of(context);
-    return Container(
-      padding: EdgeInsets.fromLTRB(
-        0,//24 + _query.padding.left,
-        20,
-        0, //24 + _query.padding.right,
-        20 + _query.viewInsets.bottom + _query.padding.bottom,
-      ),
-      child: Row(
-        children: [
-          IconButton(
-            icon: Icon(
-              Icons.mic,
-              color: InheritedChatTheme.of(context).theme.secondaryColor,
+    return Material(
+      elevation: 8.0,
+      child: Container(
+        padding: EdgeInsets.fromLTRB(
+          0,//24 + _query.padding.left,
+          20,
+          0, //24 + _query.padding.right,
+          20 + _query.viewInsets.bottom + _query.padding.bottom,
+        ),
+        child: Row(
+          children: [
+            IconButton(
+              icon: Icon(
+                Icons.mic,
+                color: InheritedChatTheme.of(context).theme.secondaryColor,
+              ),
+              onPressed: widget.onVoiceMessagePressed,
             ),
-            onPressed: widget.onVoiceMessagePressed,
-          ),
-          if (widget.onAttachmentPressed != null) _attachmentWidget(),
-          Expanded(
-            child: Container(
-              decoration: BoxDecoration(
-                  color: InheritedChatTheme.of(context).theme.backgroundColor,
-                  borderRadius: BorderRadius.circular(20),
-                  boxShadow: [
-                    BoxShadow(
-                        color: Colors.grey[300]!,
-                        blurRadius: 10.0,
-                        spreadRadius: 5),
-                  ]),
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: TextFormField(
-                controller: _textController,
-                focusNode: _inputFocusNode,
-                keyboardType: TextInputType.multiline,
-                textCapitalization: TextCapitalization.sentences,
-                textInputAction: TextInputAction.done,
-                decoration: InputDecoration(
-                    hintText: 'Say something...', border: InputBorder.none,
-                  hintStyle: InheritedChatTheme.of(context)
+            if (widget.onAttachmentPressed != null) _attachmentWidget(),
+            Expanded(
+              child: Container(
+                decoration: BoxDecoration(
+                    color: InheritedChatTheme.of(context).theme.backgroundColor,
+                    borderRadius: BorderRadius.circular(20),
+                    boxShadow: [
+                      BoxShadow(
+                          color: Colors.grey[300]!,
+                          blurRadius: 10.0,
+                          spreadRadius: 5),
+                    ]),
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: TextFormField(
+                  controller: _textController,
+                  focusNode: _inputFocusNode,
+                  keyboardType: TextInputType.multiline,
+                  textCapitalization: TextCapitalization.sentences,
+                  textInputAction: TextInputAction.done,
+                  decoration: InputDecoration(
+                      hintText: 'Say something...', border: InputBorder.none,
+                    hintStyle: InheritedChatTheme.of(context)
+                        .theme
+                        .inputTextStyle
+                        .copyWith(
+                      color: InheritedChatTheme.of(context)
+                          .theme
+                          .inputTextColor
+                          .withOpacity(0.5),
+                    ),
+                  ),
+                  style: InheritedChatTheme.of(context)
                       .theme
                       .inputTextStyle
                       .copyWith(
                     color: InheritedChatTheme.of(context)
                         .theme
-                        .inputTextColor
-                        .withOpacity(0.5),
+                        .inputTextColor,
                   ),
+                  maxLines: 5,
+                  minLines: 1,
+                  onChanged: widget.onTextChanged,
                 ),
-                style: InheritedChatTheme.of(context)
-                    .theme
-                    .inputTextStyle
-                    .copyWith(
-                  color: InheritedChatTheme.of(context)
-                      .theme
-                      .inputTextColor,
-                ),
-                maxLines: 5,
-                minLines: 1,
-                onChanged: widget.onTextChanged,
               ),
             ),
-          ),
 
-          IconButton(
-            icon: Icon(
-                Icons.send,
-                color: _sendButtonVisible
-                    ? InheritedChatTheme.of(context).theme.secondaryColor
-                    : Colors.grey[400]
+            IconButton(
+              icon: Icon(
+                  Icons.send,
+                  color: _sendButtonVisible
+                      ? InheritedChatTheme.of(context).theme.secondaryColor
+                      : Colors.grey[400]
+              ),
+              onPressed: () {
+                if(_sendButtonVisible) {
+                  _handleSendPressed();
+                }
+              },
             ),
-            onPressed: () {
-              if(_sendButtonVisible) {
-                _handleSendPressed();
-              }
-            },
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
