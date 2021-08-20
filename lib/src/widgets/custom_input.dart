@@ -79,6 +79,7 @@ class _CustomInputState extends State<CustomInput> {
     final _query = MediaQuery.of(context);
     return Material(
       elevation: 8.0,
+      color: InheritedChatTheme.of(context).theme.backgroundColor,
       child: Container(
         padding: EdgeInsets.fromLTRB(
           0,//24 + _query.padding.left,
@@ -98,7 +99,7 @@ class _CustomInputState extends State<CustomInput> {
             if (widget.onAttachmentPressed != null) _attachmentWidget(),
             Expanded(
               child: Container(
-                decoration: BoxDecoration(
+                /*decoration: BoxDecoration(
                     color: InheritedChatTheme.of(context).theme.backgroundColor,
                     borderRadius: BorderRadius.circular(20),
                     boxShadow: [
@@ -106,7 +107,7 @@ class _CustomInputState extends State<CustomInput> {
                           color: Colors.grey[300]!,
                           blurRadius: 10.0,
                           spreadRadius: 5),
-                    ]),
+                    ]),*/
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: TextFormField(
                   controller: _textController,
