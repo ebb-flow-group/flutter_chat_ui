@@ -77,9 +77,18 @@ class _CustomInputState extends State<CustomInput> {
   @override
   Widget build(BuildContext context) {
     final _query = MediaQuery.of(context);
-    return Material(
-      elevation: 8.0,
-      color: InheritedChatTheme.of(context).theme.backgroundColor,
+    return Container(
+      decoration: BoxDecoration(
+        color: InheritedChatTheme.of(context).theme.backgroundColor,
+        boxShadow: [
+          BoxShadow(
+            spreadRadius: 0,
+            blurRadius: 10,
+            offset: const Offset(0, 1),
+            color: const Color(0xFF000000).withOpacity(.15),
+          ),
+        ],
+      ),
       child: Container(
         padding: EdgeInsets.fromLTRB(
           0,//24 + _query.padding.left,
