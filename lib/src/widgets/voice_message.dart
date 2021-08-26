@@ -134,8 +134,8 @@ class _VoiceMessageState extends State<VoiceMessage> {
 
   bool isMuted = false;
 
-  StreamSubscription? _positionSubscription;
-  StreamSubscription? _audioPlayerStateSubscription;
+  /*StreamSubscription? _positionSubscription;
+  StreamSubscription? _audioPlayerStateSubscription;*/
 
   List<String> urlList = [];
   String firstUrl = '';
@@ -148,18 +148,18 @@ class _VoiceMessageState extends State<VoiceMessage> {
 
   @override
   void dispose() {
-    _positionSubscription!.cancel();
-    _audioPlayerStateSubscription!.cancel();
+    /*_positionSubscription!.cancel();
+    _audioPlayerStateSubscription!.cancel();*/
     audioPlayer.stop();
     super.dispose();
   }
 
   void initAudioPlayer() {
     audioPlayer = AudioPlayer();
-    _positionSubscription = audioPlayer.onAudioPositionChanged
+    /*_positionSubscription = */audioPlayer.onAudioPositionChanged
         .listen((p) => setState(() => position = p));
-    _audioPlayerStateSubscription =
-        audioPlayer.onPlayerStateChanged.listen((s) {
+    /*_audioPlayerStateSubscription =
+        */audioPlayer.onPlayerStateChanged.listen((s) {
           if (s == AudioPlayerState.PAUSED) {
             setState(() => duration = audioPlayer.duration);
             /*audioPlayer.onDurationChanged.listen((Duration d) {
@@ -211,10 +211,10 @@ class _VoiceMessageState extends State<VoiceMessage> {
       });
 
       audioPlayer = AudioPlayer();
-      _positionSubscription = audioPlayer.onAudioPositionChanged
+      /*_positionSubscription = */audioPlayer.onAudioPositionChanged
           .listen((p) => setState(() => position = p));
-      _audioPlayerStateSubscription =
-          audioPlayer.onPlayerStateChanged.listen((s) {
+      /*_audioPlayerStateSubscription =
+          */audioPlayer.onPlayerStateChanged.listen((s) {
             if (s == AudioPlayerState.PLAYING) {
               setState(() => duration = audioPlayer.duration);
               /*audioPlayer.onDurationChanged.listen((Duration d) {
@@ -244,10 +244,10 @@ class _VoiceMessageState extends State<VoiceMessage> {
     }
     else{
       audioPlayer = AudioPlayer();
-      _positionSubscription = audioPlayer.onAudioPositionChanged
+      /*_positionSubscription = */audioPlayer.onAudioPositionChanged
           .listen((p) => setState(() => position = p));
-      _audioPlayerStateSubscription =
-          audioPlayer.onPlayerStateChanged.listen((s) {
+      /*_audioPlayerStateSubscription =
+          */audioPlayer.onPlayerStateChanged.listen((s) {
             if (s == AudioPlayerState.PLAYING) {
               setState(() => duration = audioPlayer.duration);
               /*audioPlayer.onDurationChanged.listen((Duration d) {
