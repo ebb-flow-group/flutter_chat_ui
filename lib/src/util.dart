@@ -75,7 +75,7 @@ List<Object> calculateChatMessages(
     final messageHasCreatedAt = message.createdAt != null;
     final nextMessage = isLast ? null : messages[i - 1];
     final nextMessageHasCreatedAt = nextMessage?.createdAt != null;
-    final nextMessageSameAuthor = message.author.id == nextMessage.author.id;
+    final nextMessageSameAuthor = message.author.id == nextMessage?.author?.id;
     final notMyMessage = message.author.id != user.id;
 
     var nextMessageDateThreshold = false;

@@ -79,8 +79,14 @@ class _VoiceMessageState extends State<VoiceMessage> {
 
   void play() async{
     audioPlayer = AudioPlayer(playerId: widget.message.uri.split('/').last);
+    audioPlayer.onAudioPositionChanged
+        .listen((p) => setState(() => position = p));
     audioPlayer.onPlayerStateChanged.listen((s) {
       if (s == PlayerState.PLAYING) {
+        audioPlayer.onDurationChanged.listen((Duration d) {
+          print('Max duration: $d');
+          setState(() => duration = d);
+        });
         setState(() {
           playerState = PlayerState.PLAYING;
           print('PLAYINGGGG');
