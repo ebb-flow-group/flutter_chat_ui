@@ -49,41 +49,41 @@ const SECONDARY_DARK = Color(0xff2b2250);
 abstract class ChatTheme {
   /// Creates a new chat theme based on provided colors and text styles.
   const ChatTheme({
-    required this.attachmentButtonIcon,
-    required this.backgroundColor,
-    required this.dateDividerTextStyle,
-    required this.deliveredIcon,
-    required this.documentIcon,
-    required this.emptyChatPlaceholderTextStyle,
-    required this.errorColor,
-    required this.errorIcon,
-    required this.inputBackgroundColor,
-    required this.inputBorderRadius,
-    required this.inputTextStyle,
-    required this.inputTextColor,
-    required this.messageBorderRadius,
-    required this.primaryColor,
-    required this.receivedMessageBodyTextStyle,
-    required this.receivedMessageCaptionTextStyle,
-    required this.receivedMessageDocumentIconColor,
-    required this.receivedMessageLinkDescriptionTextStyle,
-    required this.receivedMessageLinkTitleTextStyle,
-    required this.secondaryColor,
-    required this.seenIcon,
-    required this.sendButtonIcon,
-    required this.sendingIcon,
-    required this.sentMessageBodyTextStyle,
-    required this.sentMessageCaptionTextStyle,
-    required this.sentMessageDocumentIconColor,
-    required this.sentMessageLinkDescriptionTextStyle,
-    required this.sentMessageLinkTitleTextStyle,
-    required this.userAvatarNameColors,
-    required this.userAvatarTextStyle,
-    required this.userNameTextStyle,
+    @required this.attachmentButtonIcon,
+    @required this.backgroundColor,
+    @required this.dateDividerTextStyle,
+    @required this.deliveredIcon,
+    @required this.documentIcon,
+    @required this.emptyChatPlaceholderTextStyle,
+    @required this.errorColor,
+    @required this.errorIcon,
+    @required this.inputBackgroundColor,
+    @required this.inputBorderRadius,
+    @required this.inputTextStyle,
+    @required this.inputTextColor,
+    @required this.messageBorderRadius,
+    @required this.primaryColor,
+    @required this.receivedMessageBodyTextStyle,
+    @required this.receivedMessageCaptionTextStyle,
+    @required this.receivedMessageDocumentIconColor,
+    @required this.receivedMessageLinkDescriptionTextStyle,
+    @required this.receivedMessageLinkTitleTextStyle,
+    @required this.secondaryColor,
+    @required this.seenIcon,
+    @required this.sendButtonIcon,
+    @required this.sendingIcon,
+    @required this.sentMessageBodyTextStyle,
+    @required this.sentMessageCaptionTextStyle,
+    @required this.sentMessageDocumentIconColor,
+    @required this.sentMessageLinkDescriptionTextStyle,
+    @required this.sentMessageLinkTitleTextStyle,
+    @required this.userAvatarNameColors,
+    @required this.userAvatarTextStyle,
+    @required this.userNameTextStyle,
   });
 
   /// Icon for select attachment button
-  final Widget? attachmentButtonIcon;
+  final Widget attachmentButtonIcon;
 
   /// Used as a background color of a chat widget
   final Color backgroundColor;
@@ -92,10 +92,10 @@ abstract class ChatTheme {
   final TextStyle dateDividerTextStyle;
 
   /// Icon for message's `delivered` status. For the best look use size of 16.
-  final Widget? deliveredIcon;
+  final Widget deliveredIcon;
 
   /// Icon inside file message
-  final Widget? documentIcon;
+  final Widget documentIcon;
 
   /// Text style of the empty chat placeholder
   final TextStyle emptyChatPlaceholderTextStyle;
@@ -104,7 +104,7 @@ abstract class ChatTheme {
   final Color errorColor;
 
   /// Icon for message's `error` status. For the best look use size of 16.
-  final Widget? errorIcon;
+  final Widget errorIcon;
 
   /// Color of the bottom bar where text field is
   final Color inputBackgroundColor;
@@ -147,13 +147,13 @@ abstract class ChatTheme {
   final Color secondaryColor;
 
   /// Icon for message's `seen` status. For the best look use size of 16.
-  final Widget? seenIcon;
+  final Widget seenIcon;
 
   /// Icon for send button
-  final Widget? sendButtonIcon;
+  final Widget sendButtonIcon;
 
   /// Icon for message's `sending` status. For the best look use size of 10.
-  final Widget? sendingIcon;
+  final Widget sendingIcon;
 
   /// Body text style used for displaying text on different types
   /// of sent messages
@@ -192,7 +192,7 @@ class DefaultChatTheme extends ChatTheme {
   /// override only a couple of variables, otherwise create a new class
   /// which extends [ChatTheme]
   const DefaultChatTheme({
-    Widget? attachmentButtonIcon,
+    Widget attachmentButtonIcon,
     Color backgroundColor = NEUTRAL_7,
     TextStyle dateDividerTextStyle = const TextStyle(
       color: NEUTRAL_2,
@@ -201,8 +201,8 @@ class DefaultChatTheme extends ChatTheme {
       fontWeight: FontWeight.w800,
       height: 1.333,
     ),
-    Widget? deliveredIcon,
-    Widget? documentIcon,
+    Widget deliveredIcon,
+    Widget documentIcon,
     TextStyle emptyChatPlaceholderTextStyle = const TextStyle(
       color: NEUTRAL_2,
       fontFamily: 'Avenir',
@@ -211,7 +211,7 @@ class DefaultChatTheme extends ChatTheme {
       height: 1.5,
     ),
     Color errorColor = ERROR,
-    Widget? errorIcon,
+    Widget errorIcon,
     Color inputBackgroundColor = NEUTRAL_0,
     BorderRadius inputBorderRadius = const BorderRadius.vertical(
       top: Radius.circular(20),
@@ -255,9 +255,9 @@ class DefaultChatTheme extends ChatTheme {
       height: 1.375,
     ),
     Color secondaryColor = SECONDARY,
-    Widget? seenIcon,
-    Widget? sendButtonIcon,
-    Widget? sendingIcon,
+    Widget seenIcon,
+    Widget sendButtonIcon,
+    Widget sendingIcon,
     TextStyle sentMessageBodyTextStyle = const TextStyle(
       color: NEUTRAL_7,
       fontFamily: 'Avenir',
@@ -345,7 +345,7 @@ class DarkChatTheme extends ChatTheme {
   /// override only a couple of variables, otherwise create a new class
   /// which extends [ChatTheme]
   const DarkChatTheme({
-    Widget? attachmentButtonIcon,
+    Widget attachmentButtonIcon,
     Color backgroundColor = DARK,
     TextStyle dateDividerTextStyle = const TextStyle(
       color: NEUTRAL_7,
@@ -354,8 +354,8 @@ class DarkChatTheme extends ChatTheme {
       fontWeight: FontWeight.w800,
       height: 1.333,
     ),
-    Widget? deliveredIcon,
-    Widget? documentIcon,
+    Widget deliveredIcon,
+    Widget documentIcon,
     TextStyle emptyChatPlaceholderTextStyle = const TextStyle(
       color: NEUTRAL_2,
       fontFamily: 'Avenir',
@@ -364,7 +364,7 @@ class DarkChatTheme extends ChatTheme {
       height: 1.5,
     ),
     Color errorColor = ERROR,
-    Widget? errorIcon,
+    Widget errorIcon,
     Color inputBackgroundColor = SECONDARY_DARK,
     BorderRadius inputBorderRadius = const BorderRadius.vertical(
       top: Radius.circular(20),
@@ -408,9 +408,9 @@ class DarkChatTheme extends ChatTheme {
       height: 1.375,
     ),
     Color secondaryColor = SECONDARY_DARK,
-    Widget? seenIcon,
-    Widget? sendButtonIcon,
-    Widget? sendingIcon,
+    Widget seenIcon,
+    Widget sendButtonIcon,
+    Widget sendingIcon,
     TextStyle sentMessageBodyTextStyle = const TextStyle(
       color: NEUTRAL_7,
       fontFamily: 'Avenir',

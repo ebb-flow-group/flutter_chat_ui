@@ -9,8 +9,8 @@ import 'inherited_user.dart';
 class FileMessage extends StatelessWidget {
   /// Creates a file message widget based on a [types.FileMessage]
   const FileMessage({
-    Key? key,
-    required this.message,
+    Key key,
+    @required this.message,
     this.onPressed,
   }) : super(key: key);
 
@@ -18,7 +18,7 @@ class FileMessage extends StatelessWidget {
   final types.FileMessage message;
 
   /// Called when user taps on a file
-  final void Function(types.FileMessage)? onPressed;
+  final void Function(types.FileMessage) onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -41,9 +41,7 @@ class FileMessage extends StatelessWidget {
               ),
               height: 42,
               width: 42,
-              child: InheritedChatTheme.of(context).theme.documentIcon != null
-                  ? InheritedChatTheme.of(context).theme.documentIcon!
-                  : Image.asset(
+              child: InheritedChatTheme.of(context).theme.documentIcon ?? Image.asset(
                       'assets/icon-document.png',
                       color: _color,
                       package: 'flutter_chat_ui',

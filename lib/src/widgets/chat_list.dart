@@ -8,10 +8,10 @@ import 'inherited_user.dart';
 class ChatList extends StatefulWidget {
   /// Creates a chat list widget
   const ChatList({
-    Key? key,
+    Key key,
     this.isLastPage,
-    required this.itemBuilder,
-    required this.items,
+    @required this.itemBuilder,
+    @required this.items,
     this.onEndReached,
     this.onEndReachedThreshold,
   }) : super(key: key);
@@ -19,24 +19,24 @@ class ChatList extends StatefulWidget {
   /// Used for pagination (infinite scroll) together with [onEndReached].
   /// When true, indicates that there are no more pages to load and
   /// pagination will not be triggered.
-  final bool? isLastPage;
+  final bool isLastPage;
 
   /// Items to build
   final List<Object> items;
 
   /// Item builder
-  final Widget Function(Object, int? index) itemBuilder;
+  final Widget Function(Object, int index) itemBuilder;
 
   /// Used for pagination (infinite scroll). Called when user scrolls
   /// to the very end of the list (minus [onEndReachedThreshold]).
-  final Future<void> Function()? onEndReached;
+  final Future<void> Function() onEndReached;
 
   /// Used for pagination (infinite scroll) together with [onEndReached].
   /// Can be anything from 0 to 1, where 0 is immediate load of the next page
   /// as soon as scroll starts, and 1 is load of the next page only if scrolled
   /// to the very end of the list. Default value is 0.75, e.g. start loading
   /// next page when scrolled through about 3/4 of the available content.
-  final double? onEndReachedThreshold;
+  final double onEndReachedThreshold;
 
   @override
   _ChatListState createState() => _ChatListState();
@@ -48,19 +48,25 @@ class _ChatListState extends State<ChatList>
   bool _isNextPageLoading = false;
   final GlobalKey<SliverAnimatedListState> _listKey =
       GlobalKey<SliverAnimatedListState>();
-  late List<Object> _oldData = List.from(widget.items);
+  List<Object> _oldData = [];
   final _scrollController = ScrollController();
 
-  late final AnimationController _controller = AnimationController(vsync: this);
+  AnimationController _controller;
 
-  late final Animation<double> _animation = CurvedAnimation(
-    curve: Curves.easeOutQuad,
-    parent: _controller,
-  );
+  Animation<double> _animation;
 
   @override
   void initState() {
     super.initState();
+
+    _oldData = List.from(widget.items);
+
+    _controller = AnimationController(vsync: this);
+
+    _animation = CurvedAnimation(
+      curve: Curves.easeOutQuad,
+      parent: _controller,
+    );
 
     didUpdateWidget(widget);
   }
@@ -86,8 +92,8 @@ class _ChatListState extends State<ChatList>
       widget.items,
       equalityChecker: (item1, item2) {
         if (item1 is Map<String, Object> && item2 is Map<String, Object>) {
-          final message1 = item1['message']! as types.Message;
-          final message2 = item2['message']! as types.Message;
+          final message1 = item1['message'] as types.Message;
+          final message2 = item2['message'] as types.Message;
 
           return message1.id == message2.id;
         } else {
@@ -127,7 +133,7 @@ class _ChatListState extends State<ChatList>
 
       // Compare items to fire only on newly added messages
       if (oldItem != item && item is Map<String, Object>) {
-        final message = item['message']! as types.Message;
+        final message = item['message'] as types.Message;
 
         // Run only for sent message
         if (message.author.id == InheritedUser.of(context).user.id) {
@@ -194,7 +200,7 @@ class _ChatListState extends State<ChatList>
             _isNextPageLoading = true;
           });
 
-          widget.onEndReached!().whenComplete(() {
+          widget.onEndReached().whenComplete(() {
             _controller.duration = const Duration(milliseconds: 300);
             _controller.reverse();
 

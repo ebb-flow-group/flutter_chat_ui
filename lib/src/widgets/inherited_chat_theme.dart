@@ -5,16 +5,16 @@ import '../chat_theme.dart';
 class InheritedChatTheme extends InheritedWidget {
   /// Creates [InheritedWidget] from a provided [ChatTheme] class
   const InheritedChatTheme({
-    Key? key,
-    required this.theme,
-    required Widget child,
+    Key key,
+    @required this.theme,
+    @required Widget child,
   }) : super(key: key, child: child);
 
   /// Represents chat theme
   final ChatTheme theme;
 
   static InheritedChatTheme of(BuildContext context) {
-    return context.dependOnInheritedWidgetOfExactType<InheritedChatTheme>()!;
+    return context.dependOnInheritedWidgetOfExactType<InheritedChatTheme>();
   }
 
   @override

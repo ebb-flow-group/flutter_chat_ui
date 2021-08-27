@@ -6,7 +6,7 @@ import 'package:meta/meta.dart';
 class DateHeader extends Equatable {
   /// Creates a date header.
   const DateHeader({
-    required this.text,
+    @required this.text,
   });
 
   /// Equatable props

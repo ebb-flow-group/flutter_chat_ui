@@ -22,7 +22,7 @@ import 'message.dart';
 class Chat extends StatefulWidget {
   /// Creates a chat widget
   const Chat({
-    Key? key,
+    Key key,
     this.buildCustomMessage,
     this.customDateHeaderText,
     this.dateFormat,
@@ -32,7 +32,7 @@ class Chat extends StatefulWidget {
     this.isAttachmentUploading,
     this.isLastPage,
     this.l10n = const ChatL10nEn(),
-    required this.messages,
+    @required this.messages,
     this.onAttachmentPressed,
     this.onVoiceMessagePressed,
     this.onEndReached,
@@ -40,18 +40,18 @@ class Chat extends StatefulWidget {
     this.onMessageLongPress,
     this.onMessageTap,
     this.onPreviewDataFetched,
-    required this.onSendPressed,
+    @required this.onSendPressed,
     this.onTextChanged,
     this.showUserAvatars = false,
     this.showUserNames = false,
     this.theme = const DefaultChatTheme(),
     this.timeFormat,
     this.usePreviewData = true,
-    required this.user,
+    @required this.user,
   }) : super(key: key);
 
   /// See [Message.buildCustomMessage]
-  final Widget Function(types.Message)? buildCustomMessage;
+  final Widget Function(types.Message) buildCustomMessage;
 
   /// If [dateFormat], [dateLocale] and/or [timeFormat] is not enough to
   /// customize date headers in your case, use this to return an arbitrary
@@ -60,33 +60,33 @@ class Chat extends StatefulWidget {
   /// all default date headers, so you must handle all cases yourself, like
   /// for example today, yesterday and before. Or you can just return the same
   /// date header for any message.
-  final String Function(DateTime)? customDateHeaderText;
+  final String Function(DateTime) customDateHeaderText;
 
   /// Allows you to customize the date format. IMPORTANT: only for the date,
   /// do not return time here. See [timeFormat] to customize the time format.
   /// [dateLocale] will be ignored if you use this, so if you want a localized date
   /// make sure you initialize your [DateFormat] with a locale. See [customDateHeaderText]
   /// for more customization.
-  final DateFormat? dateFormat;
+  final DateFormat dateFormat;
 
   /// Locale will be passed to the `Intl` package. Make sure you initialized
   /// date formatting in your app before passing any locale here, otherwise
   /// an error will be thrown. Also see [customDateHeaderText], [dateFormat], [timeFormat].
-  final String? dateLocale;
+  final String dateLocale;
 
   /// Disable automatic image preview on tap.
-  final bool? disableImageGallery;
+  final bool disableImageGallery;
 
   /// Allows you to change what the user sees when there are no messages.
   /// `emptyChatPlaceholder` and `emptyChatPlaceholderTextStyle` are ignored
   /// in this case.
-  final Widget? emptyState;
+  final Widget emptyState;
 
   /// See [Input.isAttachmentUploading]
-  final bool? isAttachmentUploading;
+  final bool isAttachmentUploading;
 
   /// See [ChatList.isLastPage]
-  final bool? isLastPage;
+  final bool isLastPage;
 
   /// Localized copy. Extend [ChatL10n] class to create your own copy or use
   /// existing one, like the default [ChatL10nEn]. You can customize only
@@ -97,32 +97,32 @@ class Chat extends StatefulWidget {
   final List<types.Message> messages;
 
   /// See [Input.onAttachmentPressed]
-  final void Function()? onAttachmentPressed;
+  final void Function() onAttachmentPressed;
 
   /// See [Input.onAttachmentPressed]
-  final void Function()? onVoiceMessagePressed;
+  final void Function() onVoiceMessagePressed;
 
   /// See [ChatList.onEndReached]
-  final Future<void> Function()? onEndReached;
+  final Future<void> Function() onEndReached;
 
   /// See [ChatList.onEndReachedThreshold]
-  final double? onEndReachedThreshold;
+  final double onEndReachedThreshold;
 
   /// See [Message.onMessageLongPress]
-  final void Function(types.Message)? onMessageLongPress;
+  final void Function(types.Message) onMessageLongPress;
 
   /// See [Message.onMessageTap]
-  final void Function(types.Message)? onMessageTap;
+  final void Function(types.Message) onMessageTap;
 
   /// See [Message.onPreviewDataFetched]
-  final void Function(types.TextMessage, types.PreviewData)?
+  final void Function(types.TextMessage, types.PreviewData)
       onPreviewDataFetched;
 
   /// See [Input.onSendPressed]
   final void Function(types.PartialText) onSendPressed;
 
   /// See [Input.onTextChanged]
-  final void Function(String)? onTextChanged;
+  final void Function(String) onTextChanged;
 
   /// See [Message.showUserAvatars]
   final bool showUserAvatars;
@@ -141,7 +141,7 @@ class Chat extends StatefulWidget {
   /// [dateLocale] will be ignored if you use this, so if you want a localized time
   /// make sure you initialize your [DateFormat] with a locale. See [customDateHeaderText]
   /// for more customization.
-  final DateFormat? timeFormat;
+  final DateFormat timeFormat;
 
   /// See [Message.usePreviewData]
   final bool usePreviewData;
@@ -266,7 +266,7 @@ class _ChatState extends State<Chat> {
       );
     } else {
       final map = object as Map<String, Object>;
-      final message = map['message']! as types.Message;
+      final message = map['message'] as types.Message;
       final _messageWidth =
           widget.showUserAvatars && message.author.id != widget.user.id
               ? min(MediaQuery.of(context).size.width * 0.72, 440).floor()
@@ -300,7 +300,7 @@ class _ChatState extends State<Chat> {
 
   Widget _imageGalleryLoadingBuilder(
     BuildContext context,
-    ImageChunkEvent? event,
+    ImageChunkEvent event,
   ) {
     return Center(
       child: SizedBox(
@@ -309,7 +309,7 @@ class _ChatState extends State<Chat> {
         child: CircularProgressIndicator(
           value: event == null || event.expectedTotalBytes == null
               ? 0
-              : event.cumulativeBytesLoaded / event.expectedTotalBytes!,
+              : event.cumulativeBytesLoaded / event.expectedTotalBytes,
         ),
       ),
     );

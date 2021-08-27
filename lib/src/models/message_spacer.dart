@@ -6,8 +6,8 @@ import 'package:meta/meta.dart';
 class MessageSpacer extends Equatable {
   /// Creates a MessageSpacer.
   const MessageSpacer({
-    required this.height,
-    required this.id,
+    @required this.height,
+    @required this.id,
   });
 
   /// Equatable props

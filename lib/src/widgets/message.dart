@@ -14,23 +14,23 @@ import 'text_message.dart';
 class Message extends StatelessWidget {
   /// Creates a particular message from any message type
   const Message({
-    Key? key,
+    Key key,
     this.buildCustomMessage,
-    required this.message,
-    required this.messageWidth,
+    @required this.message,
+    @required this.messageWidth,
     this.onMessageLongPress,
     this.onMessageTap,
     this.onPreviewDataFetched,
-    required this.roundBorder,
-    required this.showAvatar,
-    required this.showName,
-    required this.showStatus,
-    required this.showUserAvatars,
-    required this.usePreviewData,
+    @required this.roundBorder,
+    @required this.showAvatar,
+    @required this.showName,
+    @required this.showStatus,
+    @required this.showUserAvatars,
+    @required this.usePreviewData,
   }) : super(key: key);
 
   /// Build a custom message inside predefined bubble
-  final Widget Function(types.Message)? buildCustomMessage;
+  final Widget Function(types.Message) buildCustomMessage;
 
   /// Any message type
   final types.Message message;
@@ -39,13 +39,13 @@ class Message extends StatelessWidget {
   final int messageWidth;
 
   /// Called when user makes a long press on any message
-  final void Function(types.Message)? onMessageLongPress;
+  final void Function(types.Message) onMessageLongPress;
 
   /// Called when user taps on any message
-  final void Function(types.Message)? onMessageTap;
+  final void Function(types.Message) onMessageTap;
 
   /// See [TextMessage.onPreviewDataFetched]
-  final void Function(types.TextMessage, types.PreviewData)?
+  final void Function(types.TextMessage, types.PreviewData)
       onPreviewDataFetched;
 
   /// Rounds border of the message to visually group messages together.
@@ -77,7 +77,7 @@ class Message extends StatelessWidget {
             margin: const EdgeInsets.only(right: 8),
             child: CircleAvatar(
               backgroundImage:
-                  hasImage ? NetworkImage(message.author.imageUrl!) : null,
+                  hasImage ? NetworkImage(message.author.imageUrl) : null,
               backgroundColor: color,
               radius: 16,
               child: !hasImage
@@ -100,7 +100,7 @@ class Message extends StatelessWidget {
       case types.MessageType.custom:
         final customMessage = message as types.CustomMessage;
         return buildCustomMessage != null
-            ? buildCustomMessage!(customMessage)
+            ? buildCustomMessage(customMessage)
             : const SizedBox();
       case types.MessageType.file:
         final fileMessage = message as types.FileMessage;
@@ -132,34 +132,26 @@ class Message extends StatelessWidget {
   Widget _buildStatus(BuildContext context) {
     switch (message.status) {
       case types.Status.error:
-        return InheritedChatTheme.of(context).theme.errorIcon != null
-            ? InheritedChatTheme.of(context).theme.errorIcon!
-            : Image.asset(
+        return InheritedChatTheme.of(context).theme.errorIcon ?? Image.asset(
                 'assets/icon-error.png',
                 color: InheritedChatTheme.of(context).theme.errorColor,
                 package: 'flutter_chat_ui',
               );
       case types.Status.sent:
       case types.Status.delivered:
-        return InheritedChatTheme.of(context).theme.deliveredIcon != null
-            ? InheritedChatTheme.of(context).theme.deliveredIcon!
-            : Image.asset(
+        return InheritedChatTheme.of(context).theme.deliveredIcon ?? Image.asset(
                 'assets/icon-delivered.png',
                 color: InheritedChatTheme.of(context).theme.primaryColor,
                 package: 'flutter_chat_ui',
               );
       case types.Status.seen:
-        return InheritedChatTheme.of(context).theme.seenIcon != null
-            ? InheritedChatTheme.of(context).theme.seenIcon!
-            : Image.asset(
+        return InheritedChatTheme.of(context).theme.seenIcon ?? Image.asset(
                 'assets/icon-seen.png',
                 color: InheritedChatTheme.of(context).theme.primaryColor,
                 package: 'flutter_chat_ui',
               );
       case types.Status.sending:
-        return InheritedChatTheme.of(context).theme.sendingIcon != null
-            ? InheritedChatTheme.of(context).theme.sendingIcon!
-            : Center(
+        return InheritedChatTheme.of(context).theme.sendingIcon ?? Center(
                 child: SizedBox(
                   height: 10,
                   width: 10,

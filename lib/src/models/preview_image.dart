@@ -6,8 +6,8 @@ import 'package:meta/meta.dart';
 class PreviewImage extends Equatable {
   /// Creates a preview image.
   const PreviewImage({
-    required this.id,
-    required this.uri,
+    @required this.id,
+    @required this.uri,
   });
 
   /// Equatable props

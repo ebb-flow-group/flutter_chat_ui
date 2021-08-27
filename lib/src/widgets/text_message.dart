@@ -10,18 +10,18 @@ import 'inherited_user.dart';
 class TextMessage extends StatelessWidget {
   /// Creates a text message widget from a [types.TextMessage] class
   const TextMessage({
-    Key? key,
-    required this.message,
+    Key key,
+    @required this.message,
     this.onPreviewDataFetched,
-    required this.usePreviewData,
-    required this.showName,
+    @required this.usePreviewData,
+    @required this.showName,
   }) : super(key: key);
 
   /// [types.TextMessage]
   final types.TextMessage message;
 
   /// See [LinkPreview.onPreviewDataFetched]
-  final void Function(types.TextMessage, types.PreviewData)?
+  final void Function(types.TextMessage, types.PreviewData)
       onPreviewDataFetched;
 
   /// Show user name for the received message. Useful for a group chat.

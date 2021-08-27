@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:audioplayer/audioplayer.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import '../util.dart';
@@ -8,99 +8,13 @@ import 'inherited_chat_theme.dart';
 import 'inherited_l10n.dart';
 import 'inherited_user.dart';
 
-enum PlayerState { stopped, playing, paused }
-
-/// A class that represents file message widget
-class _VoiceMessage extends StatelessWidget {
-  /// Creates a file message widget based on a [types.VoiceMessage]
-  const _VoiceMessage({
-    Key? key,
-    required this.message,
-    this.onPressed,
-  }) : super(key: key);
-
-  /// [types.VoiceMessage]
-  final types.VoiceMessage message;
-
-  /// Called when user taps on a file
-  final void Function(types.VoiceMessage)? onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    final _user = InheritedUser.of(context).user;
-    final _color = _user.id == message.author.id
-        ? InheritedChatTheme.of(context).theme.sentMessageDocumentIconColor
-        : InheritedChatTheme.of(context).theme.receivedMessageDocumentIconColor;
-
-    return Semantics(
-      label: InheritedL10n.of(context).l10n.fileButtonAccessibilityLabel,
-      child: Container(
-        padding: const EdgeInsets.fromLTRB(16, 16, 24, 16),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                color: _color.withOpacity(0.2),
-                borderRadius: BorderRadius.circular(21),
-              ),
-              height: 42,
-              width: 42,
-              child: InheritedChatTheme.of(context).theme.documentIcon != null
-                  ? InheritedChatTheme.of(context).theme.documentIcon!
-                  : Icon(
-                Icons.play_arrow,
-                color: _color,
-              ),
-            ),
-            Flexible(
-              child: Container(
-                margin: const EdgeInsets.only(
-                  left: 16,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      message.name,
-                      style: _user.id == message.author.id
-                          ? InheritedChatTheme.of(context)
-                          .theme
-                          .sentMessageBodyTextStyle
-                          : InheritedChatTheme.of(context)
-                          .theme
-                          .receivedMessageBodyTextStyle,
-                      textWidthBasis: TextWidthBasis.longestLine,
-                    ),
-                    Container(
-                      margin: const EdgeInsets.only(
-                        top: 4,
-                      ),
-                      child: Text(formatBytes(message.size),
-                          style: _user.id == message.author.id
-                              ? InheritedChatTheme.of(context)
-                              .theme
-                              .sentMessageCaptionTextStyle
-                              : InheritedChatTheme.of(context)
-                              .theme
-                              .receivedMessageCaptionTextStyle),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
+// enum PlayerState { stopped, playing, paused }
 
 class VoiceMessage extends StatefulWidget {
   /// Creates a voice message widget based on a [types.VoiceMessage]
   const VoiceMessage({
-    Key? key,
-    required this.message,
+    Key key,
+    @required this.message,
     this.onPressed,
   }) : super(key: key);
 
@@ -108,23 +22,23 @@ class VoiceMessage extends StatefulWidget {
   final types.VoiceMessage message;
 
   /// Called when user taps on a file
-  final void Function(types.VoiceMessage)? onPressed;
+  final void Function(types.VoiceMessage) onPressed;
 
   @override
   _VoiceMessageState createState() => _VoiceMessageState();
 }
 
 class _VoiceMessageState extends State<VoiceMessage> {
-  AudioPlayer audioPlayer = AudioPlayer();
+  AudioPlayer audioPlayer;
 
-  Duration? duration;
-  Duration? position;
+  Duration duration;
+  Duration position;
 
-  PlayerState playerState = PlayerState.stopped;
+  PlayerState playerState = PlayerState.STOPPED;
 
-  get isPlaying => playerState == PlayerState.playing;
+  /*get isPlaying => playerState == PlayerState.playing;
 
-  get isPaused => playerState == PlayerState.paused;
+  get isPaused => playerState == PlayerState.paused;*/
 
   get durationText =>
       duration != null ? duration.toString().split('.').first : '';
@@ -134,8 +48,8 @@ class _VoiceMessageState extends State<VoiceMessage> {
 
   bool isMuted = false;
 
-  StreamSubscription? _positionSubscription;
-  StreamSubscription? _audioPlayerStateSubscription;
+  /*StreamSubscription? _positionSubscription;
+  StreamSubscription? _audioPlayerStateSubscription;*/
 
   List<String> urlList = [];
   String firstUrl = '';
@@ -148,25 +62,25 @@ class _VoiceMessageState extends State<VoiceMessage> {
 
   @override
   void dispose() {
-    _positionSubscription!.cancel();
-    _audioPlayerStateSubscription!.cancel();
+    /*_positionSubscription!.cancel();
+    _audioPlayerStateSubscription!.cancel();*/
     audioPlayer.stop();
     super.dispose();
   }
 
   void initAudioPlayer() {
     audioPlayer = AudioPlayer();
-    _positionSubscription = audioPlayer.onAudioPositionChanged
+    /*_positionSubscription = */audioPlayer.onAudioPositionChanged
         .listen((p) => setState(() => position = p));
-    _audioPlayerStateSubscription =
-        audioPlayer.onPlayerStateChanged.listen((s) {
-          if (s == AudioPlayerState.PAUSED) {
-            setState(() => duration = audioPlayer.duration);
-            /*audioPlayer.onDurationChanged.listen((Duration d) {
+    /*_audioPlayerStateSubscription =
+        */audioPlayer.onPlayerStateChanged.listen((s) {
+          if (s == PlayerState.PAUSED) {
+            // setState(() => duration = audioPlayer.);
+            audioPlayer.onDurationChanged.listen((Duration d) {
               print('Max duration: $d');
               setState(() => duration = d);
-            });*/
-          } else if (s == AudioPlayerState.STOPPED) {
+            });
+          } else if (s == PlayerState.STOPPED) {
             onComplete();
             setState(() {
               position = duration;
@@ -174,7 +88,7 @@ class _VoiceMessageState extends State<VoiceMessage> {
           }
         }, onError: (msg) {
           setState(() {
-            playerState = PlayerState.stopped;
+            playerState = PlayerState.STOPPED;
             duration = const Duration(seconds: 0);
             position = const Duration(seconds: 0);
           });
@@ -184,18 +98,54 @@ class _VoiceMessageState extends State<VoiceMessage> {
   void onComplete() {
     audioPlayer.stop();
     setState(() {
-      playerState = PlayerState.stopped;
+      playerState = PlayerState.STOPPED;
       duration = const Duration(seconds: 0);
       position = const Duration(seconds: 0);
     });
   }
 
-  void play(String uri) async {
+  void play() async{
+    audioPlayer = AudioPlayer(playerId: widget.message.uri.split('/').last);
+    audioPlayer.onPlayerStateChanged.listen((s) {
+      if (s == PlayerState.PLAYING) {
+        setState(() {
+          playerState = PlayerState.PLAYING;
+          print('PLAYINGGGG');
+        });
+      } else if (s == PlayerState.PAUSED) {
+        setState(() {
+          playerState = PlayerState.PAUSED;
+          print('PAUSEDDDDD');
+        });
+      } else if (s == PlayerState.COMPLETED) {
+       setState(() {
+         playerState = PlayerState.COMPLETED;
+         print('COMPLETEDDDDD');
+       });
+        // onComplete();
 
-    if(playerState == PlayerState.paused)
+        audioPlayer.dispose();
+      }
+    }, onError: (msg) {
+      setState(() {
+        playerState = PlayerState.COMPLETED;
+        print('STOPPPED BCOZ ERROR');
+      });
+      print('ERORRRRRRR: $msg');
+      // onStop();
+
+      audioPlayer.dispose();
+    });
+
+    await audioPlayer.play(widget.message.uri, isLocal: true);
+  }
+
+  /*void play(String uri) async {
+
+    if(playerState == PlayerState.PAUSED)
     {
       await audioPlayer.play(widget.message.uri);
-      await audioPlayer.seek(position!.inSeconds.toDouble());
+      await audioPlayer.seek(position.inSeconds.toDouble());
       setState(() {
         playerState = PlayerState.playing;
       });
@@ -211,17 +161,17 @@ class _VoiceMessageState extends State<VoiceMessage> {
       });
 
       audioPlayer = AudioPlayer();
-      _positionSubscription = audioPlayer.onAudioPositionChanged
+      *//*_positionSubscription = *//*audioPlayer.onAudioPositionChanged
           .listen((p) => setState(() => position = p));
-      _audioPlayerStateSubscription =
-          audioPlayer.onPlayerStateChanged.listen((s) {
-            if (s == AudioPlayerState.PLAYING) {
+      *//*_audioPlayerStateSubscription =
+          *//*audioPlayer.onPlayerStateChanged.listen((s) {
+            if (s == PlayerState.PLAYING) {
               setState(() => duration = audioPlayer.duration);
-              /*audioPlayer.onDurationChanged.listen((Duration d) {
+              *//*audioPlayer.onDurationChanged.listen((Duration d) {
               print('Max duration: $d');
               setState(() => duration = d);
-            });*/
-            } else if (s == AudioPlayerState.STOPPED) {
+            });*//*
+            } else if (s == PlayerState.STOPPED) {
               onComplete();
               setState(() {
                 position = duration;
@@ -244,17 +194,17 @@ class _VoiceMessageState extends State<VoiceMessage> {
     }
     else{
       audioPlayer = AudioPlayer();
-      _positionSubscription = audioPlayer.onAudioPositionChanged
+      *//*_positionSubscription = *//*audioPlayer.onAudioPositionChanged
           .listen((p) => setState(() => position = p));
-      _audioPlayerStateSubscription =
-          audioPlayer.onPlayerStateChanged.listen((s) {
-            if (s == AudioPlayerState.PLAYING) {
+      *//*_audioPlayerStateSubscription =
+          *//*audioPlayer.onPlayerStateChanged.listen((s) {
+            if (s == oPlayerState.PLAYING) {
               setState(() => duration = audioPlayer.duration);
-              /*audioPlayer.onDurationChanged.listen((Duration d) {
+              *//*audioPlayer.onDurationChanged.listen((Duration d) {
               print('Max duration: $d');
               setState(() => duration = d);
-            });*/
-            } else if (s == AudioPlayerState.STOPPED) {
+            });*//*
+            } else if (s == PlayerState.STOPPED) {
               onComplete();
               setState(() {
                 position = duration;
@@ -274,14 +224,14 @@ class _VoiceMessageState extends State<VoiceMessage> {
         playerState = PlayerState.playing;
       });
     }
-  }
+  }*/
 
   Future stop() async
   {
     await audioPlayer.stop();
     setState(() {
-      playerState = PlayerState.paused;
-      playerState = PlayerState.stopped;
+      playerState = PlayerState.PAUSED;
+      playerState = PlayerState.STOPPED;
       duration = const Duration(seconds: 0);
       position = const Duration(seconds: 0);
     });
@@ -290,8 +240,17 @@ class _VoiceMessageState extends State<VoiceMessage> {
   Future pause() async {
     await audioPlayer.pause();
     setState(() {
-      firstUrl = widget.message.uri;
-      playerState = PlayerState.paused;
+      // irstUrl = widget.message.uri;
+      playerState = PlayerState.PAUSED;
+    });
+    // setState(() => playerState = PlayerState.paused);
+  }
+
+  Future resume() async {
+    await audioPlayer.resume();
+    setState(() {
+      // firstUrl = widget.message.uri;
+      playerState = PlayerState.PLAYING;
     });
     // setState(() => playerState = PlayerState.paused);
   }
@@ -318,9 +277,7 @@ class _VoiceMessageState extends State<VoiceMessage> {
               ),
               height: 42,
               width: 42,
-              child: InheritedChatTheme.of(context).theme.documentIcon != null
-                  ? InheritedChatTheme.of(context).theme.documentIcon!
-                  : _buildControlAndProgressView()/*AudioController(key: UniqueKey(), message: widget.message)*/,
+              child: InheritedChatTheme.of(context).theme.documentIcon ?? _buildControlAndProgressView()/*AudioController(key: UniqueKey(), message: widget.message)*/,
             ),
             Flexible(
               child: Container(
@@ -373,7 +330,7 @@ class _VoiceMessageState extends State<VoiceMessage> {
             alignment: Alignment.center,
             children: [
               CircularProgressIndicator(
-                value: position != null && position!.inMilliseconds > 0
+                value: position != null && position.inMilliseconds > 0
                     ? (position?.inMilliseconds.toDouble() ?? 0.0) /
                     (duration?.inMilliseconds.toDouble() ?? 0.0)
                     : 0.0,
@@ -382,14 +339,16 @@ class _VoiceMessageState extends State<VoiceMessage> {
               ),
               GestureDetector(
                   onTap: () {
-                    if (playerState == PlayerState.playing) {
+                    if (playerState == PlayerState.PLAYING) {
                       pause();
-                    } else {
+                    } else if(playerState == PlayerState.PAUSED){
+                      resume();
+                    }else {
                       print('PLAYED AUDIO PATH: ${widget.message.uri}');
-                      play(widget.message.uri);
+                      play();
                     }
                   },
-                  child: playerState == PlayerState.playing
+                  child: playerState == PlayerState.PLAYING
                       ? const Icon(
                     Icons.pause,
                     color: Colors.black,

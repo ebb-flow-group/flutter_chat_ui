@@ -6,11 +6,11 @@ import 'package:flutter/material.dart';
 abstract class ChatL10n {
   /// Creates a new chat l10n based on provided copy
   const ChatL10n({
-    required this.attachmentButtonAccessibilityLabel,
-    required this.emptyChatPlaceholder,
-    required this.fileButtonAccessibilityLabel,
-    required this.inputPlaceholder,
-    required this.sendButtonAccessibilityLabel,
+    @required this.attachmentButtonAccessibilityLabel,
+    @required this.emptyChatPlaceholder,
+    @required this.fileButtonAccessibilityLabel,
+    @required this.inputPlaceholder,
+    @required this.sendButtonAccessibilityLabel,
   });
 
   /// Accessibility label (hint) for the attachment button

@@ -14,30 +14,30 @@ class CustomInput extends StatefulWidget {
 
   /// Creates [Input] widget
   const CustomInput({
-    Key? key,
+    Key key,
     this.isAttachmentUploading,
     this.onVoiceMessagePressed,
     this.onAttachmentPressed,
-    required this.onSendPressed,
+    @required this.onSendPressed,
     this.onTextChanged,
   }) : super(key: key);
 
   /// See [AttachmentButton.onPressed]
-  final void Function()? onAttachmentPressed;
-  final void Function()? onVoiceMessagePressed;
+  final void Function() onAttachmentPressed;
+  final void Function() onVoiceMessagePressed;
 
   /// Whether attachment is uploading. Will replace attachment button with a
   /// [CircularProgressIndicator]. Since we don't have libraries for
   /// managing media in dependencies we have no way of knowing if
   /// something is uploading so you need to set this manually.
-  final bool? isAttachmentUploading;
+  final bool isAttachmentUploading;
 
   /// Will be called on [SendButton] tap. Has [types.PartialText] which can
   /// be transformed to [types.TextMessage] and added to the messages list.
   final void Function(types.PartialText) onSendPressed;
 
   /// Will be called whenever the text inside [TextField] changes
-  final void Function(String)? onTextChanged;
+  final void Function(String) onTextChanged;
 
   @override
   _CustomInputState createState() => _CustomInputState();

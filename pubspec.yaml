@@ -7,8 +7,7 @@ homepage: https://flyer.chat
 repository: https://github.com/flyerhq/flutter_chat_ui
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
-  flutter: ">=2.0.0"
+  sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
   flutter:
@@ -30,10 +29,14 @@ dependencies:
     #git:
       #url: https://github.com/shubhambsps/audioplayers
       #path: packages/audioplayers
-  audioplayer: #^0.8.1
+  #audioplayer: #^0.8.1
+    #git:
+      #url: https://github.com/shubhambsps/audioplayer
+      #path: audioplayer
+  audioplayers: #^0.17.3
     git:
-      url: https://github.com/shubhambsps/audioplayer
-      path: audioplayer
+      url: https://github.com/shubhambsps/audioplayers
+      path: packages/audioplayers
 
 dev_dependencies:
   flutter_test:

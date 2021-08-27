@@ -13,9 +13,9 @@ import 'inherited_user.dart';
 class ImageMessage extends StatefulWidget {
   /// Creates an image message widget based on [types.ImageMessage]
   const ImageMessage({
-    Key? key,
-    required this.message,
-    required this.messageWidth,
+    Key key,
+    @required this.message,
+    @required this.messageWidth,
   }) : super(key: key);
 
   /// [types.ImageMessage]
@@ -30,8 +30,8 @@ class ImageMessage extends StatefulWidget {
 
 /// [ImageMessage] widget state
 class _ImageMessageState extends State<ImageMessage> {
-  ImageProvider? _image;
-  ImageStream? _stream;
+  ImageProvider _image;
+  ImageStream _stream;
   Size _size = const Size(0, 0);
 
   @override
@@ -101,7 +101,7 @@ class _ImageMessageState extends State<ImageMessage> {
                 borderRadius: BorderRadius.circular(15),
                 child: Image(
                   fit: BoxFit.cover,
-                  image: _image!,
+                  image: _image,
                 ),
               ),
             ),
@@ -153,7 +153,7 @@ class _ImageMessageState extends State<ImageMessage> {
         decoration: BoxDecoration(
           image: DecorationImage(
             fit: BoxFit.cover,
-            image: _image!,
+            image: _image,
           ),
         ),
         child: BackdropFilter(
@@ -162,7 +162,7 @@ class _ImageMessageState extends State<ImageMessage> {
             aspectRatio: _size.aspectRatio > 0 ? _size.aspectRatio : 1,
             child: Image(
               fit: BoxFit.contain,
-              image: _image!,
+              image: _image,
             ),
           ),
         ),
