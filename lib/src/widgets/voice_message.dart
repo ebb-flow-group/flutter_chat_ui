@@ -79,7 +79,7 @@ class _VoiceMessageState extends State<VoiceMessage> {
 
   void play() async{
 
-    if(playerState == PlayerState.PLAYING)
+    if(AudioPlayer.players.isNotEmpty)
       {
         AudioPlayer.players.forEach((key, value) {
           value.stop();
