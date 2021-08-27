@@ -81,8 +81,12 @@ class _VoiceMessageState extends State<VoiceMessage> {
 
     if(playerState == PlayerState.PLAYING)
       {
-        await audioPlayer.stop();
-        await audioPlayer.dispose();
+        AudioPlayer.players.forEach((key, value) {
+          value.stop();
+          value.dispose();
+        });
+        /*await audioPlayer.stop();
+        await audioPlayer.dispose();*/
       }
 
     audioPlayer = AudioPlayer(playerId: widget.message.uri.split('/').last);
