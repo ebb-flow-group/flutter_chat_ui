@@ -64,14 +64,14 @@ class _VoiceMessageState extends State<VoiceMessage> {
   void dispose() {
     /*_positionSubscription!.cancel();
     _audioPlayerStateSubscription!.cancel();*/
-    audioPlayer.stop();
+    if(audioPlayer != null) audioPlayer.dispose();
     super.dispose();
   }
 
   void onComplete() {
     audioPlayer.stop();
     setState(() {
-      playerState = PlayerState.STOPPED;
+      playerState = PlayerState.COMPLETED;
       duration = const Duration(seconds: 0);
       position = const Duration(seconds: 0);
     });
@@ -101,7 +101,7 @@ class _VoiceMessageState extends State<VoiceMessage> {
          playerState = PlayerState.COMPLETED;
          print('COMPLETEDDDDD');
        });
-        // onComplete();
+        onComplete();
 
         audioPlayer.dispose();
       }
