@@ -79,15 +79,15 @@ class _VoiceMessageState extends State<VoiceMessage> {
 
   void play() async{
 
-    if(AudioPlayer.players.isNotEmpty)
+    /*if(AudioPlayer.players.isNotEmpty)
       {
         AudioPlayer.players.forEach((key, value) {
           value.stop();
           value.dispose();
         });
-        /*await audioPlayer.stop();
-        await audioPlayer.dispose();*/
-      }
+        *//*await audioPlayer.stop();
+        await audioPlayer.dispose();*//*
+      }*/
 
     audioPlayer = AudioPlayer(playerId: widget.message.uri.split('/').last);
     audioPlayer.onAudioPositionChanged
