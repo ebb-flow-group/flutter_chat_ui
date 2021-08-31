@@ -64,4 +64,4 @@ flutter:
     - packages/flutter_chat_ui/assets/3.0x/icon-error.png
     - packages/flutter_chat_ui/assets/3.0x/icon-seen.png
     - packages/flutter_chat_ui/assets/3.0x/icon-send.png
-    - assets/icon
+    - packages/flutter_chat_ui/assets/icon/
