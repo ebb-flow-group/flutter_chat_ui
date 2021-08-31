@@ -155,7 +155,7 @@ class _CustomInputState extends State<CustomInput> {
               icon: Icon(
                   Icons.send,
                   color: _sendButtonVisible
-                      ? InheritedChatTheme.of(context).theme.secondaryColor
+                      ? InheritedChatTheme.of(context).theme.primaryColor
                       : Colors.grey[400]
               ),
               onPressed: () {
