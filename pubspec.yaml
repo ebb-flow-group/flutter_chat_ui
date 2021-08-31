@@ -25,6 +25,7 @@ dependencies:
   meta: ^1.3.0
   photo_view: ^0.12.0
   provider: ^4.3.1
+  flutter_svg: ^0.19.3
   #audioplayers: #^0.19.1
     #git:
       #url: https://github.com/shubhambsps/audioplayers
@@ -63,3 +64,4 @@ flutter:
     - packages/flutter_chat_ui/assets/3.0x/icon-error.png
     - packages/flutter_chat_ui/assets/3.0x/icon-seen.png
     - packages/flutter_chat_ui/assets/3.0x/icon-send.png
+    - assets/icon

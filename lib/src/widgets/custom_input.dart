@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_ui/src/widgets/inherited_chat_theme.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+import 'package:flutter_svg/flutter_svg.dart';
 
 class NewLineIntent extends Intent {
   const NewLineIntent();
@@ -99,9 +100,11 @@ class _CustomInputState extends State<CustomInput> {
         child: Row(
           children: [
             if(_textController.text.isEmpty) IconButton(
-              icon: Icon(
-                Icons.mic,
+              icon: SvgPicture.asset(
+                'assets/icon/mic.svg',
                 color: InheritedChatTheme.of(context).theme.secondaryColor,
+                width: 18,
+                height: 18,
               ),
               onPressed: widget.onVoiceMessagePressed,
             ),
@@ -152,11 +155,13 @@ class _CustomInputState extends State<CustomInput> {
             ),
 
             IconButton(
-              icon: Icon(
-                  Icons.send,
+              icon: SvgPicture.asset(
+                  'assets/icon/send.svg',
                   color: _sendButtonVisible
                       ? InheritedChatTheme.of(context).theme.primaryColor
-                      : Colors.grey[400]
+                      : Colors.grey[400],
+                width: 18,
+                height: 18,
               ),
               onPressed: () {
                 if(_sendButtonVisible) {
@@ -186,9 +191,11 @@ class _CustomInputState extends State<CustomInput> {
       );
     } else {
       return IconButton(
-        icon: Icon(
-          Icons.add_circle_rounded,
+        icon: SvgPicture.asset(
+          'assets/icon/add.svg',
           color: InheritedChatTheme.of(context).theme.secondaryColor,
+          width: 18,
+          height: 18,
         ),
         onPressed: widget.onAttachmentPressed,
       );
