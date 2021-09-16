@@ -127,7 +127,7 @@ class _VoiceMessageState extends State<VoiceMessage> {
       audioPlayer.dispose();
     });
 
-    await audioPlayer.play(widget.message.uri, isLocal: true);
+    await audioPlayer.play(widget.message.uri, isLocal: false);
   }
 
   /*void play(String uri) async {
@@ -336,9 +336,9 @@ class _VoiceMessageState extends State<VoiceMessage> {
             alignment: Alignment.center,
             children: [
               CircularProgressIndicator(
-                value: position != null && position.inMilliseconds > 0
-                    ? (position?.inMilliseconds.toDouble() ?? 0.0) /
-                    (duration?.inMilliseconds.toDouble() ?? 0.0)
+                value: position != null && position.inMilliseconds > 0 && duration != null && duration.inMilliseconds > 0
+                    ? (position?.inMilliseconds?.toDouble() ?? 0.0) /
+                    (duration?.inMilliseconds?.toDouble() ?? 0.0)
                     : 0.0,
                 valueColor: const AlwaysStoppedAnimation(Colors.cyan),
                 backgroundColor: Colors.grey.shade400,
