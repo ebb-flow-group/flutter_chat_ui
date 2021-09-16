@@ -337,8 +337,8 @@ class _VoiceMessageState extends State<VoiceMessage> {
             children: [
               CircularProgressIndicator(
                 value: position != null && position.inMilliseconds > 0
-                    ? (position?.inMilliseconds.toDouble() ?? 0.0) /
-                    (duration?.inMilliseconds.toDouble() ?? 0.0)
+                    ? (position?.inMilliseconds?.toDouble() ?? 0.0) /
+                    (duration?.inMilliseconds?.toDouble() ?? 0.0)
                     : 0.0,
                 valueColor: const AlwaysStoppedAnimation(Colors.cyan),
                 backgroundColor: Colors.grey.shade400,
