@@ -114,7 +114,7 @@ class _VoiceMessageState extends State<VoiceMessage> {
        });
         onComplete();
 
-        audioPlayer.dispose();
+        // audioPlayer.dispose();
       }
     }, onError: (msg) {
       setState(() {
@@ -124,7 +124,7 @@ class _VoiceMessageState extends State<VoiceMessage> {
       print('ERORRRRRRR: $msg');
       // onStop();
 
-      audioPlayer.dispose();
+      // audioPlayer.dispose();
     });
 
     await audioPlayer.play(widget.message.uri, isLocal: false);
