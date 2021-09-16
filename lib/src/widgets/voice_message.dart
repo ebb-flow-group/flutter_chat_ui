@@ -127,7 +127,7 @@ class _VoiceMessageState extends State<VoiceMessage> {
       audioPlayer.dispose();
     });
 
-    await audioPlayer.play(widget.message.uri, isLocal: true);
+    await audioPlayer.play(widget.message.uri, isLocal: false);
   }
 
   /*void play(String uri) async {
