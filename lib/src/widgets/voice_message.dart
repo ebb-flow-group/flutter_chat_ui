@@ -283,7 +283,7 @@ class _VoiceMessageState extends State<VoiceMessage> {
               ),
               height: 42,
               width: 42,
-              child: InheritedChatTheme.of(context).theme.documentIcon ?? _buildControlAndProgressView()/*AudioController(key: UniqueKey(), message: widget.message)*/,
+              child: InheritedChatTheme.of(context).theme.documentIcon ?? _newBuildControlAndProgressView()/*AudioController(key: UniqueKey(), message: widget.message)*/,
             ),
             Flexible(
               child: Container(
@@ -363,6 +363,49 @@ class _VoiceMessageState extends State<VoiceMessage> {
                     Icons.play_arrow,
                     color: Colors.black,
                   )),
+            ],
+          ),
+        ),
+      ]);
+
+  Row _newBuildControlAndProgressView() =>
+      Row(mainAxisSize: MainAxisSize.min, children: [
+        Container(
+          height: 42,
+          width: 42,
+          child: Row(
+            children: [
+              GestureDetector(
+                  onTap: () {
+                    if (playerState == PlayerState.PLAYING) {
+                      pause();
+                    } else if(playerState == PlayerState.PAUSED){
+                      resume();
+                    }else {
+                      print('PLAYED AUDIO PATH: ${widget.message.uri}');
+                      play();
+                    }
+                  },
+                  child: playerState == PlayerState.PLAYING
+                      ? const Icon(
+                    Icons.pause,
+                    color: Colors.black,
+                  )
+                      : const Icon(
+                    Icons.play_arrow,
+                    color: Colors.black,
+                  )),
+              LinearProgressIndicator(
+                value: position != null && position.inMilliseconds > 0 && duration != null && duration.inMilliseconds > 0
+                    ? (position?.inMilliseconds?.toDouble() ?? 0.0) /
+                    (duration?.inMilliseconds?.toDouble() ?? 0.0)
+                    : 0.0,
+                valueColor: const AlwaysStoppedAnimation(Colors.cyan),
+                backgroundColor: Colors.grey.shade400,
+              ),
+              Text(
+                '${duration.inSeconds}s'
+              )
             ],
           ),
         ),
