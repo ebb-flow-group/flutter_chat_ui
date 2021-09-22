@@ -404,7 +404,7 @@ class _VoiceMessageState extends State<VoiceMessage> {
                 backgroundColor: Colors.grey.shade400,
               ),
               Text(
-                '${duration.inSeconds}s'
+                '${widget.message.metadata['duration'] ?? 0}s'
               )
             ],
           ),
