@@ -289,15 +289,17 @@ class _VoiceMessageState extends State<VoiceMessage> {
                   }
                 },
                 child: Padding(
-                  padding: const EdgeInsets.only(right: 24.0),
+                  padding: const EdgeInsets.only(right: 14.0),
                   child: playerState == PlayerState.PLAYING
                       ? Icon(
-                    Icons.pause,
-                    color: InheritedChatTheme.of(context).theme.secondaryColor
+                    Icons.pause_rounded,
+                    color: InheritedChatTheme.of(context).theme.secondaryColor,
+                    size: 34,
                   )
                       : Icon(
-                    Icons.play_arrow,
-                    color: InheritedChatTheme.of(context).theme.secondaryColor
+                    Icons.play_arrow_rounded,
+                    color: InheritedChatTheme.of(context).theme.secondaryColor,
+                    size: 34,
                   ),
                 )),
 
@@ -309,6 +311,7 @@ class _VoiceMessageState extends State<VoiceMessage> {
                     : 0.0,
                 valueColor: AlwaysStoppedAnimation(InheritedChatTheme.of(context).theme.secondaryColor),
                 backgroundColor: Colors.grey.shade400,
+                minHeight: 4.5,
               ),
             ),
 
