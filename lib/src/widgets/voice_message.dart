@@ -324,7 +324,7 @@ class _VoiceMessageState extends State<VoiceMessage> {
                   widget.currentUserIsAuthor
                     ? InheritedChatTheme.of(context).theme.secondaryColor
                     : Colors.white),
-                backgroundColor: InheritedChatTheme.of(context).theme.secondaryColor.withOpacity(0.5),
+                backgroundColor: Colors.grey.shade400,
                 minHeight: 4.5,
               ),
             ),
