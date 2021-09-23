@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
@@ -72,8 +73,11 @@ class _VoiceMessageState extends State<VoiceMessage> {
     audioPlayer.stop();
     setState(() {
       playerState = PlayerState.COMPLETED;
-      /*duration = const Duration(seconds: 0);
-      position = const Duration(seconds: 0);*/
+      if(Platform.isAndroid)
+        {
+          duration = const Duration(seconds: 0);
+          position = const Duration(seconds: 0);
+        }
     });
   }
 
