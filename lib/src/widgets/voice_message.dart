@@ -276,14 +276,45 @@ class _VoiceMessageState extends State<VoiceMessage> {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Container(
+
+            GestureDetector(
+                onTap: () {
+                  if (playerState == PlayerState.PLAYING) {
+                    pause();
+                  } else if(playerState == PlayerState.PAUSED){
+                    resume();
+                  }else {
+                    print('PLAYED AUDIO PATH: ${widget.message.uri}');
+                    play();
+                  }
+                },
+                child: playerState == PlayerState.PLAYING
+                    ? const Icon(
+                  Icons.pause,
+                  color: Colors.black,
+                )
+                    : const Icon(
+                  Icons.play_arrow,
+                  color: Colors.black,
+                )),
+
+            LinearProgressIndicator(
+              value: position != null && position.inMilliseconds > 0 && duration != null && duration.inMilliseconds > 0
+                  ? (position?.inMilliseconds?.toDouble() ?? 0.0) /
+                  (duration?.inMilliseconds?.toDouble() ?? 0.0)
+                  : 0.0,
+              valueColor: const AlwaysStoppedAnimation(Colors.cyan),
+              backgroundColor: Colors.grey.shade400,
+            ),
+
+            /*Container(
               decoration: BoxDecoration(
                 color: _color.withOpacity(0.2),
                 borderRadius: BorderRadius.circular(21),
               ),
               height: 42,
               width: 42,
-              child: InheritedChatTheme.of(context).theme.documentIcon ?? _buildControlAndProgressView()/*AudioController(key: UniqueKey(), message: widget.message)*/,
+              child: InheritedChatTheme.of(context).theme.documentIcon ?? _buildControlAndProgressView()*//*AudioController(key: UniqueKey(), message: widget.message)*//*,
             ),
             Flexible(
               child: Container(
@@ -320,7 +351,7 @@ class _VoiceMessageState extends State<VoiceMessage> {
                   ],
                 ),
               ),
-            ),
+            ),*/
           ],
         ),
       ),
