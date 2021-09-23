@@ -293,11 +293,11 @@ class _VoiceMessageState extends State<VoiceMessage> {
                   child: playerState == PlayerState.PLAYING
                       ? Icon(
                     Icons.pause,
-                    color: InheritedChatTheme.of(context).theme.primaryColor
+                    color: InheritedChatTheme.of(context).theme.secondaryColor
                   )
                       : Icon(
                     Icons.play_arrow,
-                    color: InheritedChatTheme.of(context).theme.primaryColor
+                    color: InheritedChatTheme.of(context).theme.secondaryColor
                   ),
                 )),
 
@@ -307,7 +307,7 @@ class _VoiceMessageState extends State<VoiceMessage> {
                     ? (position?.inMilliseconds?.toDouble() ?? 0.0) /
                     (duration?.inMilliseconds?.toDouble() ?? 0.0)
                     : 0.0,
-                valueColor: AlwaysStoppedAnimation(InheritedChatTheme.of(context).theme.primaryColor),
+                valueColor: AlwaysStoppedAnimation(InheritedChatTheme.of(context).theme.secondaryColor),
                 backgroundColor: Colors.grey.shade400,
               ),
             ),
