@@ -288,14 +288,17 @@ class _VoiceMessageState extends State<VoiceMessage> {
                     play();
                   }
                 },
-                child: playerState == PlayerState.PLAYING
-                    ? const Icon(
-                  Icons.pause,
-                  color: Colors.black,
-                )
-                    : const Icon(
-                  Icons.play_arrow,
-                  color: Colors.black,
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 24.0),
+                  child: playerState == PlayerState.PLAYING
+                      ? Icon(
+                    Icons.pause,
+                    color: InheritedChatTheme.of(context).theme.primaryColor
+                  )
+                      : Icon(
+                    Icons.play_arrow,
+                    color: InheritedChatTheme.of(context).theme.primaryColor
+                  ),
                 )),
 
             Expanded(
@@ -304,7 +307,7 @@ class _VoiceMessageState extends State<VoiceMessage> {
                     ? (position?.inMilliseconds?.toDouble() ?? 0.0) /
                     (duration?.inMilliseconds?.toDouble() ?? 0.0)
                     : 0.0,
-                valueColor: const AlwaysStoppedAnimation(Colors.cyan),
+                valueColor: AlwaysStoppedAnimation(InheritedChatTheme.of(context).theme.primaryColor),
                 backgroundColor: Colors.grey.shade400,
               ),
             ),
