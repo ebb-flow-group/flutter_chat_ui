@@ -16,11 +16,14 @@ class VoiceMessage extends StatefulWidget {
   const VoiceMessage({
     Key key,
     @required this.message,
+    @required this.currentUserIsAuthor,
     this.onPressed,
   }) : super(key: key);
 
   /// [types.VoiceMessage]
   final types.VoiceMessage message;
+
+  final bool currentUserIsAuthor;
 
   /// Called when user taps on a file
   final void Function(types.VoiceMessage) onPressed;
@@ -297,12 +300,16 @@ class _VoiceMessageState extends State<VoiceMessage> {
                   child: playerState == PlayerState.PLAYING
                       ? Icon(
                     Icons.pause_rounded,
-                    color: InheritedChatTheme.of(context).theme.secondaryColor,
+                    color: widget.currentUserIsAuthor
+                      ? InheritedChatTheme.of(context).theme.secondaryColor
+                      : Colors.white,
                     size: 34,
                   )
                       : Icon(
                     Icons.play_arrow_rounded,
-                    color: InheritedChatTheme.of(context).theme.secondaryColor,
+                    color: widget.currentUserIsAuthor
+                        ? InheritedChatTheme.of(context).theme.secondaryColor
+                        : Colors.white,
                     size: 34,
                   ),
                 )),
@@ -313,8 +320,11 @@ class _VoiceMessageState extends State<VoiceMessage> {
                     ? (position?.inMilliseconds?.toDouble() ?? 0.0) /
                     (duration?.inMilliseconds?.toDouble() ?? 0.0)
                     : 0.0,
-                valueColor: AlwaysStoppedAnimation(InheritedChatTheme.of(context).theme.secondaryColor),
-                backgroundColor: Colors.grey.shade400,
+                valueColor: AlwaysStoppedAnimation(
+                  widget.currentUserIsAuthor
+                    ? InheritedChatTheme.of(context).theme.secondaryColor
+                    : Colors.white),
+                backgroundColor: InheritedChatTheme.of(context).theme.secondaryColor.withOpacity(0.5),
                 minHeight: 4.5,
               ),
             ),
