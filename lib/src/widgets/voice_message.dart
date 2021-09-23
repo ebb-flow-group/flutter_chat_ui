@@ -298,13 +298,15 @@ class _VoiceMessageState extends State<VoiceMessage> {
                   color: Colors.black,
                 )),
 
-            LinearProgressIndicator(
-              value: position != null && position.inMilliseconds > 0 && duration != null && duration.inMilliseconds > 0
-                  ? (position?.inMilliseconds?.toDouble() ?? 0.0) /
-                  (duration?.inMilliseconds?.toDouble() ?? 0.0)
-                  : 0.0,
-              valueColor: const AlwaysStoppedAnimation(Colors.cyan),
-              backgroundColor: Colors.grey.shade400,
+            Expanded(
+              child: LinearProgressIndicator(
+                value: position != null && position.inMilliseconds > 0 && duration != null && duration.inMilliseconds > 0
+                    ? (position?.inMilliseconds?.toDouble() ?? 0.0) /
+                    (duration?.inMilliseconds?.toDouble() ?? 0.0)
+                    : 0.0,
+                valueColor: const AlwaysStoppedAnimation(Colors.cyan),
+                backgroundColor: Colors.grey.shade400,
+              ),
             ),
 
             /*Container(
