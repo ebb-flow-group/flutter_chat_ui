@@ -59,6 +59,8 @@ class _VoiceMessageState extends State<VoiceMessage> {
   List<String> urlList = [];
   String firstUrl = '';
   Duration voiceMessageDuration;
+  int durationInSeconds = 0;
+  Timer audioMessageTimer;
 
   @override
   void initState() {
@@ -70,6 +72,28 @@ class _VoiceMessageState extends State<VoiceMessage> {
   void getDurationOfVoiceMessage() async{
     final duration = await FlutterSoundHelper().duration(widget.message.uri);
     print('VOICE MESSAGE DURATION: $duration');
+
+    setState(() {
+      voiceMessageDuration = duration;
+      durationInSeconds = voiceMessageDuration.inSeconds;
+    });
+  }
+
+  void startAudioMessageTimer() {
+    const oneSec = Duration(seconds: 1);
+    audioMessageTimer = Timer.periodic(
+      oneSec,
+          (Timer timer) {
+        setState(() {
+          if (durationInSeconds == 0) {
+            timer.cancel();
+            durationInSeconds = voiceMessageDuration.inSeconds;
+          } else {
+            durationInSeconds--;
+          }
+        });
+      },
+    );
   }
 
   @override
@@ -334,6 +358,21 @@ class _VoiceMessageState extends State<VoiceMessage> {
                     : Colors.white),
                 backgroundColor: Colors.grey.shade400,
                 minHeight: 4.5,
+              ),
+            ),
+
+            Padding(
+              padding: const EdgeInsets.only(left: 14.0),
+              child: Text(
+               '${durationInSeconds}s',
+                style: _user.id == widget.message.author.id
+                    ? InheritedChatTheme.of(context)
+                    .theme
+                    .sentMessageBodyTextStyle
+                    : InheritedChatTheme.of(context)
+                    .theme
+                    .receivedMessageBodyTextStyle,
+                textWidthBasis: TextWidthBasis.longestLine,
               ),
             ),
 
