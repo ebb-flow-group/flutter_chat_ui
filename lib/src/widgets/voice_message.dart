@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+import 'package:flutter_sound/public/util/flutter_sound_helper.dart';
 import '../util.dart';
 import 'inherited_chat_theme.dart';
 import 'inherited_l10n.dart';
@@ -57,11 +58,21 @@ class _VoiceMessageState extends State<VoiceMessage> {
 
   List<String> urlList = [];
   String firstUrl = '';
+  Duration voiceMessageDuration;
 
   @override
   void initState() {
     super.initState();
     // initAudioPlayer();
+
+
+  }
+
+  void getDurationOfVoiceMessage() async{
+    voiceMessageDuration =
+    await FlutterSoundHelper().duration(widget.message.uri);
+
+    print('VOICE MESSAGE DURATION: $voiceMessageDuration');
   }
 
   @override
