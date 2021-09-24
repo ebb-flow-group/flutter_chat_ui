@@ -66,7 +66,10 @@ class _VoiceMessageState extends State<VoiceMessage> {
   void initState() {
     super.initState();
 
-    getDurationOfVoiceMessage();
+    setState(() {
+      voiceMessageDuration = widget.message.duration;
+      durationInSeconds = voiceMessageDuration.inSeconds;
+    });
   }
 
   void getDurationOfVoiceMessage() async{
@@ -87,7 +90,7 @@ class _VoiceMessageState extends State<VoiceMessage> {
         setState(() {
           if (durationInSeconds == 0) {
             timer.cancel();
-            durationInSeconds = voiceMessageDuration.inSeconds;
+            durationInSeconds = widget.message.duration.inSeconds;
           } else {
             durationInSeconds--;
           }
@@ -140,6 +143,7 @@ class _VoiceMessageState extends State<VoiceMessage> {
         setState(() {
           playerState = PlayerState.PLAYING;
           print('PLAYINGGGG');
+          startAudioMessageTimer();
         });
       } else if (s == PlayerState.PAUSED) {
         setState(() {
