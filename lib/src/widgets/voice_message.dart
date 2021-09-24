@@ -70,6 +70,7 @@ class _VoiceMessageState extends State<VoiceMessage> {
   void getDurationOfVoiceMessage() async{
     voiceMessageDuration =
     await FlutterSoundHelper().duration(widget.message.uri);
+    setState(() {});
 
     print('VOICE MESSAGE DURATION: $voiceMessageDuration');
   }
