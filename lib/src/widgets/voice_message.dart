@@ -119,16 +119,6 @@ class _VoiceMessageState extends State<VoiceMessage> {
 
   void play() async{
 
-    /*if(AudioPlayer.players.isNotEmpty)
-      {
-        AudioPlayer.players.forEach((key, value) {
-          value.stop();
-          value.dispose();
-        });
-        *//*await audioPlayer.stop();
-        await audioPlayer.dispose();*//*
-      }*/
-
     audioPlayer = AudioPlayer(playerId: widget.message.uri.split('/').last);
     audioPlayer.onAudioPositionChanged
         .listen((p) => setState(() => position = p));
@@ -171,108 +161,6 @@ class _VoiceMessageState extends State<VoiceMessage> {
     await audioPlayer.play(widget.message.uri, isLocal: false);
   }
 
-  /*void play(String uri) async {
-
-    if(playerState == PlayerState.PAUSED)
-    {
-      await audioPlayer.play(widget.message.uri);
-      await audioPlayer.seek(position.inSeconds.toDouble());
-      setState(() {
-        playerState = PlayerState.playing;
-      });
-    }
-    else if(playerState == PlayerState.playing)
-    {
-
-      await audioPlayer.stop();
-      setState(() {
-        playerState = PlayerState.stopped;
-        duration = const Duration(seconds: 0);
-        position = const Duration(seconds: 0);
-      });
-
-      audioPlayer = AudioPlayer();
-<<<<<<< HEAD
-      *//*_positionSubscription = *//*audioPlayer.onAudioPositionChanged
-          .listen((p) => setState(() => position = p));
-      *//*_audioPlayerStateSubscription =
-          *//*audioPlayer.onPlayerStateChanged.listen((s) {
-            if (s == PlayerState.PLAYING) {
-=======
-      /*_positionSubscription = */audioPlayer.onAudioPositionChanged
-          .listen((p) => setState(() => position = p));
-      /*_audioPlayerStateSubscription =
-          */audioPlayer.onPlayerStateChanged.listen((s) {
-            if (s == AudioPlayerState.PLAYING) {
->>>>>>> a388864a4d155df86ba04ddfb2277ceec7e7609a
-              setState(() => duration = audioPlayer.duration);
-              *//*audioPlayer.onDurationChanged.listen((Duration d) {
-              print('Max duration: $d');
-              setState(() => duration = d);
-            });*//*
-            } else if (s == PlayerState.STOPPED) {
-              onComplete();
-              setState(() {
-                position = duration;
-              });
-            }
-          }, onError: (msg) {
-            setState(() {
-              playerState = PlayerState.stopped;
-              duration = const Duration(seconds: 0);
-              position = const Duration(seconds: 0);
-            });
-          });
-
-      await audioPlayer.play(uri, isLocal: true);
-
-      setState(() {
-        playerState = PlayerState.playing;
-      });
-
-    }
-    else{
-      audioPlayer = AudioPlayer();
-<<<<<<< HEAD
-      *//*_positionSubscription = *//*audioPlayer.onAudioPositionChanged
-          .listen((p) => setState(() => position = p));
-      *//*_audioPlayerStateSubscription =
-          *//*audioPlayer.onPlayerStateChanged.listen((s) {
-            if (s == oPlayerState.PLAYING) {
-=======
-      /*_positionSubscription = */audioPlayer.onAudioPositionChanged
-          .listen((p) => setState(() => position = p));
-      /*_audioPlayerStateSubscription =
-          */audioPlayer.onPlayerStateChanged.listen((s) {
-            if (s == AudioPlayerState.PLAYING) {
->>>>>>> a388864a4d155df86ba04ddfb2277ceec7e7609a
-              setState(() => duration = audioPlayer.duration);
-              *//*audioPlayer.onDurationChanged.listen((Duration d) {
-              print('Max duration: $d');
-              setState(() => duration = d);
-            });*//*
-            } else if (s == PlayerState.STOPPED) {
-              onComplete();
-              setState(() {
-                position = duration;
-              });
-            }
-          }, onError: (msg) {
-            setState(() {
-              playerState = PlayerState.stopped;
-              duration = const Duration(seconds: 0);
-              position = const Duration(seconds: 0);
-            });
-          });
-
-      await audioPlayer.play(uri, isLocal: true);
-
-      setState(() {
-        playerState = PlayerState.playing;
-      });
-    }
-  }*/
-
   Future stop() async
   {
     await audioPlayer.stop();
@@ -287,7 +175,6 @@ class _VoiceMessageState extends State<VoiceMessage> {
   Future pause() async {
     await audioPlayer.pause();
     setState(() {
-      // irstUrl = widget.message.uri;
       playerState = PlayerState.PAUSED;
       timer.cancel();
       timerMaxSeconds = timerMaxSeconds - currentSeconds;
@@ -301,7 +188,7 @@ class _VoiceMessageState extends State<VoiceMessage> {
       // firstUrl = widget.message.uri;
       playerState = PlayerState.PLAYING;
     });
-    startTimeout();
+    // startTimeout();
     // setState(() => playerState = PlayerState.paused);
   }
 
