@@ -67,7 +67,7 @@ class _VoiceMessageState extends State<VoiceMessage> {
     super.initState();
 
     setState(() {
-      voiceMessageDuration = widget.message.duration;
+      voiceMessageDuration = Duration(seconds: widget.message.duration);
       durationInSeconds = voiceMessageDuration.inSeconds;
     });
   }
@@ -91,7 +91,7 @@ class _VoiceMessageState extends State<VoiceMessage> {
         setState(() {
           if (durationInSeconds == 0) {
             timer.cancel();
-            durationInSeconds = widget.message.duration.inSeconds;
+            durationInSeconds = voiceMessageDuration.inSeconds;
           } else {
             durationInSeconds--;
           }
