@@ -247,7 +247,7 @@ class _VoiceMessageState extends State<VoiceMessage> {
             ),
 
             Padding(
-              padding: const EdgeInsets.only(left: 14.0),
+              padding: const EdgeInsets.only(left: 24.0),
               child: Text(
                 timerText,
                 style: _user.id == widget.message.author.id
