@@ -63,9 +63,8 @@ class _VoiceMessageState extends State<VoiceMessage> {
   @override
   void initState() {
     super.initState();
-    // initAudioPlayer();
 
-
+    getDurationOfVoiceMessage();
   }
 
   void getDurationOfVoiceMessage() async{
