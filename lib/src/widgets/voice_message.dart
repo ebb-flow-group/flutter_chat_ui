@@ -290,6 +290,7 @@ class _VoiceMessageState extends State<VoiceMessage> {
       // irstUrl = widget.message.uri;
       playerState = PlayerState.PAUSED;
       timer.cancel();
+      timerMaxSeconds = timerMaxSeconds - currentSeconds;
     });
     // setState(() => playerState = PlayerState.paused);
   }
