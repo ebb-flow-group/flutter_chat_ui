@@ -58,46 +58,43 @@ class _VoiceMessageState extends State<VoiceMessage> {
 
   List<String> urlList = [];
   String firstUrl = '';
-  Duration voiceMessageDuration;
-  int durationInSeconds = 0;
-  Timer audioMessageTimer;
+  Timer timer;
+  Duration interval = const Duration(seconds: 1);
+  int globalTimerMaxSeconds = 0, currentSeconds = 0, timerMaxSeconds = 0;
+  String get getterTimerText =>
+      '${((timerMaxSeconds - currentSeconds) ~/ 60).toString().padLeft(2, '0')}:${((timerMaxSeconds - currentSeconds) % 60).toString().padLeft(2, '0')}';
+
+  String timerText = '';
 
   @override
   void initState() {
     super.initState();
 
     setState(() {
-      voiceMessageDuration = Duration(seconds: widget.message.duration);
-      durationInSeconds = voiceMessageDuration.inSeconds;
+      globalTimerMaxSeconds =  widget.message.duration;
+      timerMaxSeconds = widget.message.duration;
+      timerText = '${timerMaxSeconds}s';
     });
   }
 
-  void getDurationOfVoiceMessage() async{
-
-    final duration = await FlutterSoundHelper().duration(widget.message.uri);
-    print('VOICE MESSAGE DURATION: $duration');
-
-    setState(() {
-      voiceMessageDuration = duration;
-      durationInSeconds = voiceMessageDuration.inSeconds;
-    });
-  }
-
-  void startAudioMessageTimer() {
-    const oneSec = Duration(seconds: 1);
-    audioMessageTimer = Timer.periodic(
-      oneSec,
-          (Timer timer) {
+  void startTimeout([int milliseconds]) {
+    final duration = interval;
+    Timer.periodic(duration, (timer) {
+      if(mounted)
+      {
         setState(() {
-          if (durationInSeconds == 0) {
+          //        print(timer.tick);
+          this.timer = timer;
+          currentSeconds = timer.tick;
+          timerText = getterTimerText;
+          if (timer.tick >= timerMaxSeconds) {
             timer.cancel();
-            durationInSeconds = voiceMessageDuration.inSeconds;
-          } else {
-            durationInSeconds--;
+            timerMaxSeconds = globalTimerMaxSeconds;
+            timerText = '${globalTimerMaxSeconds}s';
           }
         });
-      },
-    );
+      }
+    });
   }
 
   @override
@@ -144,7 +141,7 @@ class _VoiceMessageState extends State<VoiceMessage> {
         setState(() {
           playerState = PlayerState.PLAYING;
           print('PLAYINGGGG');
-          startAudioMessageTimer();
+          startTimeout();
         });
       } else if (s == PlayerState.PAUSED) {
         setState(() {
@@ -292,6 +289,7 @@ class _VoiceMessageState extends State<VoiceMessage> {
     setState(() {
       // irstUrl = widget.message.uri;
       playerState = PlayerState.PAUSED;
+      timer.cancel();
     });
     // setState(() => playerState = PlayerState.paused);
   }
@@ -302,6 +300,7 @@ class _VoiceMessageState extends State<VoiceMessage> {
       // firstUrl = widget.message.uri;
       playerState = PlayerState.PLAYING;
     });
+    startTimeout();
     // setState(() => playerState = PlayerState.paused);
   }
 
@@ -335,18 +334,14 @@ class _VoiceMessageState extends State<VoiceMessage> {
                 child: Padding(
                   padding: const EdgeInsets.only(right: 14.0),
                   child: playerState == PlayerState.PLAYING
-                      ? Icon(
+                      ? const Icon(
                     Icons.pause_rounded,
-                    color: widget.currentUserIsAuthor
-                      ? InheritedChatTheme.of(context).theme.secondaryColor
-                      : Colors.white,
+                    color: Colors.white,
                     size: 34,
                   )
-                      : Icon(
+                      : const Icon(
                     Icons.play_arrow_rounded,
-                    color: widget.currentUserIsAuthor
-                        ? InheritedChatTheme.of(context).theme.secondaryColor
-                        : Colors.white,
+                    color: Colors.white,
                     size: 34,
                   ),
                 )),
@@ -357,11 +352,8 @@ class _VoiceMessageState extends State<VoiceMessage> {
                     ? (position?.inMilliseconds?.toDouble() ?? 0.0) /
                     (duration?.inMilliseconds?.toDouble() ?? 0.0)
                     : 0.0,
-                valueColor: AlwaysStoppedAnimation(
-                  widget.currentUserIsAuthor
-                    ? InheritedChatTheme.of(context).theme.secondaryColor
-                    : Colors.white),
-                backgroundColor: Colors.grey.shade400,
+                valueColor: const AlwaysStoppedAnimation(Colors.white),
+                backgroundColor: Colors.grey[300],
                 minHeight: 4.5,
               ),
             ),
@@ -369,7 +361,7 @@ class _VoiceMessageState extends State<VoiceMessage> {
             Padding(
               padding: const EdgeInsets.only(left: 14.0),
               child: Text(
-               '${durationInSeconds}s',
+                timerText,
                 style: _user.id == widget.message.author.id
                     ? InheritedChatTheme.of(context)
                     .theme
