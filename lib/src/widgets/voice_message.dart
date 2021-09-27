@@ -131,7 +131,7 @@ class _VoiceMessageState extends State<VoiceMessage> {
         setState(() {
           playerState = PlayerState.PLAYING;
           print('PLAYINGGGG');
-          startTimeout();
+          Future.delayed(const Duration(seconds: 1), () => startTimeout());
         });
       } else if (s == PlayerState.PAUSED) {
         setState(() {
