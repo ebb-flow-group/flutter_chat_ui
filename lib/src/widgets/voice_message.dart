@@ -236,9 +236,9 @@ class _VoiceMessageState extends State<VoiceMessage> {
 
             Expanded(
               child: LinearProgressIndicator(
-                value: position != null && position.inMilliseconds > 0 && duration != null && duration.inMilliseconds > 0
-                    ? (position?.inMilliseconds?.toDouble() ?? 0.0) /
-                    (duration?.inMilliseconds?.toDouble() ?? 0.0)
+                value: position != null && position.inSeconds > 0 && duration != null && duration.inSeconds > 0
+                    ? (position?.inSeconds?.toDouble() ?? 0.0) /
+                    (duration?.inSeconds?.toDouble() ?? 0.0)
                     : 0.0,
                 valueColor: const AlwaysStoppedAnimation(Colors.white),
                 backgroundColor: Colors.grey[300],
