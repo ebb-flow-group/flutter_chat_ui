@@ -14,19 +14,19 @@ abstract class ChatL10n {
   });
 
   /// Accessibility label (hint) for the attachment button
-  final String attachmentButtonAccessibilityLabel;
+  final String? attachmentButtonAccessibilityLabel;
 
   /// Placeholder when there are no messages
-  final String emptyChatPlaceholder;
+  final String? emptyChatPlaceholder;
 
   /// Accessibility label (hint) for the tap action on file message
-  final String fileButtonAccessibilityLabel;
+  final String? fileButtonAccessibilityLabel;
 
   /// Placeholder for the text field
-  final String inputPlaceholder;
+  final String? inputPlaceholder;
 
   /// Accessibility label (hint) for the send button
-  final String sendButtonAccessibilityLabel;
+  final String? sendButtonAccessibilityLabel;
 }
 
 /// English l10n which extends [ChatL10n]

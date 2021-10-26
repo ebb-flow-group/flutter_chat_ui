@@ -19,7 +19,7 @@ class SendMessageIntent extends Intent {
 class Input extends StatefulWidget {
   /// Creates [Input] widget
   const Input({
-    Key key,
+    Key? key,
     this.isAttachmentUploading,
     this.onAttachmentPressed,
     @required this.onSendPressed,
@@ -27,20 +27,20 @@ class Input extends StatefulWidget {
   }) : super(key: key);
 
   /// See [AttachmentButton.onPressed]
-  final void Function() onAttachmentPressed;
+  final void Function()? onAttachmentPressed;
 
   /// Whether attachment is uploading. Will replace attachment button with a
   /// [CircularProgressIndicator]. Since we don't have libraries for
   /// managing media in dependencies we have no way of knowing if
   /// something is uploading so you need to set this manually.
-  final bool isAttachmentUploading;
+  final bool? isAttachmentUploading;
 
   /// Will be called on [SendButton] tap. Has [types.PartialText] which can
   /// be transformed to [types.TextMessage] and added to the messages list.
-  final void Function(types.PartialText) onSendPressed;
+  final void Function(types.PartialText)? onSendPressed;
 
   /// Will be called whenever the text inside [TextField] changes
-  final void Function(String) onTextChanged;
+  final void Function(String)? onTextChanged;
 
   @override
   _InputState createState() => _InputState();
@@ -67,7 +67,7 @@ class _InputState extends State<Input> {
 
   void _handleSendPressed() {
     final _partialText = types.PartialText(text: _textController.text.trim());
-    widget.onSendPressed(_partialText);
+    widget.onSendPressed!(_partialText);
     _textController.clear();
   }
 
@@ -87,7 +87,7 @@ class _InputState extends State<Input> {
           backgroundColor: Colors.transparent,
           strokeWidth: 2,
           valueColor: AlwaysStoppedAnimation<Color>(
-            InheritedChatTheme.of(context).theme.inputTextColor,
+            InheritedChatTheme.of(context)!.theme!.inputTextColor!,
           ),
         ),
       );
@@ -131,8 +131,8 @@ class _InputState extends State<Input> {
             autofocus: true,
             child: Material(
               borderRadius:
-                  InheritedChatTheme.of(context).theme.inputBorderRadius,
-              color: InheritedChatTheme.of(context).theme.inputBackgroundColor,
+                  InheritedChatTheme.of(context)!.theme!.inputBorderRadius,
+              color: InheritedChatTheme.of(context)!.theme!.inputBackgroundColor,
               child: Container(
                 padding: EdgeInsets.fromLTRB(
                   24 + _query.padding.left,
@@ -147,29 +147,29 @@ class _InputState extends State<Input> {
                       child: TextField(
                         controller: _textController,
                         decoration: InputDecoration.collapsed(
-                          hintStyle: InheritedChatTheme.of(context)
-                              .theme
-                              .inputTextStyle
+                          hintStyle: InheritedChatTheme.of(context)!
+                              .theme!
+                              .inputTextStyle!
                               .copyWith(
-                                color: InheritedChatTheme.of(context)
-                                    .theme
-                                    .inputTextColor
+                                color: InheritedChatTheme.of(context)!
+                                    .theme!
+                                    .inputTextColor!
                                     .withOpacity(0.5),
                               ),
                           hintText:
-                              InheritedL10n.of(context).l10n.inputPlaceholder,
+                              InheritedL10n.of(context)!.l10n!.inputPlaceholder,
                         ),
                         focusNode: _inputFocusNode,
                         keyboardType: TextInputType.multiline,
                         maxLines: 5,
                         minLines: 1,
                         onChanged: widget.onTextChanged,
-                        style: InheritedChatTheme.of(context)
-                            .theme
-                            .inputTextStyle
+                        style: InheritedChatTheme.of(context)!
+                            .theme!
+                            .inputTextStyle!
                             .copyWith(
-                              color: InheritedChatTheme.of(context)
-                                  .theme
+                              color: InheritedChatTheme.of(context)!
+                                  .theme!
                                   .inputTextColor,
                             ),
                         textCapitalization: TextCapitalization.sentences,

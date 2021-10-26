@@ -13,26 +13,26 @@ import 'inherited_user.dart';
 class VoiceMessage extends StatefulWidget {
   /// Creates a voice message widget based on a [types.VoiceMessage]
   const VoiceMessage({
-    Key key,
+    Key? key,
     @required this.message,
     this.onPressed,
   }) : super(key: key);
 
   /// [types.VoiceMessage]
-  final types.VoiceMessage message;
+  final types.VoiceMessage? message;
 
   /// Called when user taps on a file
-  final void Function(types.VoiceMessage) onPressed;
+  final void Function(types.VoiceMessage)? onPressed;
 
   @override
   _VoiceMessageState createState() => _VoiceMessageState();
 }
 
 class _VoiceMessageState extends State<VoiceMessage> {
-  AudioPlayer audioPlayer;
+  AudioPlayer? audioPlayer;
 
-  Duration duration;
-  Duration position;
+  Duration? duration;
+  Duration? position;
 
   PlayerState playerState = PlayerState.STOPPED;
 
@@ -64,12 +64,12 @@ class _VoiceMessageState extends State<VoiceMessage> {
   void dispose() {
     /*_positionSubscription!.cancel();
     _audioPlayerStateSubscription!.cancel();*/
-    if(audioPlayer != null) audioPlayer.dispose();
+    if(audioPlayer != null) audioPlayer!.dispose();
     super.dispose();
   }
 
   void onComplete() {
-    audioPlayer.stop();
+    audioPlayer!.stop();
     setState(() {
       playerState = PlayerState.COMPLETED;
       duration = const Duration(seconds: 0);
@@ -89,12 +89,12 @@ class _VoiceMessageState extends State<VoiceMessage> {
         await audioPlayer.dispose();
       }*/
 
-    audioPlayer = AudioPlayer(playerId: widget.message.uri.split('/').last);
-    audioPlayer.onAudioPositionChanged
+    audioPlayer = AudioPlayer(playerId: widget.message!.uri.split('/').last);
+    audioPlayer!.onAudioPositionChanged
         .listen((p) => setState(() => position = p));
-    audioPlayer.onPlayerStateChanged.listen((s) {
+    audioPlayer!.onPlayerStateChanged.listen((s) {
       if (s == PlayerState.PLAYING) {
-        audioPlayer.onDurationChanged.listen((Duration d) {
+        audioPlayer!.onDurationChanged.listen((Duration d) {
           print('Max duration: $d');
           setState(() => duration = d);
         });
@@ -114,7 +114,7 @@ class _VoiceMessageState extends State<VoiceMessage> {
         });
         onComplete();
 
-        audioPlayer.dispose();
+        audioPlayer!.dispose();
       }
     }, onError: (msg) {
       setState(() {
@@ -124,10 +124,10 @@ class _VoiceMessageState extends State<VoiceMessage> {
       print('Errororor: $msg');
       // onStop();
 
-      audioPlayer.dispose();
+      audioPlayer!.dispose();
     });
 
-    await audioPlayer.play(widget.message.uri, isLocal: true);
+    await audioPlayer!.play(widget.message!.uri, isLocal: true);
   }
 
   /*void play(String uri) async {
@@ -234,7 +234,7 @@ class _VoiceMessageState extends State<VoiceMessage> {
 
   Future stop() async
   {
-    await audioPlayer.stop();
+    await audioPlayer!.stop();
     setState(() {
       playerState = PlayerState.PAUSED;
       playerState = PlayerState.STOPPED;
@@ -244,7 +244,7 @@ class _VoiceMessageState extends State<VoiceMessage> {
   }
 
   Future pause() async {
-    await audioPlayer.pause();
+    await audioPlayer!.pause();
     setState(() {
       // firstUrl = widget.message.uri;
       playerState = PlayerState.PAUSED;
@@ -253,7 +253,7 @@ class _VoiceMessageState extends State<VoiceMessage> {
   }
 
   Future resume() async {
-    await audioPlayer.resume();
+    await audioPlayer!.resume();
     setState(() {
       // firstUrl = widget.message.uri;
       playerState = PlayerState.PLAYING;
@@ -263,14 +263,14 @@ class _VoiceMessageState extends State<VoiceMessage> {
 
   @override
   Widget build(BuildContext context) {
-    final _user = InheritedUser.of(context).user;
-    final _color = _user.id == widget.message.author.id
-        ? InheritedChatTheme.of(context).theme.sentMessageDocumentIconColor
-        : InheritedChatTheme.of(context).theme.receivedMessageDocumentIconColor;
+    final _user = InheritedUser.of(context)!.user;
+    final _color = _user!.id == widget.message!.author.id
+        ? InheritedChatTheme.of(context)!.theme!.sentMessageDocumentIconColor
+        : InheritedChatTheme.of(context)!.theme!.receivedMessageDocumentIconColor;
 
     return Semantics(
       key: widget.key,
-      label: InheritedL10n.of(context).l10n.fileButtonAccessibilityLabel,
+      label: InheritedL10n.of(context)!.l10n!.fileButtonAccessibilityLabel,
       child: Container(
         padding: const EdgeInsets.fromLTRB(16, 16, 24, 16),
         child: Row(
@@ -278,12 +278,12 @@ class _VoiceMessageState extends State<VoiceMessage> {
           children: [
             Container(
               decoration: BoxDecoration(
-                color: _color.withOpacity(0.2),
+                color: _color!.withOpacity(0.2),
                 borderRadius: BorderRadius.circular(21),
               ),
               height: 42,
               width: 42,
-              child: InheritedChatTheme.of(context).theme.documentIcon ?? _buildControlAndProgressView()/*AudioController(key: UniqueKey(), message: widget.message)*/,
+              child: InheritedChatTheme.of(context)!.theme!.documentIcon ?? _buildControlAndProgressView()/*AudioController(key: UniqueKey(), message: widget.message)*/,
             ),
             Flexible(
               child: Container(
@@ -294,27 +294,27 @@ class _VoiceMessageState extends State<VoiceMessage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      widget.message.name,
-                      style: _user.id == widget.message.author.id
-                          ? InheritedChatTheme.of(context)
-                          .theme
-                          .sentMessageBodyTextStyle
-                          : InheritedChatTheme.of(context)
-                          .theme
-                          .receivedMessageBodyTextStyle,
+                      widget.message!.name,
+                      style: _user.id == widget.message!.author.id
+                          ? InheritedChatTheme.of(context)!
+                          .theme!
+                          .sentMessageBodyTextStyle!
+                          : InheritedChatTheme.of(context)!
+                          .theme!
+                          .receivedMessageBodyTextStyle!,
                       textWidthBasis: TextWidthBasis.longestLine,
                     ),
                     Container(
                       margin: const EdgeInsets.only(
                         top: 4,
                       ),
-                      child: Text(formatBytes(widget.message.size),
-                          style: _user.id == widget.message.author.id
-                              ? InheritedChatTheme.of(context)
-                              .theme
-                              .sentMessageCaptionTextStyle
-                              : InheritedChatTheme.of(context)
-                              .theme
+                      child: Text(formatBytes(widget.message!.size),
+                          style: _user.id == widget.message!.author.id
+                              ? InheritedChatTheme.of(context)!
+                              .theme!
+                              .sentMessageCaptionTextStyle!
+                              : InheritedChatTheme.of(context)!
+                              .theme!
                               .receivedMessageCaptionTextStyle),
                     ),
                   ],
@@ -336,7 +336,7 @@ class _VoiceMessageState extends State<VoiceMessage> {
             alignment: Alignment.center,
             children: [
               CircularProgressIndicator(
-                value: position != null && position.inMilliseconds > 0
+                value: position != null && position!.inMilliseconds > 0
                     ? (position?.inMilliseconds.toDouble() ?? 0.0) /
                     (duration?.inMilliseconds.toDouble() ?? 0.0)
                     : 0.0,
@@ -350,7 +350,7 @@ class _VoiceMessageState extends State<VoiceMessage> {
                     } else if(playerState == PlayerState.PAUSED){
                       resume();
                     }else {
-                      print('PLAYED AUDIO PATH: ${widget.message.uri}');
+                      print('PLAYED AUDIO PATH: ${widget.message!.uri}');
                       play();
                     }
                   },

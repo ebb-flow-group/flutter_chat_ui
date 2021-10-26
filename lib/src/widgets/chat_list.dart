@@ -8,7 +8,7 @@ import 'inherited_user.dart';
 class ChatList extends StatefulWidget {
   /// Creates a chat list widget
   const ChatList({
-    Key key,
+    Key? key,
     this.isLastPage,
     @required this.itemBuilder,
     @required this.items,
@@ -19,24 +19,24 @@ class ChatList extends StatefulWidget {
   /// Used for pagination (infinite scroll) together with [onEndReached].
   /// When true, indicates that there are no more pages to load and
   /// pagination will not be triggered.
-  final bool isLastPage;
+  final bool? isLastPage;
 
   /// Items to build
-  final List<Object> items;
+  final List<Object>? items;
 
   /// Item builder
-  final Widget Function(Object, int index) itemBuilder;
+  final Widget Function(Object, int index)? itemBuilder;
 
   /// Used for pagination (infinite scroll). Called when user scrolls
   /// to the very end of the list (minus [onEndReachedThreshold]).
-  final Future<void> Function() onEndReached;
+  final Future<void> Function()? onEndReached;
 
   /// Used for pagination (infinite scroll) together with [onEndReached].
   /// Can be anything from 0 to 1, where 0 is immediate load of the next page
   /// as soon as scroll starts, and 1 is load of the next page only if scrolled
   /// to the very end of the list. Default value is 0.75, e.g. start loading
   /// next page when scrolled through about 3/4 of the available content.
-  final double onEndReachedThreshold;
+  final double? onEndReachedThreshold;
 
   @override
   _ChatListState createState() => _ChatListState();
@@ -51,15 +51,15 @@ class _ChatListState extends State<ChatList>
   List<Object> _oldData = [];
   final _scrollController = ScrollController();
 
-  AnimationController _controller;
+  late AnimationController _controller;
 
-  Animation<double> _animation;
+  late Animation<double> _animation;
 
   @override
   void initState() {
     super.initState();
 
-    _oldData = List.from(widget.items);
+    _oldData = List.from(widget.items!);
 
     _controller = AnimationController(vsync: this);
 
@@ -75,7 +75,7 @@ class _ChatListState extends State<ChatList>
   void didUpdateWidget(covariant ChatList oldWidget) {
     super.didUpdateWidget(oldWidget);
 
-    _calculateDiffs(oldWidget.items);
+    _calculateDiffs(oldWidget.items!);
   }
 
   @override
@@ -89,7 +89,7 @@ class _ChatListState extends State<ChatList>
   void _calculateDiffs(List<Object> oldList) async {
     final diffResult = calculateListDiff<Object>(
       oldList,
-      widget.items,
+      widget.items!,
       equalityChecker: (item1, item2) {
         if (item1 is Map<String, Object> && item2 is Map<String, Object>) {
           final message1 = item1['message'] as types.Message;
@@ -121,7 +121,7 @@ class _ChatListState extends State<ChatList>
 
     _scrollToBottomIfNeeded(oldList);
 
-    _oldData = List.from(widget.items);
+    _oldData = List.from(widget.items!);
   }
 
   // Hacky solution to reconsider
@@ -129,14 +129,14 @@ class _ChatListState extends State<ChatList>
     try {
       // Take index 1 because there is always a spacer on index 0
       final oldItem = oldList[1];
-      final item = widget.items[1];
+      final item = widget.items![1];
 
       // Compare items to fire only on newly added messages
       if (oldItem != item && item is Map<String, Object>) {
         final message = item['message'] as types.Message;
 
         // Run only for sent message
-        if (message.author.id == InheritedUser.of(context).user.id) {
+        if (message.author.id == InheritedUser.of(context)!.user!.id) {
           // Delay to give some time for Flutter to calculate new
           // size after new message was added
           Future.delayed(const Duration(milliseconds: 100), () {
@@ -161,7 +161,7 @@ class _ChatListState extends State<ChatList>
       sizeFactor: animation.drive(CurveTween(curve: Curves.easeInQuad)),
       child: FadeTransition(
         opacity: animation.drive(CurveTween(curve: Curves.easeInQuad)),
-        child: widget.itemBuilder(item, null),
+        child: widget.itemBuilder!(item, -1),
       ),
     );
   }
@@ -173,7 +173,7 @@ class _ChatListState extends State<ChatList>
       return SizeTransition(
         axisAlignment: -1,
         sizeFactor: animation.drive(CurveTween(curve: Curves.easeOutQuad)),
-        child: widget.itemBuilder(item, index),
+        child: widget.itemBuilder!(item, index),
       );
     } catch (e) {
       return const SizedBox();
@@ -191,7 +191,7 @@ class _ChatListState extends State<ChatList>
         if (notification.metrics.pixels >=
             (notification.metrics.maxScrollExtent *
                 (widget.onEndReachedThreshold ?? 0.75))) {
-          if (widget.items.isEmpty || _isNextPageLoading) return false;
+          if (widget.items!.isEmpty || _isNextPageLoading) return false;
 
           _controller.duration = const Duration();
           _controller.forward();
@@ -200,7 +200,7 @@ class _ChatListState extends State<ChatList>
             _isNextPageLoading = true;
           });
 
-          widget.onEndReached().whenComplete(() {
+          widget.onEndReached!().whenComplete(() {
             _controller.duration = const Duration(milliseconds: 300);
             _controller.reverse();
 
@@ -219,7 +219,7 @@ class _ChatListState extends State<ChatList>
           SliverPadding(
             padding: const EdgeInsets.only(bottom: 4),
             sliver: SliverAnimatedList(
-              initialItemCount: widget.items.length,
+              initialItemCount: widget.items!.length,
               key: _listKey,
               itemBuilder: (_, index, animation) =>
                   _buildNewMessage(index, animation),
@@ -245,7 +245,7 @@ class _ChatListState extends State<ChatList>
                         backgroundColor: Colors.transparent,
                         strokeWidth: 2,
                         valueColor: AlwaysStoppedAnimation<Color>(
-                          InheritedChatTheme.of(context).theme.primaryColor,
+                          InheritedChatTheme.of(context)!.theme!.primaryColor!,
                         ),
                       ),
                     ),

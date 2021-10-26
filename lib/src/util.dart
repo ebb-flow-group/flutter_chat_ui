@@ -30,9 +30,9 @@ String getUserName(types.User user) =>
 /// chat history
 String getVerboseDateTimeRepresentation(
   DateTime dateTime, {
-  DateFormat dateFormat,
-  String dateLocale,
-  DateFormat timeFormat,
+  DateFormat? dateFormat,
+  String? dateLocale,
+  DateFormat? timeFormat,
 }) {
   final formattedDate = dateFormat != null
       ? dateFormat.format(dateTime)
@@ -57,11 +57,11 @@ String getVerboseDateTimeRepresentation(
 List<Object> calculateChatMessages(
   List<types.Message> messages,
   types.User user, {
-  String Function(DateTime) customDateHeaderText,
-  DateFormat dateFormat,
-  String dateLocale,
-  @required bool showUserNames,
-  DateFormat timeFormat,
+  String Function(DateTime)? customDateHeaderText,
+  DateFormat? dateFormat,
+  String? dateLocale,
+  @required bool? showUserNames,
+  DateFormat? timeFormat,
 }) {
   final chatMessages = <Object>[];
   final gallery = <PreviewImage>[];
@@ -75,7 +75,7 @@ List<Object> calculateChatMessages(
     final messageHasCreatedAt = message.createdAt != null;
     final nextMessage = isLast ? null : messages[i - 1];
     final nextMessageHasCreatedAt = nextMessage?.createdAt != null;
-    final nextMessageSameAuthor = message.author.id == nextMessage?.author?.id;
+    final nextMessageSameAuthor = message.author.id == nextMessage?.author.id;
     final notMyMessage = message.author.id != user.id;
 
     var nextMessageDateThreshold = false;
@@ -83,14 +83,14 @@ List<Object> calculateChatMessages(
     var nextMessageInGroup = false;
     var showName = false;
 
-    if (showUserNames) {
+    if (showUserNames!) {
       final previousMessage = isFirst ? null : messages[i + 1];
 
       final isFirstInGroup = notMyMessage &&
           ((message.author.id != previousMessage?.author.id) ||
               (message.createdAt != null &&
                   previousMessage?.createdAt != null &&
-                  message.createdAt - previousMessage.createdAt > 60000));
+                  message.createdAt! - previousMessage!.createdAt! > 60000));
 
       if (isFirstInGroup) {
         shouldShowName = false;
@@ -109,14 +109,14 @@ List<Object> calculateChatMessages(
 
     if (messageHasCreatedAt && nextMessageHasCreatedAt) {
       nextMessageDateThreshold =
-          nextMessage.createdAt - message.createdAt >= 900000;
+          nextMessage!.createdAt! - message.createdAt! >= 900000;
 
       nextMessageDifferentDay =
-          DateTime.fromMillisecondsSinceEpoch(message.createdAt).day !=
-              DateTime.fromMillisecondsSinceEpoch(nextMessage.createdAt).day;
+          DateTime.fromMillisecondsSinceEpoch(message.createdAt!).day !=
+              DateTime.fromMillisecondsSinceEpoch(nextMessage.createdAt!).day;
 
       nextMessageInGroup = nextMessageSameAuthor &&
-          nextMessage.createdAt - message.createdAt <= 60000;
+          nextMessage.createdAt! - message.createdAt! <= 60000;
     }
 
     if (isFirst && messageHasCreatedAt) {
@@ -125,10 +125,10 @@ List<Object> calculateChatMessages(
         DateHeader(
           text: customDateHeaderText != null
               ? customDateHeaderText(
-                  DateTime.fromMillisecondsSinceEpoch(message.createdAt),
+                  DateTime.fromMillisecondsSinceEpoch(message.createdAt!),
                 )
               : getVerboseDateTimeRepresentation(
-                  DateTime.fromMillisecondsSinceEpoch(message.createdAt),
+                  DateTime.fromMillisecondsSinceEpoch(message.createdAt!),
                   dateFormat: dateFormat,
                   dateLocale: dateLocale,
                   timeFormat: timeFormat,
@@ -163,10 +163,10 @@ List<Object> calculateChatMessages(
         DateHeader(
           text: customDateHeaderText != null
               ? customDateHeaderText(
-                  DateTime.fromMillisecondsSinceEpoch(nextMessage.createdAt),
+                  DateTime.fromMillisecondsSinceEpoch(nextMessage!.createdAt!),
                 )
               : getVerboseDateTimeRepresentation(
-                  DateTime.fromMillisecondsSinceEpoch(nextMessage.createdAt),
+                  DateTime.fromMillisecondsSinceEpoch(nextMessage!.createdAt!),
                   dateFormat: dateFormat,
                   dateLocale: dateLocale,
                   timeFormat: timeFormat,

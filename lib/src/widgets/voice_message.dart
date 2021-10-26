@@ -15,29 +15,29 @@ import 'inherited_user.dart';
 class VoiceMessage extends StatefulWidget {
   /// Creates a voice message widget based on a [types.VoiceMessage]
   const VoiceMessage({
-    Key key,
+    Key? key,
     @required this.message,
     @required this.currentUserIsAuthor,
     this.onPressed,
   }) : super(key: key);
 
   /// [types.VoiceMessage]
-  final types.VoiceMessage message;
+  final types.VoiceMessage? message;
 
-  final bool currentUserIsAuthor;
+  final bool? currentUserIsAuthor;
 
   /// Called when user taps on a file
-  final void Function(types.VoiceMessage) onPressed;
+  final void Function(types.VoiceMessage)? onPressed;
 
   @override
   _VoiceMessageState createState() => _VoiceMessageState();
 }
 
 class _VoiceMessageState extends State<VoiceMessage> {
-  AudioPlayer audioPlayer;
+  AudioPlayer? audioPlayer;
 
-  Duration duration;
-  Duration position;
+  Duration? duration;
+  Duration? position;
 
   PlayerState playerState = PlayerState.STOPPED;
 
@@ -58,7 +58,7 @@ class _VoiceMessageState extends State<VoiceMessage> {
 
   List<String> urlList = [];
   String firstUrl = '';
-  Timer timer;
+  Timer? timer;
   Duration interval = const Duration(seconds: 1);
   int globalTimerMaxSeconds = 0, currentSeconds = 0, timerMaxSeconds = 0;
   String get getterTimerText =>
@@ -71,13 +71,13 @@ class _VoiceMessageState extends State<VoiceMessage> {
     super.initState();
 
     setState(() {
-      globalTimerMaxSeconds =  widget.message.duration;
-      timerMaxSeconds = widget.message.duration;
+      globalTimerMaxSeconds =  widget.message!.duration;
+      timerMaxSeconds = widget.message!.duration;
       timerText = '${timerMaxSeconds}s';
     });
   }
 
-  void startTimeout([int milliseconds]) {
+  void startTimeout([int? milliseconds]) {
     final duration = interval;
     Timer.periodic(duration, (timer) {
       if(mounted)
@@ -101,12 +101,12 @@ class _VoiceMessageState extends State<VoiceMessage> {
   void dispose() {
     /*_positionSubscription!.cancel();
     _audioPlayerStateSubscription!.cancel();*/
-    if(audioPlayer != null) audioPlayer.dispose();
+    if(audioPlayer != null) audioPlayer!.dispose();
     super.dispose();
   }
 
   void onComplete() {
-    audioPlayer.stop();
+    audioPlayer!.stop();
     setState(() {
       playerState = PlayerState.COMPLETED;
       if(Platform.isAndroid)
@@ -119,12 +119,12 @@ class _VoiceMessageState extends State<VoiceMessage> {
 
   void play() async{
 
-    audioPlayer = AudioPlayer(playerId: widget.message.uri.split('/').last);
-    audioPlayer.onAudioPositionChanged
+    audioPlayer = AudioPlayer(playerId: widget.message!.uri.split('/').last);
+    audioPlayer!.onAudioPositionChanged
         .listen((p) => setState(() => position = p));
-    audioPlayer.onPlayerStateChanged.listen((s) {
+    audioPlayer!.onPlayerStateChanged.listen((s) {
       if (s == PlayerState.PLAYING) {
-        audioPlayer.onDurationChanged.listen((Duration d) {
+        audioPlayer!.onDurationChanged.listen((Duration d) {
           print('Max duration: $d');
           setState(() => duration = d);
         });
@@ -158,12 +158,12 @@ class _VoiceMessageState extends State<VoiceMessage> {
       // audioPlayer.dispose();
     });
 
-    await audioPlayer.play(widget.message.uri, isLocal: false);
+    await audioPlayer!.play(widget.message!.uri, isLocal: false);
   }
 
   Future stop() async
   {
-    await audioPlayer.stop();
+    await audioPlayer!.stop();
     setState(() {
       playerState = PlayerState.PAUSED;
       playerState = PlayerState.STOPPED;
@@ -173,17 +173,17 @@ class _VoiceMessageState extends State<VoiceMessage> {
   }
 
   Future pause() async {
-    await audioPlayer.pause();
+    await audioPlayer!.pause();
     setState(() {
       playerState = PlayerState.PAUSED;
-      timer.cancel();
+      timer!.cancel();
       timerMaxSeconds = timerMaxSeconds - currentSeconds;
     });
     // setState(() => playerState = PlayerState.paused);
   }
 
   Future resume() async {
-    await audioPlayer.resume();
+    await audioPlayer!.resume();
     setState(() {
       // firstUrl = widget.message.uri;
       playerState = PlayerState.PLAYING;
@@ -194,14 +194,14 @@ class _VoiceMessageState extends State<VoiceMessage> {
 
   @override
   Widget build(BuildContext context) {
-    final _user = InheritedUser.of(context).user;
-    final _color = _user.id == widget.message.author.id
-        ? InheritedChatTheme.of(context).theme.sentMessageDocumentIconColor
-        : InheritedChatTheme.of(context).theme.receivedMessageDocumentIconColor;
+    final _user = InheritedUser.of(context)!.user;
+    final _color = _user!.id == widget.message!.author.id
+        ? InheritedChatTheme.of(context)!.theme!.sentMessageDocumentIconColor
+        : InheritedChatTheme.of(context)!.theme!.receivedMessageDocumentIconColor;
 
     return Semantics(
       key: widget.key,
-      label: InheritedL10n.of(context).l10n.fileButtonAccessibilityLabel,
+      label: InheritedL10n.of(context)!.l10n!.fileButtonAccessibilityLabel,
       child: Container(
         padding: const EdgeInsets.fromLTRB(16, 16, 24, 16),
         child: Row(
@@ -215,7 +215,7 @@ class _VoiceMessageState extends State<VoiceMessage> {
                   } else if(playerState == PlayerState.PAUSED){
                     resume();
                   }else {
-                    print('PLAYED AUDIO PATH: ${widget.message.uri}');
+                    print('PLAYED AUDIO PATH: ${widget.message!.uri}');
                     play();
                   }
                 },
@@ -236,9 +236,9 @@ class _VoiceMessageState extends State<VoiceMessage> {
 
             Expanded(
               child: LinearProgressIndicator(
-                value: position != null && position.inSeconds > 0 && duration != null && duration.inSeconds > 0
-                    ? (position?.inSeconds?.toDouble() ?? 0.0) /
-                    (duration?.inSeconds?.toDouble() ?? 0.0)
+                value: position != null && position!.inSeconds > 0 && duration != null && duration!.inSeconds > 0
+                    ? (position?.inSeconds.toDouble() ?? 0.0) /
+                    (duration?.inSeconds.toDouble() ?? 0.0)
                     : 0.0,
                 valueColor: const AlwaysStoppedAnimation(Colors.white),
                 backgroundColor: Colors.grey[300],
@@ -250,12 +250,12 @@ class _VoiceMessageState extends State<VoiceMessage> {
               padding: const EdgeInsets.only(left: 24.0),
               child: Text(
                 timerText,
-                style: _user.id == widget.message.author.id
-                    ? InheritedChatTheme.of(context)
-                    .theme
+                style: _user.id == widget.message!.author.id
+                    ? InheritedChatTheme.of(context)!
+                    .theme!
                     .sentMessageBodyTextStyle
-                    : InheritedChatTheme.of(context)
-                    .theme
+                    : InheritedChatTheme.of(context)!
+                    .theme!
                     .receivedMessageBodyTextStyle,
                 textWidthBasis: TextWidthBasis.longestLine,
               ),
@@ -321,9 +321,9 @@ class _VoiceMessageState extends State<VoiceMessage> {
             alignment: Alignment.center,
             children: [
               CircularProgressIndicator(
-                value: position != null && position.inMilliseconds > 0 && duration != null && duration.inMilliseconds > 0
-                    ? (position?.inMilliseconds?.toDouble() ?? 0.0) /
-                    (duration?.inMilliseconds?.toDouble() ?? 0.0)
+                value: position != null && position!.inMilliseconds > 0 && duration != null && duration!.inMilliseconds > 0
+                    ? (position?.inMilliseconds.toDouble() ?? 0.0) /
+                    (duration?.inMilliseconds.toDouble() ?? 0.0)
                     : 0.0,
                 valueColor: const AlwaysStoppedAnimation(Colors.cyan),
                 backgroundColor: Colors.grey.shade400,
@@ -335,7 +335,7 @@ class _VoiceMessageState extends State<VoiceMessage> {
                     } else if(playerState == PlayerState.PAUSED){
                       resume();
                     }else {
-                      print('PLAYED AUDIO PATH: ${widget.message.uri}');
+                      print('PLAYED AUDIO PATH: ${widget.message!.uri}');
                       play();
                     }
                   },

@@ -14,7 +14,7 @@ import 'text_message.dart';
 class Message extends StatelessWidget {
   /// Creates a particular message from any message type
   const Message({
-    Key key,
+    Key? key,
     this.buildCustomMessage,
     @required this.message,
     @required this.messageWidth,
@@ -30,61 +30,61 @@ class Message extends StatelessWidget {
   }) : super(key: key);
 
   /// Build a custom message inside predefined bubble
-  final Widget Function(types.Message) buildCustomMessage;
+  final Widget Function(types.Message)? buildCustomMessage;
 
   /// Any message type
-  final types.Message message;
+  final types.Message? message;
 
   /// Maximum message width
-  final int messageWidth;
+  final int? messageWidth;
 
   /// Called when user makes a long press on any message
-  final void Function(types.Message) onMessageLongPress;
+  final void Function(types.Message)? onMessageLongPress;
 
   /// Called when user taps on any message
-  final void Function(types.Message) onMessageTap;
+  final void Function(types.Message)? onMessageTap;
 
   /// See [TextMessage.onPreviewDataFetched]
-  final void Function(types.TextMessage, types.PreviewData)
+  final void Function(types.TextMessage, types.PreviewData)?
       onPreviewDataFetched;
 
   /// Rounds border of the message to visually group messages together.
-  final bool roundBorder;
+  final bool? roundBorder;
 
   /// Show user avatar for the received message. Useful for a group chat.
-  final bool showAvatar;
+  final bool? showAvatar;
 
   /// See [TextMessage.showName]
-  final bool showName;
+  final bool? showName;
 
   /// Show message's status
-  final bool showStatus;
+  final bool? showStatus;
 
   /// Show user avatars for received messages. Useful for a group chat.
-  final bool showUserAvatars;
+  final bool? showUserAvatars;
 
   /// See [TextMessage.usePreviewData]
-  final bool usePreviewData;
+  final bool? usePreviewData;
 
   Widget _buildAvatar(BuildContext context) {
-    final color = getUserAvatarNameColor(message.author,
-        InheritedChatTheme.of(context).theme.userAvatarNameColors);
-    final hasImage = message.author.imageUrl != null;
-    final name = getUserName(message.author);
+    final color = getUserAvatarNameColor(message!.author,
+        InheritedChatTheme.of(context)!.theme!.userAvatarNameColors!);
+    final hasImage = message!.author.imageUrl != null;
+    final name = getUserName(message!.author);
 
-    return showAvatar
+    return showAvatar!
         ? Container(
             margin: const EdgeInsets.only(right: 8),
             child: CircleAvatar(
               backgroundImage:
-                  hasImage ? NetworkImage(message.author.imageUrl) : null,
+                  hasImage ? NetworkImage(message!.author.imageUrl!) : null,
               backgroundColor: color,
               radius: 16,
               child: !hasImage
                   ? Text(
                       name.isEmpty ? '' : name[0].toUpperCase(),
-                      style: InheritedChatTheme.of(context)
-                          .theme
+                      style: InheritedChatTheme.of(context)!
+                          .theme!
                           .userAvatarTextStyle,
                     )
                   : null,
@@ -96,11 +96,11 @@ class Message extends StatelessWidget {
   }
 
   Widget _buildMessage(bool currentUserIsAuthor) {
-    switch (message.type) {
+    switch (message!.type) {
       case types.MessageType.custom:
         final customMessage = message as types.CustomMessage;
         return buildCustomMessage != null
-            ? buildCustomMessage(customMessage)
+            ? buildCustomMessage!(customMessage)
             : const SizedBox();
       case types.MessageType.file:
         final fileMessage = message as types.FileMessage;
@@ -120,9 +120,9 @@ class Message extends StatelessWidget {
         final textMessage = message as types.TextMessage;
         return TextMessage(
           message: textMessage,
-          onPreviewDataFetched: onPreviewDataFetched,
-          showName: showName,
-          usePreviewData: usePreviewData,
+          onPreviewDataFetched: onPreviewDataFetched!,
+          showName: showName!,
+          usePreviewData: usePreviewData!,
         );
       default:
         return const SizedBox();
@@ -130,28 +130,28 @@ class Message extends StatelessWidget {
   }
 
   Widget _buildStatus(BuildContext context) {
-    switch (message.status) {
+    switch (message!.status) {
       case types.Status.error:
-        return InheritedChatTheme.of(context).theme.errorIcon ?? Image.asset(
+        return InheritedChatTheme.of(context)!.theme!.errorIcon ?? Image.asset(
                 'assets/icon-error.png',
-                color: InheritedChatTheme.of(context).theme.errorColor,
+                color: InheritedChatTheme.of(context)!.theme!.errorColor,
                 package: 'flutter_chat_ui',
               );
       case types.Status.sent:
       case types.Status.delivered:
-        return InheritedChatTheme.of(context).theme.deliveredIcon ?? Image.asset(
+        return InheritedChatTheme.of(context)!.theme!.deliveredIcon ?? Image.asset(
                 'assets/icon-delivered.png',
-                color: InheritedChatTheme.of(context).theme.primaryColor,
+                color: InheritedChatTheme.of(context)!.theme!.primaryColor,
                 package: 'flutter_chat_ui',
               );
       case types.Status.seen:
-        return InheritedChatTheme.of(context).theme.seenIcon ?? Image.asset(
+        return InheritedChatTheme.of(context)!.theme!.seenIcon ?? Image.asset(
                 'assets/icon-seen.png',
-                color: InheritedChatTheme.of(context).theme.primaryColor,
+                color: InheritedChatTheme.of(context)!.theme!.primaryColor,
                 package: 'flutter_chat_ui',
               );
       case types.Status.sending:
-        return InheritedChatTheme.of(context).theme.sendingIcon ?? Center(
+        return InheritedChatTheme.of(context)!.theme!.sendingIcon ?? Center(
                 child: SizedBox(
                   height: 10,
                   width: 10,
@@ -159,7 +159,7 @@ class Message extends StatelessWidget {
                     backgroundColor: Colors.transparent,
                     strokeWidth: 1.5,
                     valueColor: AlwaysStoppedAnimation<Color>(
-                      InheritedChatTheme.of(context).theme.primaryColor,
+                      InheritedChatTheme.of(context)!.theme!.primaryColor!,
                     ),
                   ),
                 ),
@@ -171,25 +171,25 @@ class Message extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _user = InheritedUser.of(context).user;
+    final _user = InheritedUser.of(context)!.user;
     final _messageBorderRadius =
-        InheritedChatTheme.of(context).theme.messageBorderRadius;
+        InheritedChatTheme.of(context)!.theme!.messageBorderRadius;
     final _borderRadius = BorderRadius.only(
-      bottomLeft: Radius.circular(_user.id == message.author.id || roundBorder
-          ? _messageBorderRadius
+      bottomLeft: Radius.circular(_user!.id == message!.author.id || roundBorder!
+          ? _messageBorderRadius!
           : 0),
-      bottomRight: Radius.circular(_user.id == message.author.id
-          ? roundBorder
-              ? _messageBorderRadius
+      bottomRight: Radius.circular(_user.id == message!.author.id
+          ? roundBorder!
+              ? _messageBorderRadius!
               : 0
-          : _messageBorderRadius),
-      topLeft: Radius.circular(_messageBorderRadius),
+          : _messageBorderRadius!),
+      topLeft: Radius.circular(_messageBorderRadius!),
       topRight: Radius.circular(_messageBorderRadius),
     );
-    final _currentUserIsAuthor = _user.id == message.author.id;
+    final _currentUserIsAuthor = _user.id == message!.author.id;
 
     return Container(
-      alignment: _user.id == message.author.id
+      alignment: _user.id == message!.author.id
           ? Alignment.centerRight
           : Alignment.centerLeft,
       margin: const EdgeInsets.only(
@@ -200,24 +200,24 @@ class Message extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.end,
         mainAxisSize: MainAxisSize.min,
         children: [
-          if (!_currentUserIsAuthor && showUserAvatars) _buildAvatar(context),
+          if (!_currentUserIsAuthor && showUserAvatars!) _buildAvatar(context),
           ConstrainedBox(
             constraints: BoxConstraints(
-              maxWidth: messageWidth.toDouble(),
+              maxWidth: messageWidth!.toDouble(),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 GestureDetector(
-                  onLongPress: () => onMessageLongPress?.call(message),
-                  onTap: () => onMessageTap?.call(message),
+                  onLongPress: () => onMessageLongPress?.call(message!),
+                  onTap: () => onMessageTap?.call(message!),
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: _borderRadius,
                       color: !_currentUserIsAuthor ||
-                              message.type == types.MessageType.image
-                          ? InheritedChatTheme.of(context).theme.secondaryColor // primaryColor
-                          : InheritedChatTheme.of(context).theme.primaryColor, // accentColor
+                              message!.type == types.MessageType.image
+                          ? InheritedChatTheme.of(context)!.theme!.secondaryColor // primaryColor
+                          : InheritedChatTheme.of(context)!.theme!.primaryColor, // accentColor
                     ),
                     child: ClipRRect(
                       borderRadius: _borderRadius,
@@ -235,7 +235,7 @@ class Message extends StatelessWidget {
                 child: SizedBox(
                   height: 16,
                   width: 16,
-                  child: showStatus ? _buildStatus(context) : null,
+                  child: showStatus! ? _buildStatus(context) : null,
                 ),
               ),
             ),

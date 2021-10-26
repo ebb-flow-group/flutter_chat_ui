@@ -12,11 +12,11 @@ class MessageSpacer extends Equatable {
 
   /// Equatable props
   @override
-  List<Object> get props => [height, id];
+  List<Object> get props => [height!, id!];
 
   /// Spacer's height
-  final double height;
+  final double? height;
 
   /// Unique ID of the spacer
-  final String id;
+  final String? id;
 }

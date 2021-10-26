@@ -15,7 +15,7 @@ class CustomInput extends StatefulWidget {
 
   /// Creates [Input] widget
   const CustomInput({
-    Key key,
+    Key? key,
     this.isAttachmentUploading,
     this.onVoiceMessagePressed,
     this.onAttachmentPressed,
@@ -24,21 +24,21 @@ class CustomInput extends StatefulWidget {
   }) : super(key: key);
 
   /// See [AttachmentButton.onPressed]
-  final void Function() onAttachmentPressed;
-  final void Function() onVoiceMessagePressed;
+  final void Function()? onAttachmentPressed;
+  final void Function()? onVoiceMessagePressed;
 
   /// Whether attachment is uploading. Will replace attachment button with a
   /// [CircularProgressIndicator]. Since we don't have libraries for
   /// managing media in dependencies we have no way of knowing if
   /// something is uploading so you need to set this manually.
-  final bool isAttachmentUploading;
+  final bool? isAttachmentUploading;
 
   /// Will be called on [SendButton] tap. Has [types.PartialText] which can
   /// be transformed to [types.TextMessage] and added to the messages list.
-  final void Function(types.PartialText) onSendPressed;
+  final void Function(types.PartialText)? onSendPressed;
 
   /// Will be called whenever the text inside [TextField] changes
-  final void Function(String) onTextChanged;
+  final void Function(String)? onTextChanged;
 
   @override
   _CustomInputState createState() => _CustomInputState();
@@ -65,7 +65,7 @@ class _CustomInputState extends State<CustomInput> {
 
   void _handleSendPressed() {
     final _partialText = types.PartialText(text: _textController.text.trim());
-    widget.onSendPressed(_partialText);
+    widget.onSendPressed!(_partialText);
     _textController.clear();
   }
 
@@ -80,7 +80,7 @@ class _CustomInputState extends State<CustomInput> {
     final _query = MediaQuery.of(context);
     return Container(
       decoration: BoxDecoration(
-        color: InheritedChatTheme.of(context).theme.backgroundColor,
+        color: InheritedChatTheme.of(context)!.theme!.backgroundColor,
         boxShadow: [
           BoxShadow(
             spreadRadius: 0,
@@ -102,7 +102,7 @@ class _CustomInputState extends State<CustomInput> {
             if(_textController.text.isEmpty) IconButton(
               icon: SvgPicture.asset(
                 'assets/icon/mic.svg',
-                color: InheritedChatTheme.of(context).theme.secondaryColor,
+                color: InheritedChatTheme.of(context)!.theme!.secondaryColor,
                 width: 18,
                 height: 18,
               ),
@@ -129,22 +129,22 @@ class _CustomInputState extends State<CustomInput> {
                   textInputAction: TextInputAction.done,
                   decoration: InputDecoration(
                       hintText: 'Say something...', border: InputBorder.none,
-                    hintStyle: InheritedChatTheme.of(context)
-                        .theme
-                        .inputTextStyle
+                    hintStyle: InheritedChatTheme.of(context)!
+                        .theme!
+                        .inputTextStyle!
                         .copyWith(
-                      color: InheritedChatTheme.of(context)
-                          .theme
-                          .inputTextColor
+                      color: InheritedChatTheme.of(context)!
+                          .theme!
+                          .inputTextColor!
                           .withOpacity(0.5),
                     ),
                   ),
-                  style: InheritedChatTheme.of(context)
-                      .theme
-                      .inputTextStyle
+                  style: InheritedChatTheme.of(context)!
+                      .theme!
+                      .inputTextStyle!
                       .copyWith(
-                    color: InheritedChatTheme.of(context)
-                        .theme
+                    color: InheritedChatTheme.of(context)!
+                        .theme!
                         .inputTextColor,
                   ),
                   maxLines: 5,
@@ -158,7 +158,7 @@ class _CustomInputState extends State<CustomInput> {
               icon: SvgPicture.asset(
                   'assets/icon/send.svg',
                   color: _sendButtonVisible
-                      ? InheritedChatTheme.of(context).theme.primaryColor
+                      ? InheritedChatTheme.of(context)!.theme!.primaryColor
                       : Colors.grey[400],
                 width: 18,
                 height: 18,
@@ -185,7 +185,7 @@ class _CustomInputState extends State<CustomInput> {
           backgroundColor: Colors.transparent,
           strokeWidth: 2,
           valueColor: AlwaysStoppedAnimation<Color>(
-            InheritedChatTheme.of(context).theme.inputTextColor,
+            InheritedChatTheme.of(context)!.theme!.inputTextColor!,
           ),
         ),
       );
@@ -193,7 +193,7 @@ class _CustomInputState extends State<CustomInput> {
       return IconButton(
         icon: SvgPicture.asset(
           'assets/icon/add.svg',
-          color: InheritedChatTheme.of(context).theme.secondaryColor,
+          color: InheritedChatTheme.of(context)!.theme!.secondaryColor,
           width: 18,
           height: 18,
         ),

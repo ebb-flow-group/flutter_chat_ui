@@ -83,106 +83,106 @@ abstract class ChatTheme {
   });
 
   /// Icon for select attachment button
-  final Widget attachmentButtonIcon;
+  final Widget? attachmentButtonIcon;
 
   /// Used as a background color of a chat widget
-  final Color backgroundColor;
+  final Color? backgroundColor;
 
   /// Text style of the date dividers
-  final TextStyle dateDividerTextStyle;
+  final TextStyle? dateDividerTextStyle;
 
   /// Icon for message's `delivered` status. For the best look use size of 16.
-  final Widget deliveredIcon;
+  final Widget? deliveredIcon;
 
   /// Icon inside file message
-  final Widget documentIcon;
+  final Widget? documentIcon;
 
   /// Text style of the empty chat placeholder
-  final TextStyle emptyChatPlaceholderTextStyle;
+  final TextStyle? emptyChatPlaceholderTextStyle;
 
   /// Color to indicate something bad happened (usually - shades of red)
-  final Color errorColor;
+  final Color? errorColor;
 
   /// Icon for message's `error` status. For the best look use size of 16.
-  final Widget errorIcon;
+  final Widget? errorIcon;
 
   /// Color of the bottom bar where text field is
-  final Color inputBackgroundColor;
+  final Color? inputBackgroundColor;
 
   /// Top border radius of the bottom bar where text field is
-  final BorderRadius inputBorderRadius;
+  final BorderRadius? inputBorderRadius;
 
   /// Color of the text field's text and attachment/send buttons
-  final Color inputTextColor;
+  final Color? inputTextColor;
 
   /// Text style of the message input. To change the color use [inputTextColor].
-  final TextStyle inputTextStyle;
+  final TextStyle? inputTextStyle;
 
   /// Border radius of message container
-  final double messageBorderRadius;
+  final double? messageBorderRadius;
 
   /// Primary color of the chat used as a background of sent messages
   /// and statuses
-  final Color primaryColor;
+  final Color? primaryColor;
 
   /// Body text style used for displaying text on different types
   /// of received messages
-  final TextStyle receivedMessageBodyTextStyle;
+  final TextStyle? receivedMessageBodyTextStyle;
 
   /// Caption text style used for displaying secondary info (e.g. file size)
   /// on different types of received messages
-  final TextStyle receivedMessageCaptionTextStyle;
+  final TextStyle? receivedMessageCaptionTextStyle;
 
   /// Color of the document icon on received messages. Has no effect when
   /// [documentIcon] is used.
-  final Color receivedMessageDocumentIconColor;
+  final Color? receivedMessageDocumentIconColor;
 
   /// Text style used for displaying link description on received messages
-  final TextStyle receivedMessageLinkDescriptionTextStyle;
+  final TextStyle? receivedMessageLinkDescriptionTextStyle;
 
   /// Text style used for displaying link title on received messages
-  final TextStyle receivedMessageLinkTitleTextStyle;
+  final TextStyle? receivedMessageLinkTitleTextStyle;
 
   /// Secondary color, used as a background of received messages
-  final Color secondaryColor;
+  final Color? secondaryColor;
 
   /// Icon for message's `seen` status. For the best look use size of 16.
-  final Widget seenIcon;
+  final Widget? seenIcon;
 
   /// Icon for send button
-  final Widget sendButtonIcon;
+  final Widget? sendButtonIcon;
 
   /// Icon for message's `sending` status. For the best look use size of 10.
-  final Widget sendingIcon;
+  final Widget? sendingIcon;
 
   /// Body text style used for displaying text on different types
   /// of sent messages
-  final TextStyle sentMessageBodyTextStyle;
+  final TextStyle? sentMessageBodyTextStyle;
 
   /// Caption text style used for displaying secondary info (e.g. file size)
   /// on different types of sent messages
-  final TextStyle sentMessageCaptionTextStyle;
+  final TextStyle? sentMessageCaptionTextStyle;
 
   /// Color of the document icon on sent messages. Has no effect when
   /// [documentIcon] is used.
-  final Color sentMessageDocumentIconColor;
+  final Color? sentMessageDocumentIconColor;
 
   /// Text style used for displaying link description on sent messages
-  final TextStyle sentMessageLinkDescriptionTextStyle;
+  final TextStyle? sentMessageLinkDescriptionTextStyle;
 
   /// Text style used for displaying link title on sent messages
-  final TextStyle sentMessageLinkTitleTextStyle;
+  final TextStyle? sentMessageLinkTitleTextStyle;
 
   /// Colors used as backgrounds for user avatars and corresponded user names.
   /// Calculated based on a user ID, so unique across the whole app.
-  final List<Color> userAvatarNameColors;
+  final List<Color>? userAvatarNameColors;
 
   /// Text style used for displaying initials on user avatar if no
   /// image is provided
-  final TextStyle userAvatarTextStyle;
+  final TextStyle? userAvatarTextStyle;
 
   /// User names text style. Color will be overwritten with [userAvatarNameColors].
-  final TextStyle userNameTextStyle;
+  final TextStyle? userNameTextStyle;
 }
 
 /// Default chat theme which extends [ChatTheme]
@@ -191,8 +191,8 @@ class DefaultChatTheme extends ChatTheme {
   /// Creates a default chat theme. Use this constructor if you want to
   /// override only a couple of variables, otherwise create a new class
   /// which extends [ChatTheme]
-  const DefaultChatTheme({
-    Widget attachmentButtonIcon,
+  DefaultChatTheme({
+    Widget? attachmentButtonIcon,
     Color backgroundColor = NEUTRAL_7,
     TextStyle dateDividerTextStyle = const TextStyle(
       color: NEUTRAL_2,
@@ -201,8 +201,8 @@ class DefaultChatTheme extends ChatTheme {
       fontWeight: FontWeight.w800,
       height: 1.333,
     ),
-    Widget deliveredIcon,
-    Widget documentIcon,
+    Widget? deliveredIcon,
+    Widget? documentIcon,
     TextStyle emptyChatPlaceholderTextStyle = const TextStyle(
       color: NEUTRAL_2,
       fontFamily: 'Avenir',
@@ -211,7 +211,7 @@ class DefaultChatTheme extends ChatTheme {
       height: 1.5,
     ),
     Color errorColor = ERROR,
-    Widget errorIcon,
+    Widget? errorIcon,
     Color inputBackgroundColor = NEUTRAL_0,
     BorderRadius inputBorderRadius = const BorderRadius.vertical(
       top: Radius.circular(20),
@@ -255,9 +255,9 @@ class DefaultChatTheme extends ChatTheme {
       height: 1.375,
     ),
     Color secondaryColor = SECONDARY,
-    Widget seenIcon,
-    Widget sendButtonIcon,
-    Widget sendingIcon,
+    Widget? seenIcon,
+    Widget? sendButtonIcon,
+    Widget? sendingIcon,
     TextStyle sentMessageBodyTextStyle = const TextStyle(
       color: NEUTRAL_7,
       fontFamily: 'Avenir',
@@ -302,14 +302,14 @@ class DefaultChatTheme extends ChatTheme {
       height: 1.333,
     ),
   }) : super(
-          attachmentButtonIcon: attachmentButtonIcon,
+          attachmentButtonIcon: attachmentButtonIcon!,
           backgroundColor: backgroundColor,
           dateDividerTextStyle: dateDividerTextStyle,
-          deliveredIcon: deliveredIcon,
-          documentIcon: documentIcon,
+          deliveredIcon: deliveredIcon!,
+          documentIcon: documentIcon!,
           emptyChatPlaceholderTextStyle: emptyChatPlaceholderTextStyle,
           errorColor: errorColor,
-          errorIcon: errorIcon,
+          errorIcon: errorIcon!,
           inputBackgroundColor: inputBackgroundColor,
           inputBorderRadius: inputBorderRadius,
           inputTextColor: inputTextColor,
@@ -323,9 +323,9 @@ class DefaultChatTheme extends ChatTheme {
               receivedMessageLinkDescriptionTextStyle,
           receivedMessageLinkTitleTextStyle: receivedMessageLinkTitleTextStyle,
           secondaryColor: secondaryColor,
-          seenIcon: seenIcon,
-          sendButtonIcon: sendButtonIcon,
-          sendingIcon: sendingIcon,
+          seenIcon: seenIcon!,
+          sendButtonIcon: sendButtonIcon!,
+          sendingIcon: sendingIcon!,
           sentMessageBodyTextStyle: sentMessageBodyTextStyle,
           sentMessageCaptionTextStyle: sentMessageCaptionTextStyle,
           sentMessageDocumentIconColor: sentMessageDocumentIconColor,
@@ -344,8 +344,8 @@ class DarkChatTheme extends ChatTheme {
   /// Creates a dark chat theme. Use this constructor if you want to
   /// override only a couple of variables, otherwise create a new class
   /// which extends [ChatTheme]
-  const DarkChatTheme({
-    Widget attachmentButtonIcon,
+  DarkChatTheme({
+    Widget? attachmentButtonIcon,
     Color backgroundColor = DARK,
     TextStyle dateDividerTextStyle = const TextStyle(
       color: NEUTRAL_7,
@@ -354,8 +354,8 @@ class DarkChatTheme extends ChatTheme {
       fontWeight: FontWeight.w800,
       height: 1.333,
     ),
-    Widget deliveredIcon,
-    Widget documentIcon,
+    Widget? deliveredIcon,
+    Widget? documentIcon,
     TextStyle emptyChatPlaceholderTextStyle = const TextStyle(
       color: NEUTRAL_2,
       fontFamily: 'Avenir',
@@ -364,7 +364,7 @@ class DarkChatTheme extends ChatTheme {
       height: 1.5,
     ),
     Color errorColor = ERROR,
-    Widget errorIcon,
+    Widget? errorIcon,
     Color inputBackgroundColor = SECONDARY_DARK,
     BorderRadius inputBorderRadius = const BorderRadius.vertical(
       top: Radius.circular(20),
@@ -408,9 +408,9 @@ class DarkChatTheme extends ChatTheme {
       height: 1.375,
     ),
     Color secondaryColor = SECONDARY_DARK,
-    Widget seenIcon,
-    Widget sendButtonIcon,
-    Widget sendingIcon,
+    Widget? seenIcon,
+    Widget? sendButtonIcon,
+    Widget? sendingIcon,
     TextStyle sentMessageBodyTextStyle = const TextStyle(
       color: NEUTRAL_7,
       fontFamily: 'Avenir',
@@ -455,14 +455,14 @@ class DarkChatTheme extends ChatTheme {
       height: 1.333,
     ),
   }) : super(
-          attachmentButtonIcon: attachmentButtonIcon,
+          attachmentButtonIcon: attachmentButtonIcon!,
           backgroundColor: backgroundColor,
           dateDividerTextStyle: dateDividerTextStyle,
-          deliveredIcon: deliveredIcon,
-          documentIcon: documentIcon,
+          deliveredIcon: deliveredIcon!,
+          documentIcon: documentIcon!,
           emptyChatPlaceholderTextStyle: emptyChatPlaceholderTextStyle,
           errorColor: errorColor,
-          errorIcon: errorIcon,
+          errorIcon: errorIcon!,
           inputBackgroundColor: inputBackgroundColor,
           inputBorderRadius: inputBorderRadius,
           inputTextColor: inputTextColor,
@@ -476,9 +476,9 @@ class DarkChatTheme extends ChatTheme {
               receivedMessageLinkDescriptionTextStyle,
           receivedMessageLinkTitleTextStyle: receivedMessageLinkTitleTextStyle,
           secondaryColor: secondaryColor,
-          seenIcon: seenIcon,
-          sendButtonIcon: sendButtonIcon,
-          sendingIcon: sendingIcon,
+          seenIcon: seenIcon!,
+          sendButtonIcon: sendButtonIcon!,
+          sendingIcon: sendingIcon!,
           sentMessageBodyTextStyle: sentMessageBodyTextStyle,
           sentMessageCaptionTextStyle: sentMessageCaptionTextStyle,
           sentMessageDocumentIconColor: sentMessageDocumentIconColor,
