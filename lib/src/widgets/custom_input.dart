@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_chat_ui/src/widgets/inherited_chat_theme.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+import 'package:flutter_chat_ui/src/widgets/inherited_chat_theme.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class NewLineIntent extends Intent {
@@ -193,7 +193,7 @@ class _CustomInputState extends State<CustomInput> {
       return IconButton(
         icon: SvgPicture.asset(
           'materials/add.svg',
-          color: InheritedChatTheme.of(context)!.theme!.secondaryColor,
+          color: Colors.red,
           width: 18,
           height: 18,
         ),
