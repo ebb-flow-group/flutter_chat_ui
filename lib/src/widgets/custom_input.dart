@@ -101,7 +101,7 @@ class _CustomInputState extends State<CustomInput> {
           children: [
             if(_textController.text.isEmpty) IconButton(
               icon: SvgPicture.asset(
-                'materials/mic1.svg',
+                'assets/images/mic1.svg',
                 color: InheritedChatTheme.of(context)!.theme!.secondaryColor,
                 width: 18,
                 height: 18,
@@ -194,7 +194,7 @@ class _CustomInputState extends State<CustomInput> {
     } else {
       return IconButton(
         icon: SvgPicture.asset(
-          'materials/add1.svg',
+          'assets/images/add.svg',
           color: Colors.red,
           width: 18,
           height: 18,

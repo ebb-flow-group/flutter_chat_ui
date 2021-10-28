@@ -47,6 +47,7 @@ dev_dependencies:
 
 flutter:
   assets:
+    - assets/images/
     - packages/flutter_chat_ui/assets/icon-attachment.png
     - packages/flutter_chat_ui/assets/icon-delivered.png
     - packages/flutter_chat_ui/assets/icon-document.png
