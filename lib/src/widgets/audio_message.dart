@@ -283,7 +283,7 @@ class _VoiceMessageState extends State<VoiceMessage> {
               ),
               height: 42,
               width: 42,
-              child: InheritedChatTheme.of(context)!.theme!.documentIcon ?? _buildControlAndProgressView()/*AudioController(key: UniqueKey(), message: widget.message)*/,
+              child: /*InheritedChatTheme.of(context)!.theme!.documentIcon ??*/ _buildControlAndProgressView()/*AudioController(key: UniqueKey(), message: widget.message)*/,
             ),
             Flexible(
               child: Container(

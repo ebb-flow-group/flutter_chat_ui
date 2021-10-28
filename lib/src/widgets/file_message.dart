@@ -41,7 +41,7 @@ class FileMessage extends StatelessWidget {
               ),
               height: 42,
               width: 42,
-              child: InheritedChatTheme.of(context)!.theme!.documentIcon ?? Image.asset(
+              child: /*InheritedChatTheme.of(context)!.theme!.documentIcon ??*/ Image.asset(
                       'assets/icon-document.png',
                       color: _color,
                       package: 'flutter_chat_ui',

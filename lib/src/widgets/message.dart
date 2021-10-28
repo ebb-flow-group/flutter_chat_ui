@@ -132,26 +132,26 @@ class Message extends StatelessWidget {
   Widget _buildStatus(BuildContext context) {
     switch (message!.status) {
       case types.Status.error:
-        return InheritedChatTheme.of(context)!.theme!.errorIcon ?? Image.asset(
+        return /*InheritedChatTheme.of(context)!.theme!.errorIcon ?? */Image.asset(
                 'assets/icon-error.png',
                 color: InheritedChatTheme.of(context)!.theme!.errorColor,
                 package: 'flutter_chat_ui',
               );
       case types.Status.sent:
       case types.Status.delivered:
-        return InheritedChatTheme.of(context)!.theme!.deliveredIcon ?? Image.asset(
+        return /*InheritedChatTheme.of(context)!.theme!.deliveredIcon ??*/ Image.asset(
                 'assets/icon-delivered.png',
                 color: InheritedChatTheme.of(context)!.theme!.primaryColor,
                 package: 'flutter_chat_ui',
               );
       case types.Status.seen:
-        return InheritedChatTheme.of(context)!.theme!.seenIcon ?? Image.asset(
+        return /*InheritedChatTheme.of(context)!.theme!.seenIcon ??*/ Image.asset(
                 'assets/icon-seen.png',
                 color: InheritedChatTheme.of(context)!.theme!.primaryColor,
                 package: 'flutter_chat_ui',
               );
       case types.Status.sending:
-        return InheritedChatTheme.of(context)!.theme!.sendingIcon ?? Center(
+        return /*InheritedChatTheme.of(context)!.theme!.sendingIcon ??*/ Center(
                 child: SizedBox(
                   height: 10,
                   width: 10,

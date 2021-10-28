@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'inherited_chat_theme.dart';
 import 'inherited_l10n.dart';
 
@@ -20,7 +21,12 @@ class AttachmentButton extends StatelessWidget {
       margin: const EdgeInsets.only(right: 16),
       width: 24,
       child: IconButton(
-        icon: InheritedChatTheme.of(context)!.theme!.attachmentButtonIcon!,
+        icon: SvgPicture.asset(
+          'assets/icon/add.svg',
+          color: InheritedChatTheme.of(context)!.theme!.secondaryColor,
+          width: 18,
+          height: 18,
+        ),
         onPressed: onPressed,
         padding: EdgeInsets.zero,
         tooltip:
