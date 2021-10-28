@@ -155,14 +155,16 @@ class _CustomInputState extends State<CustomInput> {
             ),
 
             IconButton(
-              icon: SvgPicture.asset(
+              icon: const Icon(Icons.send,),
+              iconSize: 18
+              /*SvgPicture.asset(
                   'materials/send.svg',
                   color: _sendButtonVisible
                       ? InheritedChatTheme.of(context)!.theme!.primaryColor
                       : Colors.grey[400],
                 width: 18,
                 height: 18,
-              ),
+              )*/,
               onPressed: () {
                 if(_sendButtonVisible) {
                   _handleSendPressed();
