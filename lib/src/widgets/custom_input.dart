@@ -101,7 +101,7 @@ class _CustomInputState extends State<CustomInput> {
           children: [
             if(_textController.text.isEmpty) IconButton(
               icon: SvgPicture.asset(
-                'packages/flutter_chat_ui/assets/icon/mic.svg',
+                'assets/images/mic.svg',
                 color: InheritedChatTheme.of(context)!.theme!.secondaryColor,
                 width: 18,
                 height: 18,
@@ -155,22 +155,29 @@ class _CustomInputState extends State<CustomInput> {
             ),
 
             IconButton(
-              icon: const Icon(Icons.send,),
-              iconSize: 18
-              /*SvgPicture.asset(
-                  'materials/send.svg',
+              icon: SvgPicture.asset(
+                'assets/images/send.svg',
                   color: _sendButtonVisible
                       ? InheritedChatTheme.of(context)!.theme!.primaryColor
                       : Colors.grey[400],
                 width: 18,
                 height: 18,
-              )*/,
+              ),
               onPressed: () {
                 if(_sendButtonVisible) {
                   _handleSendPressed();
                 }
               },
             ),
+            /*IconButton(
+              icon: const Icon(Icons.send,),
+              iconSize: 18,
+              onPressed: () {
+                if(_sendButtonVisible) {
+                  _handleSendPressed();
+                }
+              },
+            ),*/
           ],
         ),
       ),
@@ -194,8 +201,8 @@ class _CustomInputState extends State<CustomInput> {
     } else {
       return IconButton(
         icon: SvgPicture.asset(
-          'packages/flutter_chat_ui/assets/icon/add.svg',
-          color: Colors.red,
+          'assets/images/add.svg',
+          color: InheritedChatTheme.of(context)!.theme!.primaryColor,
           width: 18,
           height: 18,
         ),
