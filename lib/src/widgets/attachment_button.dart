@@ -22,7 +22,7 @@ class AttachmentButton extends StatelessWidget {
       width: 24,
       child: IconButton(
         icon: SvgPicture.asset(
-          'assets/icon/add.svg',
+          'assets/icon/add1.svg',
           color: InheritedChatTheme.of(context)!.theme!.secondaryColor,
           width: 18,
           height: 18,
