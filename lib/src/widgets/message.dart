@@ -173,6 +173,7 @@ class Message extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('INSIDE BUILD');
     final _user = InheritedUser.of(context)!.user;
     final _messageBorderRadius =
         InheritedChatTheme.of(context)!.theme!.messageBorderRadius;
