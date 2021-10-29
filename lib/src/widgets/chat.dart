@@ -276,6 +276,8 @@ class _ChatState extends State<Chat> {
               ? min(MediaQuery.of(context).size.width * 0.72, 440).floor()
               : min(MediaQuery.of(context).size.width * 0.78, 440).floor();
 
+      print('MESSAGE TYPE ${message.type}');
+
       return Message(
         key: ValueKey(message.id),
         buildCustomMessage: widget.buildCustomMessage!,
