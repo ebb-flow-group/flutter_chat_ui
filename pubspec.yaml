@@ -46,6 +46,7 @@ dev_dependencies:
   pedantic: ^1.11.1
 
 flutter:
+  uses-material-design: true
   assets:
     - assets/images/add.svg
     - assets/images/mic.svg
