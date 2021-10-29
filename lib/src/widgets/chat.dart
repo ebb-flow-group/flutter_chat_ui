@@ -303,8 +303,8 @@ class _ChatState extends State<Chat> {
           usePreviewData: widget.usePreviewData!,
         );
       }
-      catch (e){
-        print('CATCH ERROR $e');
+      catch (e, s){
+        print('CATCH ERROR $e $s');
       }
 
       return const SizedBox();
