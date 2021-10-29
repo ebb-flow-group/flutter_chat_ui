@@ -190,9 +190,9 @@ class Message extends StatelessWidget {
     );
     final _currentUserIsAuthor = _user.id == message!.author.id;
 
-    return Text('HIIIIIIIII');
+    return const Text('HIIIIIIIII');
 
-    return Container(
+    /*return Container(
       alignment: _user.id == message!.author.id
           ? Alignment.centerRight
           : Alignment.centerLeft,
@@ -245,6 +245,6 @@ class Message extends StatelessWidget {
             ),
         ],
       ),
-    );
+    );*/
   }
 }
