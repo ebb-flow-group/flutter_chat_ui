@@ -201,7 +201,7 @@ class _CustomInputState extends State<CustomInput> {
     } else {
       return IconButton(
         icon: SvgPicture.asset(
-          'assets/images/add.svg',
+          './assets/images/add.svg',
           color: InheritedChatTheme.of(context)!.theme!.primaryColor,
           width: 18,
           height: 18,
