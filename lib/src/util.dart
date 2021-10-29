@@ -66,6 +66,8 @@ List<Object> calculateChatMessages(
   final chatMessages = <Object>[];
   final gallery = <PreviewImage>[];
 
+  print('NOT EMPTY TWO');
+
   var shouldShowName = false;
 
   for (var i = messages.length - 1; i >= 0; i--) {
@@ -136,6 +138,8 @@ List<Object> calculateChatMessages(
         ),
       );
     }
+
+    print('MESSAGEEEEE: ${message.toJson()}');
 
     chatMessages.insert(0, {
       'message': message,

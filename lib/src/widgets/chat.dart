@@ -172,6 +172,7 @@ class _ChatState extends State<Chat> {
     super.didUpdateWidget(oldWidget);
 
     if (widget.messages!.isNotEmpty) {
+      print('NOT EMPTY');
       final result = calculateChatMessages(
         widget.messages!,
         widget.user!,
