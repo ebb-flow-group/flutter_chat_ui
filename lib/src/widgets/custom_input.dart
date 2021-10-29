@@ -160,7 +160,7 @@ class _CustomInputState extends State<CustomInput> {
                 'assets/icon/send.svg',
                 package: 'flutter_chat_ui',
                   color: _sendButtonVisible
-                      ? InheritedChatTheme.of(context)!.theme!.primaryColor
+                      ? InheritedChatTheme.of(context)!.theme!.secondaryColor
                       : Colors.grey[400],
                 width: 18,
                 height: 18,
@@ -205,7 +205,7 @@ class _CustomInputState extends State<CustomInput> {
         icon: SvgPicture.asset(
           'assets/icon/add.svg',
           package: 'flutter_chat_ui',
-          color: InheritedChatTheme.of(context)!.theme!.primaryColor,
+          color: InheritedChatTheme.of(context)!.theme!.secondaryColor,
           width: 18,
           height: 18,
         ),
