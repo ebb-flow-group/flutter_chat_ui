@@ -190,6 +190,8 @@ class Message extends StatelessWidget {
     );
     final _currentUserIsAuthor = _user.id == message!.author.id;
 
+    return Text('HIIIIIIIII');
+
     return Container(
       alignment: _user.id == message!.author.id
           ? Alignment.centerRight
