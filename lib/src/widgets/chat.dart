@@ -278,29 +278,36 @@ class _ChatState extends State<Chat> {
 
       print('MESSAGE TYPE ${message.type}');
 
-      return Message(
-        key: ValueKey(message.id),
-        buildCustomMessage: widget.buildCustomMessage!,
-        message: message,
-        messageWidth: _messageWidth,
-        onMessageLongPress: widget.onMessageLongPress!,
-        onMessageTap: (tappedMessage) {
-          if (tappedMessage is types.ImageMessage &&
-              widget.disableImageGallery != true) {
-            _onImagePressed(tappedMessage);
-          }
+      try{
+        return Message(
+          key: ValueKey(message.id),
+          buildCustomMessage: widget.buildCustomMessage!,
+          message: message,
+          messageWidth: _messageWidth,
+          onMessageLongPress: widget.onMessageLongPress!,
+          onMessageTap: (tappedMessage) {
+            if (tappedMessage is types.ImageMessage &&
+                widget.disableImageGallery != true) {
+              _onImagePressed(tappedMessage);
+            }
 
-          widget.onMessageTap?.call(tappedMessage);
-        },
-        onPreviewDataFetched: _onPreviewDataFetched,
-        roundBorder: map['nextMessageInGroup'] == true,
-        showAvatar:
-            widget.showUserAvatars! && map['nextMessageInGroup'] == false,
-        showName: map['showName'] == true,
-        showStatus: map['showStatus'] == true,
-        showUserAvatars: widget.showUserAvatars!,
-        usePreviewData: widget.usePreviewData!,
-      );
+            widget.onMessageTap?.call(tappedMessage);
+          },
+          onPreviewDataFetched: _onPreviewDataFetched,
+          roundBorder: map['nextMessageInGroup'] == true,
+          showAvatar:
+          widget.showUserAvatars! && map['nextMessageInGroup'] == false,
+          showName: map['showName'] == true,
+          showStatus: map['showStatus'] == true,
+          showUserAvatars: widget.showUserAvatars!,
+          usePreviewData: widget.usePreviewData!,
+        );
+      }
+      catch (e){
+        print('CATCH ERROR $e');
+      }
+
+      return const SizedBox();
     }
   }
 
