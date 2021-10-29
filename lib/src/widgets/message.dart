@@ -118,6 +118,7 @@ class Message extends StatelessWidget {
         );
       case types.MessageType.text:
         final textMessage = message as types.TextMessage;
+        print('TXT MSG: ${textMessage.toJson()}');
         return TextMessage(
           message: textMessage,
           onPreviewDataFetched: onPreviewDataFetched!,
