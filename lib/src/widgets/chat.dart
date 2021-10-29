@@ -237,6 +237,7 @@ class _ChatState extends State<Chat> {
 
   Widget _buildMessage(Object object) {
     if (object is DateHeader) {
+      print('DATE HEADER');
       return Container(
         alignment: Alignment.center,
         margin: const EdgeInsets.only(
@@ -262,10 +263,12 @@ class _ChatState extends State<Chat> {
         ),
       );
     } else if (object is MessageSpacer) {
+      print('MESSAGE SPACER');
       return SizedBox(
         height: object.height,
       );
     } else {
+      print('ACTUAL MESSAGE');
       final map = object as Map<String, Object>;
       final message = map['message'] as types.Message;
       final _messageWidth =
