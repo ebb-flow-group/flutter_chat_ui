@@ -119,9 +119,7 @@ class Message extends StatelessWidget {
           messageWidth: messageWidth,
         );
       case types.MessageType.text:
-        print('TXT MSG: ${message!.type}');
         final textMessage = message as types.TextMessage;
-        print('TXT MSG: ${textMessage.toJson()}');
         return TextMessage(
           message: textMessage,
           onPreviewDataFetched: onPreviewDataFetched!,
@@ -175,7 +173,6 @@ class Message extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('INSIDE BUILD');
     final _user = InheritedUser.of(context)!.user;
     final _messageBorderRadius =
         InheritedChatTheme.of(context)!.theme!.messageBorderRadius;

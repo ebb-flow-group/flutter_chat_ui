@@ -102,6 +102,7 @@ class _CustomInputState extends State<CustomInput> {
             if(_textController.text.isEmpty) IconButton(
               icon: SvgPicture.asset(
                 'assets/icon/mic.svg',
+                package: 'flutter_chat_ui',
                 color: InheritedChatTheme.of(context)!.theme!.secondaryColor,
                 width: 18,
                 height: 18,
@@ -157,6 +158,7 @@ class _CustomInputState extends State<CustomInput> {
             IconButton(
               icon: SvgPicture.asset(
                 'assets/icon/send.svg',
+                package: 'flutter_chat_ui',
                   color: _sendButtonVisible
                       ? InheritedChatTheme.of(context)!.theme!.primaryColor
                       : Colors.grey[400],
@@ -202,6 +204,7 @@ class _CustomInputState extends State<CustomInput> {
       return IconButton(
         icon: SvgPicture.asset(
           'assets/icon/add.svg',
+          package: 'flutter_chat_ui',
           color: InheritedChatTheme.of(context)!.theme!.primaryColor,
           width: 18,
           height: 18,

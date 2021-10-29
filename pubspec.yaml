@@ -46,7 +46,6 @@ dev_dependencies:
   pedantic: ^1.11.1
 
 flutter:
-#  uses-material-design: true
   assets:
     - packages/flutter_chat_ui/assets/icon-attachment.png
     - packages/flutter_chat_ui/assets/icon-delivered.png

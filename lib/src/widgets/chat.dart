@@ -172,7 +172,6 @@ class _ChatState extends State<Chat> {
     super.didUpdateWidget(oldWidget);
 
     if (widget.messages!.isNotEmpty) {
-      print('NOT EMPTY');
       final result = calculateChatMessages(
         widget.messages!,
         widget.user!,
@@ -237,7 +236,6 @@ class _ChatState extends State<Chat> {
 
   Widget _buildMessage(Object object) {
     if (object is DateHeader) {
-      print('DATE HEADER');
       return Container(
         alignment: Alignment.center,
         margin: const EdgeInsets.only(
@@ -263,20 +261,16 @@ class _ChatState extends State<Chat> {
         ),
       );
     } else if (object is MessageSpacer) {
-      print('MESSAGE SPACER');
       return SizedBox(
         height: object.height,
       );
     } else {
-      print('ACTUAL MESSAGE');
       final map = object as Map<String, Object>;
       final message = map['message'] as types.Message;
       final _messageWidth =
           widget.showUserAvatars! && message.author.id != widget.user!.id
               ? min(MediaQuery.of(context).size.width * 0.72, 440).floor()
               : min(MediaQuery.of(context).size.width * 0.78, 440).floor();
-
-      print('MESSAGE TYPE ${message.type}');
 
       try{
         return Message(
